@@ -2,7 +2,6 @@
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
 using System;
-using System.Collections.Generic;
 using ux.Utils;
 using ux.Waveform;
 
@@ -21,7 +20,7 @@ namespace ux.Component
 
         private float volume;
         private double finetune, noteFreq, notePhase, noteFreqOld;
-        private double vibrateDepth, vibrateFreq, vibrateDelay;
+        private double vibrateDepth, vibrateFreq, vibrateDelay, vibratePhase;
         private double portamentSpeed;
         private bool portament, vibrate;
         private float[] smplBuffer, envlBuffer;
@@ -29,10 +28,11 @@ namespace ux.Component
         private int sampleTime;
         private Panpot panpot;
         private int keyShift;
+        private float[] buffer;
         #endregion
 
         #region Public Properties
-        public Queue<float> BufferQueue { get; private set; }
+        public float[] Buffer { get { return this.buffer; } }
 
         public bool IsSounding { get { return this.envelope.State != EnvelopeState.Silence; } }
         #endregion
@@ -50,7 +50,7 @@ namespace ux.Component
         public Part(Master master)
         {
             this.envelope = new Envelope(master.SamplingFreq);
-            this.BufferQueue = new Queue<float>(1024);
+            this.buffer = new float[1024];
             this.Reset();
 
             this.ExtendBuffers(256);
@@ -61,50 +61,45 @@ namespace ux.Component
         #region Public Methods
         public void Generate(int sampleCount)
         {
-            float c;
-            double freq, target_freq, old_freq, phase;
-
             if (!this.IsSounding)
                 return;
 
             if (this.smplBuffer.Length < sampleCount)
                 this.ExtendBuffers(sampleCount);
 
+            if (this.buffer.Length < sampleCount * 2)
+                this.buffer = new float[(int)(sampleCount * 2.5)];
+            else
+                Array.Clear(this.buffer, 0, this.buffer.Length);
+
             #region Generate Parameter
-            old_freq = this.noteFreqOld;
-            phase = this.notePhase;
             for (int i = 0; i < sampleCount; i++)
             {
-                if (this.vibrate && phase > this.vibrateDelay)
-                    target_freq = this.noteFreq * this.finetune + this.vibrateDepth * Math.Sin(2.0 * Math.PI * this.vibrateFreq * phase);
-                else
-                    target_freq = this.noteFreq * this.finetune;
+                double target_freq = this.noteFreq * this.finetune +
+                            ((this.vibrate && this.notePhase > this.vibrateDelay) ?
+                            this.vibrateDepth * Math.Sin(2.0 * Math.PI * this.vibrateFreq * this.vibratePhase) : 0.0);
 
-                if (this.portament)
-                    freq = old_freq + (target_freq - old_freq) * this.portamentSpeed;
-                else
-                    freq = target_freq;
+                double freq = (this.portament) ?
+                    this.noteFreqOld + (target_freq - this.noteFreqOld) * this.portamentSpeed : target_freq;
 
-                phase = phase * (old_freq / freq);
+                this.notePhase *= (this.noteFreqOld / freq);
 
                 this.freqBuffer[i] = freq;
-                this.phasBuffer[i] = phase;
-                phase = phase + SampleDeltaTime;
-                old_freq = freq;
+                this.phasBuffer[i] = this.notePhase;
+                this.notePhase += SampleDeltaTime;
+                this.vibratePhase += SampleDeltaTime;
+                this.noteFreqOld = freq;
             }
-
-            this.notePhase = phase;
-            this.noteFreqOld = old_freq;
             #endregion
 
             this.envelope.Generate(this.sampleTime, this.envlBuffer, 0, sampleCount);
             this.waveform.GetWaveforms(this.smplBuffer, this.freqBuffer, this.phasBuffer, sampleCount);
 
-            for (int i = 0; i < sampleCount; i++)
+            for (int i = 0, j = 0; i < sampleCount; i++)
             {
-                c = this.smplBuffer[i] * this.envlBuffer[i] * this.volume * 0.25f;
-                this.BufferQueue.Enqueue(c * this.panpot.L);
-                this.BufferQueue.Enqueue(c * this.panpot.R);
+                float c = this.smplBuffer[i] * this.envlBuffer[i] * this.volume;
+                this.buffer[j++] = c * this.panpot.L;
+                this.buffer[j++] = c * this.panpot.R;
             }
 
             this.sampleTime += sampleCount;
@@ -113,12 +108,13 @@ namespace ux.Component
         public void Reset()
         {
             this.waveform = new Square();
-            this.volume = 0.8f;
+            this.volume = 0.25f;
             this.panpot.L = 1.0f;
             this.panpot.R = 1.0f;
             this.vibrateDepth = 4.0;
             this.vibrateFreq = 4.0;
             this.vibrateDelay = 0.0;
+            this.vibratePhase = 0.0;
             this.portamentSpeed = 1.0 * 0.001;
             this.portament = false;
             this.vibrate = false;
@@ -136,6 +132,8 @@ namespace ux.Component
 
         public void ZeroGate(float note)
         {
+            this.vibratePhase = 0.0;
+
             if (float.IsInfinity(note))
                 this.noteFreq = 0.0;
             else if (note < 0.0f)
@@ -172,11 +170,6 @@ namespace ux.Component
                 //パラメータリセット
                 case HandleType.Reset:
                     this.Reset();
-                    break;
-
-                //リリース
-                case HandleType.Release:
-                    this.Release();
                     break;
 
                 //サイレンス
@@ -276,7 +269,7 @@ namespace ux.Component
                     break;
 
                 case "depth":
-                    this.vibrateDelay = parameter.Value;
+                    this.vibrateDepth = parameter.Value;
                     break;
 
                 case "freq":
