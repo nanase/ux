@@ -10,47 +10,47 @@ namespace ux.Utils
 	public static class ValueTypeEx
 	{
 		/// <summary>
-		/// Double 値を 0.0 から指定された数値の範囲で正規化します。
+		/// Double 値を 0.0 から指定された数値の範囲でクランプします。
 		/// </summary>
-		/// <param name="value">正規化される値。</param>
+		/// <param name="value">クランプされる値。</param>
 		/// <param name="max">範囲の最大値。</param>
-		/// <returns>正規化された値。</returns>
-		public static double Normalize (this double value, double max)
+		/// <returns>クランプされた値。</returns>
+		public static double Clamp (this double value, double max)
 		{
 			return value < 0.0 ? 0.0 : value > max ? max : value;
 		}
 
 		/// <summary>
-		/// Double 値を 0.0 から指定された数値の範囲で正規化します。
+		/// Double 値を 0.0 から指定された数値の範囲でクランプします。
 		/// </summary>
-		/// <param name="value">正規化される値。</param>
+		/// <param name="value">クランプされる値。</param>
 		/// <param name="max">範囲の最大値。</param>
 		/// <param name="min">範囲の最小値。</param>
-		/// <returns>正規化された値。</returns>
-		public static double Normalize (this double value, double max, double min)
+		/// <returns>クランプされた値。</returns>
+		public static double Clamp (this double value, double max, double min)
 		{
 			return value < min ? min : value > max ? max : value;
 		}
 
 		/// <summary>
-		/// Single 値を 0.0 から指定された数値の範囲で正規化します。
+		/// Single 値を 0.0 から指定された数値の範囲でクランプします。
 		/// </summary>
-		/// <param name="value">正規化される値。</param>
+		/// <param name="value">クランプされる値。</param>
 		/// <param name="max">範囲の最大値。</param>
-		/// <returns>正規化された値。</returns>
-		public static float Normalize (this float value, float max)
+		/// <returns>クランプされた値。</returns>
+		public static float Clamp (this float value, float max)
 		{
 			return value < 0.0f ? 0.0f : value > max ? max : value;
 		}
 
 		/// <summary>
-		/// Single 値を 0.0 から指定された数値の範囲で正規化します。
+		/// Single 値を 0.0 から指定された数値の範囲でクランプします。
 		/// </summary>
-		/// <param name="value">正規化される値。</param>
+		/// <param name="value">クランプされる値。</param>
 		/// <param name="max">範囲の最大値。</param>
 		/// <param name="min">範囲の最小値。</param>
-		/// <returns>正規化された値。</returns>
-		public static float Normalize (this float value, float max, float min)
+		/// <returns>クランプされた値。</returns>
+		public static float Clamp (this float value, float max, float min)
 		{
 			return value < min ? min : value > max ? max : value;
 		}
@@ -91,47 +91,47 @@ namespace ux.Utils
 		}
 
 		/// <summary>
-		/// Int32 値を 0 から指定された数値の範囲で正規化します。
+		/// Int32 値を 0 から指定された数値の範囲でクランプします。
 		/// </summary>
-		/// <param name="value">正規化される値。</param>
+		/// <param name="value">クランプされる値。</param>
 		/// <param name="max">範囲の最大値。</param>
-		/// <returns>正規化された値。</returns>
-		public static int Normalize(this int value, int max)
+		/// <returns>クランプされた値。</returns>
+		public static int Clamp(this int value, int max)
 		{
 			return value < 0 ? 0 : value > max ? max : value;
 		}
 
 		/// <summary>
-		/// Int32 値を 0.0 から指定された数値の範囲で正規化します。
+		/// Int32 値を 0.0 から指定された数値の範囲でクランプします。
 		/// </summary>
-		/// <param name="value">正規化される値。</param>
+		/// <param name="value">クランプされる値。</param>
 		/// <param name="max">範囲の最大値。</param>
 		/// <param name="min">範囲の最小値。</param>
-		/// <returns>正規化された値。</returns>
-		public static int Normalize (this int value, int max, int min)
+		/// <returns>クランプされた値。</returns>
+		public static int Clamp (this int value, int max, int min)
 		{
 			return value < min ? min : value > max ? max : value;
 		}
 
 		/// <summary>
-		/// Int16 値を 0 から指定された数値の範囲で正規化します。
+		/// Int16 値を 0 から指定された数値の範囲でクランプします。
 		/// </summary>
-		/// <param name="value">正規化される値。</param>
+		/// <param name="value">クランプされる値。</param>
 		/// <param name="max">範囲の最大値。</param>
-		/// <returns>正規化された値。</returns>
-		public static short Normalize (this short value, short max)
+		/// <returns>クランプされた値。</returns>
+		public static short Clamp (this short value, short max)
 		{
 			return value < (short)0 ? (short)0 : value > max ? max : value;
 		}
 
 		/// <summary>
-		/// Int16 値を 0.0 から指定された数値の範囲で正規化します。
+		/// Int16 値を 0.0 から指定された数値の範囲でクランプします。
 		/// </summary>
-		/// <param name="value">正規化される値。</param>
+		/// <param name="value">クランプされる値。</param>
 		/// <param name="max">範囲の最大値。</param>
 		/// <param name="min">範囲の最小値。</param>
-		/// <returns>正規化された値。</returns>
-		public static short Normalize (this short value, short max, short min)
+		/// <returns>クランプされた値。</returns>
+		public static short Clamp (this short value, short max, short min)
 		{
 			return value < min ? min : value > max ? max : value;
 		}

@@ -6,12 +6,19 @@ using ux.Component;
 
 namespace ux.Waveform
 {
+    /// <summary>
+    /// FM (周波数変調) を用いた波形ジェネレータクラスです。
+    /// </summary>
     class FM : IWaveform
     {
-        #region Private Members
+        #region Private Field
         private readonly Operator op0, op1, op2, op3;
         #endregion
 
+        #region Constructor
+        /// <summary>
+        /// 新しい FM クラスのインスタンスを初期化します。
+        /// </summary>
         public FM()
         {
             this.op0 = new Operator();
@@ -23,8 +30,16 @@ namespace ux.Waveform
             this.op0.Send0 = 0.75;
             this.op1.Send0 = 0.5;
         }
+        #endregion
 
         #region IWaveform implementation
+        /// <summary>
+        /// 与えられた周波数と位相から波形を生成します。
+        /// </summary>
+        /// <param name="data">生成された波形データが代入される配列。</param>
+        /// <param name="frequency">生成に使用される周波数の配列。</param>
+        /// <param name="phase">生成に使用される位相の配列。</param>
+        /// <param name="count">配列に代入されるデータの数。</param>
         public void GetWaveforms(float[] data, double[] frequency, double[] phase, int count)
         {
             double omega, tmp0, tmp1, tmp2, tmp3;
@@ -72,115 +87,99 @@ namespace ux.Waveform
             }
         }
 
+        /// <summary>
+        /// パラメータを指定して波形の設定値を変更します。
+        /// </summary>
+        /// <param name="parameter">パラメータオブジェクトとなる PValue 値。</param>
         public void SetParameter(PValue parameter)
         {
-            switch (parameter.Name)
+            if (parameter.Name.Length < 4)
+                return;
+
+            Operator op;
+            switch (parameter.Name.Substring(0, 3))
             {
-                case "op0out":
-                    this.op0.OutAmplifier = parameter.Value;
-                    break;
-                case "op0amp":
-                    this.op0.Amplifier = parameter.Value;
-                    break;
-                case "op0freq":
-                    this.op0.FreqFactor = parameter.Value;
-                    break;
-                case "op0send0":
-                    this.op0.Send0 = parameter.Value;
-                    break;
-                case "op0send1":
-                    this.op0.Send1 = parameter.Value;
-                    break;
-                case "op0send2":
-                    this.op0.Send2 = parameter.Value;
-                    break;
-                case "op0send3":
-                    this.op0.Send3 = parameter.Value;
-                    break;
+                case "op0": op = this.op0; break;
+                case "op1": op = this.op1; break;
+                case "op2": op = this.op2; break;
+                case "op3": op = this.op3; break;
+                default:
+                    return;
+            }
 
-                case "op1out":
-                    this.op1.OutAmplifier = parameter.Value;
+            switch (parameter.Name.Substring(3))
+            {
+                case "out":
+                    op.OutAmplifier = parameter.Value;
                     break;
-                case "op1amp":
-                    this.op1.Amplifier = parameter.Value;
+                case "amp":
+                    op.Amplifier = parameter.Value;
                     break;
-                case "op1freq":
-                    this.op1.FreqFactor = parameter.Value;
+                case "freq":
+                    op.FreqFactor = parameter.Value;
                     break;
-                case "op1send0":
-                    this.op1.Send0 = parameter.Value;
+                case "send0":
+                    op.Send0 = parameter.Value;
                     break;
-                case "op1send1":
-                    this.op1.Send1 = parameter.Value;
+                case "send1":
+                    op.Send1 = parameter.Value;
                     break;
-                case "op1send2":
-                    this.op1.Send2 = parameter.Value;
+                case "send2":
+                    op.Send2 = parameter.Value;
                     break;
-                case "op1send3":
-                    this.op1.Send3 = parameter.Value;
-                    break;
-
-                case "op2out":
-                    this.op2.OutAmplifier = parameter.Value;
-                    break;
-                case "op2amp":
-                    this.op2.Amplifier = parameter.Value;
-                    break;
-                case "op2freq":
-                    this.op2.FreqFactor = parameter.Value;
-                    break;
-                case "op2send0":
-                    this.op2.Send0 = parameter.Value;
-                    break;
-                case "op2send1":
-                    this.op2.Send1 = parameter.Value;
-                    break;
-                case "op2send2":
-                    this.op2.Send2 = parameter.Value;
-                    break;
-                case "op2send3":
-                    this.op2.Send3 = parameter.Value;
-                    break;
-
-                case "op3out":
-                    this.op3.OutAmplifier = parameter.Value;
-                    break;
-                case "op3amp":
-                    this.op3.Amplifier = parameter.Value;
-                    break;
-                case "op3freq":
-                    this.op3.FreqFactor = parameter.Value;
-                    break;
-                case "op3send0":
-                    this.op3.Send0 = parameter.Value;
-                    break;
-                case "op3send1":
-                    this.op3.Send1 = parameter.Value;
-                    break;
-                case "op3send2":
-                    this.op3.Send2 = parameter.Value;
-                    break;
-                case "op3send3":
-                    this.op3.Send3 = parameter.Value;
+                case "send3":
+                    op.Send3 = parameter.Value;
                     break;
 
                 default:
                     break;
             }
-
-            return;
         }
         #endregion
 
+        /// <summary>
+        /// FM 音源の 1 モジュールとなるオペレータクラスです。
+        /// </summary>
         class Operator
         {
+            /// <summary>
+            /// 出力に接続される増幅度。
+            /// </summary>
             public double OutAmplifier = 0.0f;
+
+            /// <summary>
+            /// 各オペレータに送信されるレベルの増幅度。
+            /// </summary>
             public double Amplifier = 1.0f;
+
+            /// <summary>
+            /// このオペレータが発振する周波数の補正係数。
+            /// </summary>
             public double FreqFactor = 1.0f;
+
+            /// <summary>
+            /// オペレータ 0 に送信される波形のレベル。
+            /// </summary>
             public double Send0 = 0.0f;
+
+            /// <summary>
+            /// オペレータ 1 に送信される波形のレベル。
+            /// </summary>
             public double Send1 = 0.0f;
+
+            /// <summary>
+            /// オペレータ 2 に送信される波形のレベル。
+            /// </summary>
             public double Send2 = 0.0f;
+
+            /// <summary>
+            /// オペレータ 3 に送信される波形のレベル。
+            /// </summary>
             public double Send3 = 0.0f;
+
+            /// <summary>
+            /// オペレータが生成した古い値。
+            /// </summary>
             public double Old = 0.0f;
         }
     }

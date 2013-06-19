@@ -5,9 +5,15 @@ using ux.Component;
 
 namespace ux.Waveform
 {
+    /// <summary>
+    /// 矩形波を生成する波形ジェネレータクラスです。
+    /// </summary>
     class Square : StepWaveform
     {
         #region Constructors
+        /// <summary>
+        /// 新しい Square クラスのインスタンスを初期化します。
+        /// </summary>
         public Square()
             : base()
         {
@@ -16,6 +22,10 @@ namespace ux.Waveform
         #endregion
 
         #region Public Override Methods
+        /// <summary>
+        /// パラメータを指定してこの波形の設定値を変更します。
+        /// </summary>
+        /// <param name="parameter">パラメータオブジェクトとなる PValue 値。</param>
         public override void SetParameter(PValue parameter)
         {
             switch (parameter.Name)
@@ -31,6 +41,10 @@ namespace ux.Waveform
         #endregion
 
         #region Private Methods
+        /// <summary>
+        /// デューティ比を指定して新しい矩形波を設定します。
+        /// </summary>
+        /// <param name="duty">デューティ比。</param>
         private void GenerateStep(float duty)
         {
             if (duty <= 0.0f || duty >= 1.0f)
@@ -60,9 +74,15 @@ namespace ux.Waveform
         #endregion
     }
 
+    /// <summary>
+    /// 擬似三角波を生成する波形ジェネレータクラスです。
+    /// </summary>
     class Triangle : StepWaveform
     {
         #region Constructors
+        /// <summary>
+        /// 新しい Triangle クラスのインスタンスを初期化します。
+        /// </summary>
         public Triangle()
             : base()
         {
@@ -71,6 +91,10 @@ namespace ux.Waveform
         #endregion
 
         #region Public Override Methods
+        /// <summary>
+        /// パラメータを指定してこの波形の設定値を変更します。
+        /// </summary>
+        /// <param name="parameter">パラメータオブジェクトとなる PValue 値。</param>
         public override void SetParameter(PValue parameter)
         {
             switch (parameter.Name)
@@ -87,6 +111,10 @@ namespace ux.Waveform
         #endregion
 
         #region Private Methods
+        /// <summary>
+        /// ステップ数を指定して新しい擬似三角波を設定します。
+        /// </summary>
+        /// <param name="step">ステップ数。</param>
         private void GenerateStep(int step)
         {
             if (step <= 0 || step > 256)

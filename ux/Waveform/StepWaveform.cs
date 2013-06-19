@@ -8,22 +8,51 @@ using ux.Component;
 
 namespace ux.Waveform
 {
+    /// <summary>
+    /// ステップ (階段状) 波形を生成できるジェネレータクラスです。
+    /// </summary>
     class StepWaveform : IWaveform
     {
-        #region Protected Members
+        #region Protected Field
+        /// <summary>
+        /// 円周率 Math.PI を Single 型にキャストした定数値です。
+        /// </summary>
         protected const float PI = (float)Math.PI;
-        protected const float PI2 = PI * 2.0f;
-        protected const float PI_2 = PI / 2.0f;
+
+        /// <summary>
+        /// 円周率 Math.PI を 2 倍し Single 型にキャストした定数値です。
+        /// </summary>
+        protected const float PI2 = (float)(Math.PI * 2.0);
+
+        /// <summary>
+        /// 円周率 Math.PI を 0.5 倍し Single 型にキャストした定数値です。
+        /// </summary>
+        protected const float PI_2 = (float)(Math.PI * 0.5);
+
+        /// <summary>
+        /// 波形生成に用いられる生データの配列です。
+        /// </summary>
+        protected float[] value;
+
+        /// <summary>
+        /// 波形生成に用いられるデータ長の長さです。
+        /// </summary>
+        protected float length;
+
+        /// <summary>
+        /// 波形生成に用いられる周波数補正係数です。
+        /// </summary>
+        protected double freqFactor = 1.0;
         #endregion
 
-        #region Private Members
-        protected float[] value;
-        protected float length;
-        protected double freqFactor = 1.0;
+        #region Private Field
         private Queue<byte> queue = null;
         #endregion
 
         #region Constructors
+        /// <summary>
+        /// 空の波形データを使って新しい StepWaveform クラスのインスタンスを初期化します。
+        /// </summary>
         public StepWaveform()
         {
             this.SetStep(new byte[] { 0 });
@@ -31,6 +60,13 @@ namespace ux.Waveform
         #endregion
 
         #region IWaveform implementation
+        /// <summary>
+        /// 与えられた周波数と位相からステップ波形を生成します。
+        /// </summary>
+        /// <param name="data">生成された波形データが代入される配列。</param>
+        /// <param name="frequency">生成に使用される周波数の配列。</param>
+        /// <param name="phase">生成に使用される位相の配列。</param>
+        /// <param name="count">配列に代入されるデータの数。</param>
         public virtual void GetWaveforms(float[] data, double[] frequency, double[] phase, int count)
         {
             float tmp;
@@ -44,6 +80,10 @@ namespace ux.Waveform
             }
         }
 
+        /// <summary>
+        /// パラメータを指定してこの波形の設定値を変更します。
+        /// </summary>
+        /// <param name="parameter">パラメータオブジェクトとなる PValue 値。</param>
         public virtual void SetParameter(PValue parameter)
         {
             switch (parameter.Name)
@@ -77,6 +117,10 @@ namespace ux.Waveform
             }
         }
 
+        /// <summary>
+        /// 指定されたステップデータから波形生成用のデータを作成します。
+        /// </summary>
+        /// <param name="data">波形生成のベースとなるステップデータ。</param>
         public void SetStep(byte[] data)
         {
             if (data == null)

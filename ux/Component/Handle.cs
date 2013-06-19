@@ -65,8 +65,6 @@ namespace ux.Component
 		#endregion
 
 		#region Public Static Methods
-		//GetParameterType => InternalHandle.cs
-
 		/// <summary>
 		/// 2つのオブジェクトを比較します。
 		/// </summary>

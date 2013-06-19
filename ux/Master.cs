@@ -4,23 +4,26 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using ux.Component;
 using ux.Utils;
 
 namespace ux
 {
+    /// <summary>
+    /// シンセサイザのパート管理や出力データの最終処理を担うマスタークラスです。
+    /// </summary>
     public class Master
     {
         #region Private Constant Field
         private const float DefaultSamplingFreq = 44100.0f;
-        private const int PartCount = 8;
+        private const int PartCount = 16;
+        internal const double A = Math.E * 20;
         #endregion
 
         #region Private Field
-        private float masterVolume = 0.8f;
-        private float compressorThreshold = 0.5f;
-        private float compressorRatio = 1.0f / 10.0f;
+        private float masterVolume;
+        private float compressorThreshold = 0.8f;
+        private float compressorRatio = 1.0f / 1.666f;
         private readonly float samplingFreq;
         private readonly Part[] parts = new Part[PartCount];
         private readonly Queue<Handle> handleQueue;
@@ -35,8 +38,14 @@ namespace ux
         /// </value>
         public float SamplingFreq { get { return this.samplingFreq; } }
 
+        /// <summary>
+        /// 現在演奏を受け付けているかを表す真偽値を取得します。
+        /// </summary>
         public bool Playing { get; private set; }
 
+        /// <summary>
+        /// コンプレッサのしきい値を表す実数値を取得または設定します。
+        /// </summary>
         public float Threshold
         {
             get { return this.compressorThreshold; }
@@ -51,6 +60,9 @@ namespace ux
             }
         }
 
+        /// <summary>
+        /// コンプレッサの圧縮率を表す実数値を取得または設定します。
+        /// </summary>
         public float Ratio
         {
             get { return this.compressorRatio; }
@@ -67,11 +79,18 @@ namespace ux
         #endregion
 
         #region Constructor
+        /// <summary>
+        /// 引数を指定せずに新しい Master クラスのインスタンスを初期化します。
+        /// </summary>
         public Master()
             : this(Master.DefaultSamplingFreq)
         {
         }
 
+        /// <summary>
+        /// サンプリング周波数を指定して新しい Master クラスのインスタンスを初期化します。
+        /// </summary>
+        /// <param name="samplingFreq">演奏に使用されるサンプリング周波数。</param>
         public Master(float samplingFreq)
         {
             if (samplingFreq > 0.0f && samplingFreq <= float.MaxValue)
@@ -83,6 +102,8 @@ namespace ux
                 this.parts[i] = new Part(this);
 
             this.handleQueue = new Queue<Handle>();
+
+            this.Reset();
         }
         #endregion
 
@@ -107,12 +128,20 @@ namespace ux
             this.Playing = false;
         }
 
+        /// <summary>
+        /// 単一のハンドルをキューにプッシュします。
+        /// </summary>
+        /// <param name="handle">プッシュされるハンドル。</param>
         public void PushHandle(Handle handle)
         {
             lock (((ICollection)this.handleQueue).SyncRoot)
                 this.handleQueue.Enqueue(handle);
         }
 
+        /// <summary>
+        /// 複数のハンドルをキューにプッシュします。
+        /// </summary>
+        /// <param name="handles">複数ハンドルを列挙する IEnumerable<Handle> インスタンス。</param>
         public void PushHandle(IEnumerable<Handle> handles)
         {
             lock (((ICollection)this.handleQueue).SyncRoot)
@@ -147,35 +176,42 @@ namespace ux
         /// <returns>読み込みに成功した要素数。</returns>
         public int Read(float[] buffer, int offset, int count)
         {
-            float gain = 1.0f / (this.compressorThreshold + (1.0f - this.compressorThreshold) * this.compressorRatio);
+            // バッファクリア
+            Array.Clear(buffer, offset, count);
 
+            // ハンドルの適用
             this.ApplyHandle();
 
-            // countは バイト数
+            // count は バイト数
             // Part.Generate にはサンプル数を与える
-            for (int i = 0; i < Master.PartCount; i++)
-                if (this.parts[i].IsSounding)
-                    this.parts[i].Generate(count / 2);
-            
+            for (int k = 0; k < Master.PartCount; k++)
+            {
+                if (!this.parts[k].IsSounding)
+                    continue;
+
+                this.parts[k].Generate(count / 2);
+
+                // 波形合成
+                for (int i = offset, j = 0; i < count; i++, j++)
+                    buffer[i] += this.parts[k].Buffer[j];
+            }
+
+            // コンプレッサ増幅度
+            float gain = 1.0f / (this.compressorThreshold + (1.0f - this.compressorThreshold) * this.compressorRatio);
+
             for (int i = offset, j = 0, length = offset + count; i < length; i++, j++)
             {
-                float input, output;
+                float output = buffer[i] * this.masterVolume;
 
-                output = input = this.parts.Where(p => p.IsSounding).Sum(p => p.Buffer[j]) * this.masterVolume;
+                // 圧縮
+                output =
+                    gain *
+                    ((output > this.compressorThreshold) ? this.compressorThreshold + (output - this.compressorThreshold) * this.compressorRatio :
+                    (output < -this.compressorThreshold) ? -this.compressorThreshold + (output + this.compressorThreshold) * this.compressorRatio :
+                    output);
 
-                if (output > this.compressorThreshold)
-                    output = this.compressorThreshold + (output - this.compressorThreshold) * this.compressorRatio;
-                else if (input < -this.compressorThreshold)
-                    output = -this.compressorThreshold + (input + this.compressorThreshold) * this.compressorRatio;
-
-                output *= gain;
-
-                if (output > 1.0f)
-                    output = 1.0f;
-                else if (output < -1.0f)
-                    output = -1.0f;
-
-                buffer[i] = output;
+                // クリッピングと代入
+                buffer[i] = (output > 1.0f) ? 1.0f : (output < -1.0f) ? -1.0f : output;
             }
 
             return count;
@@ -186,7 +222,7 @@ namespace ux
         /// </summary>
         public void Reset()
         {
-            this.masterVolume = 0.8f;
+            this.masterVolume = (float)((Math.Pow(Master.A, 0.8) - 1.0) / (Master.A - 1.0));
 
             for (int i = 0; i < Master.PartCount; i++)
                 this.parts[i].Reset();
@@ -194,10 +230,14 @@ namespace ux
         #endregion
 
         #region Private Method
+        /// <summary>
+        /// キューからハンドルをポップし、各パートに送信します。
+        /// </summary>
         private void ApplyHandle()
         {
             var list = new List<Handle>();
 
+            // リストに一時転送
             lock (((ICollection)this.handleQueue).SyncRoot)
             {
                 list.AddRange(this.handleQueue);
@@ -210,7 +250,8 @@ namespace ux
                     switch (handle.Type)
                     {
                         case HandleType.Volume:
-                            this.masterVolume = handle.Parameter.Value.Normalize(2.0f, 0.0f);
+
+                            this.masterVolume = (float)(Math.Pow(Master.A, handle.Parameter.Value.Clamp(2.0f, 0.0f) - 1.0) / (Master.A - 1.0));
                             break;
 
                         default:

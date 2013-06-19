@@ -4,9 +4,15 @@
 
 namespace ux.Waveform
 {
+    /// <summary>
+    /// 線形帰還シフトレジスタを用いた長周期擬似ノイズジェネレータです。
+    /// </summary>
 	class LongNoise : StepWaveform
 	{
 		#region Constructors
+        /// <summary>
+        /// 新しい LongNoise クラスのインスタンスを初期化します。
+        /// </summary>
 		public LongNoise ()
 			: base()
 		{
@@ -25,9 +31,15 @@ namespace ux.Waveform
 		#endregion
 	}
 
+    /// <summary>
+    /// 線形帰還シフトレジスタを用いた短周期擬似ノイズジェネレータです。
+    /// </summary>
     class ShortNoise : StepWaveform
     {
         #region Constructors
+        /// <summary>
+        /// 新しい ShortNoise クラスのインスタンスを初期化します。
+        /// </summary>
         public ShortNoise()
             : base()
         {
