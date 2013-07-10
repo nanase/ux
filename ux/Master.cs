@@ -17,16 +17,19 @@ namespace ux
         #region Private Constant Field
         private const float DefaultSamplingFreq = 44100.0f;
         private const int PartCount = 16;
-        internal const double A = Math.E * 20;
         #endregion
 
         #region Private Field
-        private float masterVolume;
+        
         private float compressorThreshold = 0.8f;
-        private float compressorRatio = 1.0f / 1.666f;
+        private float compressorRatio = 1.0f / 2.0f;
         private readonly float samplingFreq;
         private readonly Part[] parts = new Part[PartCount];
         private readonly Queue<Handle> handleQueue;
+        #endregion
+
+        #region Internal Field
+        private float masterVolume;
         #endregion
 
         #region Public Property
@@ -201,7 +204,7 @@ namespace ux
 
             for (int i = offset, j = 0, length = offset + count; i < length; i++, j++)
             {
-                float output = buffer[i] * this.masterVolume;
+                float output = buffer[i];
 
                 // 圧縮
                 output =
@@ -222,7 +225,7 @@ namespace ux
         /// </summary>
         public void Reset()
         {
-            this.masterVolume = (float)((Math.Pow(Master.A, 0.8) - 1.0) / (Master.A - 1.0));
+            this.masterVolume = 0.8f;
 
             for (int i = 0; i < Master.PartCount; i++)
                 this.parts[i].Reset();
@@ -251,7 +254,7 @@ namespace ux
                     {
                         case HandleType.Volume:
 
-                            this.masterVolume = (float)(Math.Pow(Master.A, handle.Parameter.Value.Clamp(2.0f, 0.0f) - 1.0) / (Master.A - 1.0));
+                            this.masterVolume = handle.Parameter.Value.Clamp(2.0f, 0.0f);
                             break;
 
                         default:

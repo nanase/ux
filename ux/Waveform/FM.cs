@@ -47,33 +47,39 @@ namespace ux.Waveform
             for (int i = 0; i < count; i++)
             {
                 omega = 2.0 * Math.PI * phase[i] * frequency[i];
-                tmp0 =
-                    Math.Sin(omega * this.op0.FreqFactor +
-                    this.op0.Send0 * this.op0.Old +
-                    this.op1.Send0 * this.op1.Old +
-                    this.op2.Send0 * this.op2.Old +
-                    this.op3.Send0 * this.op3.Old) * this.op0.Amplifier;
+                tmp3 = tmp2 = tmp1 = tmp0 = 0.0;
 
-                tmp1 =
-                    Math.Sin(omega * this.op1.FreqFactor +
-                    this.op0.Send1 * this.op0.Old +
-                    this.op1.Send1 * this.op1.Old +
-                    this.op2.Send1 * this.op2.Old +
-                    this.op3.Send1 * this.op3.Old) * this.op1.Amplifier;
+                if (this.op0.IsSelected)
+                    tmp0 =
+                        Math.Sin(omega * this.op0.FreqFactor +
+                        this.op0.Send0 * this.op0.Old +
+                        this.op1.Send0 * this.op1.Old +
+                        this.op2.Send0 * this.op2.Old +
+                        this.op3.Send0 * this.op3.Old) * this.op0.Amplifier;
 
-                tmp2 =
-                    Math.Sin(omega * this.op2.FreqFactor +
-                    this.op0.Send2 * this.op0.Old +
-                    this.op1.Send2 * this.op1.Old +
-                    this.op2.Send2 * this.op2.Old +
-                    this.op3.Send2 * this.op3.Old) * this.op2.Amplifier;
+                if (this.op1.IsSelected)
+                    tmp1 =
+                        Math.Sin(omega * this.op1.FreqFactor +
+                        this.op0.Send1 * this.op0.Old +
+                        this.op1.Send1 * this.op1.Old +
+                        this.op2.Send1 * this.op2.Old +
+                        this.op3.Send1 * this.op3.Old) * this.op1.Amplifier;
 
-                tmp3 =
-                    Math.Sin(omega * this.op3.FreqFactor +
-                    this.op0.Send3 * this.op0.Old +
-                    this.op1.Send3 * this.op1.Old +
-                    this.op2.Send3 * this.op2.Old +
-                    this.op3.Send3 * this.op3.Old) * this.op3.Amplifier;
+                if (this.op2.IsSelected)
+                    tmp2 =
+                        Math.Sin(omega * this.op2.FreqFactor +
+                        this.op0.Send2 * this.op0.Old +
+                        this.op1.Send2 * this.op1.Old +
+                        this.op2.Send2 * this.op2.Old +
+                        this.op3.Send2 * this.op3.Old) * this.op2.Amplifier;
+
+                if (this.op3.IsSelected)
+                    tmp3 =
+                        Math.Sin(omega * this.op3.FreqFactor +
+                        this.op0.Send3 * this.op0.Old +
+                        this.op1.Send3 * this.op1.Old +
+                        this.op2.Send3 * this.op2.Old +
+                        this.op3.Send3 * this.op3.Old) * this.op3.Amplifier;
 
                 this.op0.Old = tmp0;
                 this.op1.Old = tmp1;
@@ -134,6 +140,59 @@ namespace ux.Waveform
                 default:
                     break;
             }
+
+            this.SelectProcessingOperator();
+        }
+
+        /// <summary>
+        /// 計算不要なオペレータを検出し、選択します。
+        /// </summary>
+        private void SelectProcessingOperator()
+        {
+            this.op0.IsSelected = (this.op0.OutAmplifier != 0.0);
+            this.op1.IsSelected = (this.op1.OutAmplifier != 0.0);
+            this.op2.IsSelected = (this.op2.OutAmplifier != 0.0);
+            this.op3.IsSelected = (this.op3.OutAmplifier != 0.0);
+
+            if (this.op0.IsSelected)
+            {
+                if (!this.op1.IsSelected && this.op1.Send0 != 0.0)
+                    this.op1.IsSelected = true;
+                if (!this.op2.IsSelected && this.op2.Send0 != 0.0)
+                    this.op2.IsSelected = true;
+                if (!this.op3.IsSelected && this.op3.Send0 != 0.0)
+                    this.op3.IsSelected = true;
+            }
+
+            if (this.op1.IsSelected)
+            {
+                if (!this.op0.IsSelected && this.op0.Send1 != 0.0)
+                    this.op0.IsSelected = true;
+                if (!this.op2.IsSelected && this.op2.Send1 != 0.0)
+                    this.op2.IsSelected = true;
+                if (!this.op3.IsSelected && this.op3.Send1 != 0.0)
+                    this.op3.IsSelected = true;
+            }
+
+            if (this.op2.IsSelected)
+            {
+                if (!this.op0.IsSelected && this.op0.Send2 != 0.0)
+                    this.op0.IsSelected = true;
+                if (!this.op1.IsSelected && this.op1.Send2 != 0.0)
+                    this.op1.IsSelected = true;
+                if (!this.op3.IsSelected && this.op3.Send2 != 0.0)
+                    this.op3.IsSelected = true;
+            }
+
+            if (this.op3.IsSelected)
+            {
+                if (!this.op0.IsSelected && this.op0.Send3 != 0.0)
+                    this.op0.IsSelected = true;
+                if (!this.op1.IsSelected && this.op1.Send3 != 0.0)
+                    this.op1.IsSelected = true;
+                if (!this.op2.IsSelected && this.op2.Send3 != 0.0)
+                    this.op2.IsSelected = true;
+            }
         }
         #endregion
 
@@ -181,6 +240,11 @@ namespace ux.Waveform
             /// オペレータが生成した古い値。
             /// </summary>
             public double Old = 0.0f;
+
+            /// <summary>
+            /// このオペレータが処理されるかのチェックフラグ。
+            /// </summary>
+            public bool IsSelected = false;
         }
     }
 }

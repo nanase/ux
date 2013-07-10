@@ -35,53 +35,48 @@ namespace ux.Component
 		Volume = 4,
 
         /// <summary>
-        /// エクスプレッションレベル を変更します。
-        /// </summary>
-        Expression = 5,	
-
-        /// <summary>
         /// パンポット (定位) を変更します。
         /// </summary>
-		Panpot = 6,
+		Panpot = 5,
 
         /// <summary>
         /// ビブラートに関するパラメータを設定します。
         /// </summary>
-		Vibrate = 7,
+		Vibrate = 6,
 
         /// <summary>
         /// パートに波形を割り当てます。
         /// </summary>
-		Waveform = 8,
+		Waveform = 7,
 
         /// <summary>
         /// 波形のパラメータを編集します。
         /// </summary>
-		EditWaveform = 9,
+		EditWaveform = 8,
 
         /// <summary>
         /// パートの音量エンベロープを変更します。
         /// </summary>
-		Envelope = 10,
+		Envelope = 9,
 
         /// <summary>
         /// パートのファインチューン値を変更します。
         /// </summary>
-		FineTune = 11,
+		FineTune = 10,
 
         /// <summary>
         /// パートの発音ノートキーをシフトします。
         /// </summary>
-		KeyShift = 12,
+		KeyShift = 11,
 
         /// <summary>
         /// ポルタメント効果に関するパラメータを設定します。
         /// </summary>
-		Portament = 13,
+		Portament = 12,
 
         /// <summary>
         /// パートを指定されたノートまたは周波数でアタック状態にします。
         /// </summary>
-		NoteOn = 14
+		NoteOn = 13
 	}
 }

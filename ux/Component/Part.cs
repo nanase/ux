@@ -14,14 +14,17 @@ namespace ux.Component
     {
         #region Static Private Field
         private static readonly double[] NoteFactor;
+        private const float Amplifier = 0.5f;
+        private const double A = 2.0;
         #endregion
 
         #region Private Field
         private readonly double SampleDeltaTime;
         private readonly Envelope envelope;
+        private readonly Master master;
         private IWaveform waveform;
 
-        private float volume, expression;
+        private float volume, expression, velocity, gain;
         private double finetune, noteFreq, notePhase, noteFreqOld;
         private double vibrateDepth, vibrateFreq, vibrateDelay, vibratePhase;
         private double portamentSpeed;
@@ -68,6 +71,7 @@ namespace ux.Component
 
             this.ExtendBuffers(256);
             this.SampleDeltaTime = 1.0 / master.SamplingFreq;
+            this.master = master;
         }
         #endregion
 
@@ -125,10 +129,12 @@ namespace ux.Component
             this.envelope.Generate(this.sampleTime, this.envlBuffer, 0, sampleCount);
             this.waveform.GetWaveforms(this.smplBuffer, this.freqBuffer, this.phasBuffer, sampleCount);
 
+            float vtmp = (float)((this.volume * this.expression * Part.Amplifier * this.velocity * this.gain) / (1.0 * 1.0 * 1.0 * 1.0 * 1.0 * 1.0));
+
             // 波形出力
             for (int i = 0, j = 0; i < sampleCount; i++)
             {
-                float c = this.smplBuffer[i] * (float)(Math.Pow(Master.A, this.envlBuffer[i]) / (Master.A - 1.0)) * this.volume * this.expression;
+                float c = this.smplBuffer[i] * (float)Math.Pow(this.envlBuffer[i] * vtmp, Part.A);
                 this.buffer[j++] = c * this.panpot.L;
                 this.buffer[j++] = c * this.panpot.R;
             }
@@ -142,8 +148,9 @@ namespace ux.Component
         public void Reset()
         {
             this.waveform = new Square();
-            this.volume = (float)((Math.Pow(Master.A, (1.0 / 1.27)) - 1.0) / (Master.A - 1.0));
+            this.volume = (float)(1.0 / 1.27);
             this.expression = 1.0f;
+            this.gain = 1.0f;
             this.panpot = new Panpot(1.0f, 1.0f);
             this.vibrateDepth = 4.0;
             this.vibrateFreq = 4.0;
@@ -152,6 +159,7 @@ namespace ux.Component
             this.portamentSpeed = 1.0 * 0.001;
             this.portament = false;
             this.vibrate = false;
+            this.velocity = 1.0f;
 
             this.sampleTime = 0;
             this.notePhase = 0.0;
@@ -231,13 +239,7 @@ namespace ux.Component
 
                 //ボリューム設定
                 case HandleType.Volume:
-                    
-                    this.volume = (float)((Math.Pow(Master.A, handle.Parameter.Value.Clamp(1.0f, 0.0f)) - 1.0) / (Master.A - 1.0));
-                    break;
-
-                //ボリューム設定
-                case HandleType.Expression:
-                    this.volume = handle.Parameter.Value.Clamp(1.0f, 0.0f);
+                    this.ApplyForVolume(handle.Parameter);
                     break;
 
                 //パンポッド
@@ -312,6 +314,37 @@ namespace ux.Component
             this.envlBuffer = new float[requireCount];
             this.freqBuffer = new double[requireCount];
             this.phasBuffer = new double[requireCount];
+        }
+
+        /// <summary>
+        /// ヴォリュームに対する設定を適用します。
+        /// </summary>
+        /// <param name="parameter">パラメータ値。</param>
+        private void ApplyForVolume(PValue parameter)
+        {
+            switch (parameter.Name)
+            {
+                case null:
+                case "":
+                case "volume":
+                    this.volume = parameter.Value.Clamp(1.0f, 0.0f);
+                    break;
+
+                case "expression":
+                    this.expression = parameter.Value.Clamp(1.0f, 0.0f);
+                    break;
+
+                case "velocity":
+                    this.velocity = parameter.Value.Clamp(1.0f, 0.0f);
+                    break;
+
+                case "gain":
+                    this.gain = parameter.Value.Clamp(1.0f, 0.0f);
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         /// <summary>

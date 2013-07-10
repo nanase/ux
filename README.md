@@ -1,6 +1,6 @@
 # ux - Micro Xylph
 
-**バージョン: v0.1.2-dev**
+**バージョン: v0.1.3-dev**
 
 ux は軽量でシンプルな動作を目標としたソフトウェアシンセサイザです。C# で作られており、Mono 上でも動作します。
 
@@ -17,20 +17,16 @@ C# から直接曲データを記述できるほか、独自言語 Xylph によ�
 ## 動作確認
 * Mono 2.10.8.1 (Linux Mint 14 64 bit)
 * .NET Framework 4.5 (Windows 7 64 bit)
+* (内部プロジェクトは互換性を理由に .NET Framework 4.0 をターゲットにしています)
 
 
 ## v0.1.2-devからの主な変更点
 
-* 修正 - 構造体 Panpot でチャネルの値が 0.0 から 1.0 に正規化されるよう修正
-* 修正 - 構造体 Panpot でプロパティのアクセス修飾子を変更
-* 修正 - クラス StepWaveform の定数値の定義を変更
-* 修正 - 拡張メソッド Extension.Normalize を Clamp に名称変更
-* 修正 - メソッド FM.SetParamater のソースを単純化、若干の高速化
-* 修正 - メソッド Part.Generate の音量係数を削除
-* 修正 - メソッド Part.Generate で未発音のときバッファをクリアするよう変更
-* 修正 - メソッド Master.Read のロジック変更、大幅に高速化
-* 修正 - 各種 Volume とエンベロープの出力をログスケール出力に変更
-* 追加 - Expression 命令を追加
+* 修正 - 音量の計算方法を変更
+* 修正 - メソッド Part.Generate の音量係数を追加
+* 修正 - FM音源に最適化ルーチンを実装、高速化
+* 修正 - Expression を Volume 命令に統合
+* 追加 - Velocity, Gain を Volume 命令に追加
 
 ## ライセンス
 Copyright &copy; 2013 Tomona Nanase.
