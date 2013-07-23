@@ -1,6 +1,7 @@
 ﻿/* ux - Micro Xylph / Software Synthesizer Core Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
+
 using System;
 using ux.Utils;
 using ux.Waveform;
@@ -66,10 +67,10 @@ namespace ux.Component
         public Part(Master master)
         {
             this.envelope = new Envelope(master.SamplingFreq);
-            this.buffer = new float[1024];
+            this.buffer = new float[0];
             this.Reset();
 
-            this.ExtendBuffers(256);
+            this.ExtendBuffers(0);
             this.SampleDeltaTime = 1.0 / master.SamplingFreq;
             this.master = master;
         }
@@ -126,11 +127,10 @@ namespace ux.Component
             #endregion
 
             // 波形生成
-            this.envelope.Generate(this.sampleTime, this.envlBuffer, 0, sampleCount);
-            this.waveform.GetWaveforms(this.smplBuffer, this.freqBuffer, this.phasBuffer, sampleCount);
+            this.envelope.Generate(this.sampleTime, this.envlBuffer, sampleCount);
+            this.waveform.GetWaveforms(this.smplBuffer, this.freqBuffer, this.phasBuffer, this.sampleTime, sampleCount);
 
             float vtmp = (float)((this.volume * this.expression * Part.Amplifier * this.velocity * this.gain) / (1.0 * 1.0 * 1.0 * 1.0 * 1.0 * 1.0));
-
             // 波形出力
             for (int i = 0, j = 0; i < sampleCount; i++)
             {
@@ -180,15 +180,12 @@ namespace ux.Component
         {
             this.vibratePhase = 0.0;
 
-            if (float.IsInfinity(note))
-                this.noteFreq = 0.0;
-            else if (note < 0.0f)
-                this.noteFreq = -note;
+            int key = (int)note + this.keyShift;
+
+            if (this.portament)
+                this.noteFreqOld = (key < 128 && key >= 0) ? Part.NoteFactor[key] : 0.0;
             else
-            {
-                int k = (int)note + this.keyShift;
-                this.noteFreq = (k < 128 && k >= 0) ? Part.NoteFactor[k] : 0.0;
-            }
+                this.noteFreq = (key < 128 && key >= 0) ? Part.NoteFactor[key] : 0.0;
         }
 
         /// <summary>
@@ -199,16 +196,23 @@ namespace ux.Component
         {
             this.sampleTime = 0;
             this.notePhase = 0.0;
-            this.ZeroGate(note);
+
+            this.vibratePhase = 0.0;
+
+            int key = (int)note + this.keyShift;
+            this.noteFreq = (key < 128 && key >= 0) ? Part.NoteFactor[key] : 0.0;
+
             this.envelope.Attack();
+            this.waveform.Attack();
         }
 
         /// <summary>
-        /// エンベロープをリリーズ状態に遷移させます。
+        /// エンベロープをリリース状態に遷移させます。
         /// </summary>
         public void Release()
         {
             this.envelope.Release(this.sampleTime);
+            this.waveform.Release(this.sampleTime);
         }
 
         /// <summary>
@@ -239,52 +243,52 @@ namespace ux.Component
 
                 //ボリューム設定
                 case HandleType.Volume:
-                    this.ApplyForVolume(handle.Parameter);
+                    this.ApplyForVolume(handle.Data1, handle.Data2);
                     break;
 
-                //パンポッド
+                //パンポット
                 case HandleType.Panpot:
-                    this.panpot = new Panpot(handle.Parameter.Value);
+                    this.panpot = new Panpot(handle.Data2);
                     break;
 
                 //ビブラート
                 case HandleType.Vibrate:
-                    this.ApplyForVibrate(handle.Parameter);
+                    this.ApplyForVibrate(handle.Data1, handle.Data2);
                     break;
 
                 //波形追加
                 case HandleType.Waveform:
-                    this.ApplyForWaveform(handle.Parameter);
+                    this.ApplyForWaveform(handle.Data1, handle.Data2);
                     break;
 
                 //波形編集
                 case HandleType.EditWaveform:
-                    this.waveform.SetParameter(handle.Parameter);
+                    this.waveform.SetParameter(handle.Data1, handle.Data2);
                     break;
 
-                //エンベロープ（uxではボリュームエンベロープのみ存在）
+                //エンベロープ
                 case HandleType.Envelope:
-                    this.envelope.SetParameter(handle.Parameter);
+                    this.envelope.SetParameter(handle.Data1, handle.Data2);
                     break;
 
                 //ファインチューン
                 case HandleType.FineTune:
-                    this.finetune = handle.Parameter.Value;
+                    this.finetune = handle.Data2.Clamp(float.MaxValue, 0.0f);
                     break;
 
                 //キーシフト
                 case HandleType.KeyShift:
-                    this.keyShift = (short)handle.Parameter.Value;
+                    this.keyShift = handle.Data1.Clamp(128, - 128);
                     break;
 
                 //ポルタメント
                 case HandleType.Portament:
-                    this.ApplyForPortament(handle.Parameter);
+                    this.ApplyForPortament(handle.Data1, handle.Data2);
                     break;
 
                 //ゼロゲート
                 case HandleType.ZeroGate:
-                    this.ZeroGate(handle.Parameter.Value);
+                    this.ZeroGate(handle.Data1);
                     break;
 
                 //ノートオフ
@@ -294,7 +298,8 @@ namespace ux.Component
 
                 //ノートオン
                 case HandleType.NoteOn:
-                    this.Attack(handle.Parameter.Value);
+                    this.Attack(handle.Data1);
+                    this.velocity = handle.Data2.Clamp(1.0f, 0.0f);
                     break;
 
                 default:
@@ -319,27 +324,26 @@ namespace ux.Component
         /// <summary>
         /// ヴォリュームに対する設定を適用します。
         /// </summary>
-        /// <param name="parameter">パラメータ値。</param>
-        private void ApplyForVolume(PValue parameter)
+        /// <param name="data1">整数パラメータ。</param>
+        /// <param name="data2">実数パラメータ。</param>
+        private void ApplyForVolume(int data1, float data2)
         {
-            switch (parameter.Name)
+            switch ((VolumeOperate)data1)
             {
-                case null:
-                case "":
-                case "volume":
-                    this.volume = parameter.Value.Clamp(1.0f, 0.0f);
+                case VolumeOperate.Volume:
+                    this.volume = data2.Clamp(1.0f, 0.0f);
                     break;
 
-                case "expression":
-                    this.expression = parameter.Value.Clamp(1.0f, 0.0f);
+                case VolumeOperate.Expression:
+                    this.expression = data2.Clamp(1.0f, 0.0f);
                     break;
 
-                case "velocity":
-                    this.velocity = parameter.Value.Clamp(1.0f, 0.0f);
+                case VolumeOperate.Velocity:
+                    this.velocity = data2.Clamp(1.0f, 0.0f);
                     break;
 
-                case "gain":
-                    this.gain = parameter.Value.Clamp(1.0f, 0.0f);
+                case VolumeOperate.Gain:
+                    this.gain = data2.Clamp(2.0f, 0.0f);
                     break;
 
                 default:
@@ -350,34 +354,35 @@ namespace ux.Component
         /// <summary>
         /// ビブラートに対する設定を適用します。
         /// </summary>
-        /// <param name="parameter">パラメータ値。</param>
-        private void ApplyForVibrate(PValue parameter)
+        /// <param name="data1">整数パラメータ。</param>
+        /// <param name="data2">実数パラメータ。</param>
+        private void ApplyForVibrate(int data1, float data2)
         {
-            switch (parameter.Name)
+            switch ((VibrateOperate)data1)
             {
-                // ビブラート有効化
-                case "on":
-                    this.vibrate = true;
-                    break;
-
                 // ビブラート無効化
-                case "off":
+                case VibrateOperate.Off:
                     this.vibrate = false;
                     break;
 
+                // ビブラート有効化
+                case VibrateOperate.On:
+                    this.vibrate = true;
+                    break;
+
                 // ビブラートディレイ
-                case "delay":
-                    this.vibrateDelay = parameter.Value;
+                case VibrateOperate.Delay:
+                    this.vibrateDelay = data2.Clamp(float.MaxValue, 0.0f);
                     break;
 
                 // ビブラート深度
-                case "depth":
-                    this.vibrateDepth = parameter.Value;
+                case VibrateOperate.Depth:
+                    this.vibrateDepth = data2.Clamp(float.MaxValue, 0.0f);
                     break;
 
                 // ビブラート周波数
-                case "freq":
-                    this.vibrateFreq = parameter.Value;
+                case VibrateOperate.Freq:
+                    this.vibrateFreq = data2.Clamp(float.MaxValue, 0.0f);
                     break;
 
                 default:
@@ -388,29 +393,30 @@ namespace ux.Component
         /// <summary>
         /// 波形に対する設定を適用します。
         /// </summary>
-        /// <param name="parameter">パラメータ値。</param>
-        private void ApplyForWaveform(PValue parameter)
+        /// <param name="data1">整数パラメータ。</param>
+        /// <param name="data2">実数パラメータ。</param>
+        private void ApplyForWaveform(int data1, float data2)
         {
-            switch ((int)parameter.Value)
+            switch ((WaveformType)data1)
             {
-                case 0:
+                case WaveformType.Square:
                     this.waveform = new Square();
                     break;
 
-                case 1:
+                case WaveformType.Triangle:
                     this.waveform = new Triangle();
                     break;
 
-                case 2:
+                case WaveformType.ShortNoise:
                     this.waveform = new ShortNoise();
                     break;
 
-                case 3:
+                case WaveformType.LongNoise:
                     this.waveform = new LongNoise();
                     break;
 
-                case 4:
-                    this.waveform = new FM();
+                case WaveformType.FM:
+                    this.waveform = new FM(this.master.SamplingFreq);
                     break;
 
                 default:
@@ -421,24 +427,25 @@ namespace ux.Component
         /// <summary>
         /// ポルタメントに対する設定を適用します。
         /// </summary>
-        /// <param name="parameter">パラメータ値。</param>
-        private void ApplyForPortament(PValue parameter)
+        /// <param name="data1">整数パラメータ。</param>
+        /// <param name="data2">実数パラメータ。</param>
+        private void ApplyForPortament(int data1, float data2)
         {
-            switch (parameter.Name)
+            switch ((PortamentOperate)data1)
             {
-                // ポルタメント有効化
-                case "on":
-                    this.portament = true;
-                    break;
-
                 // ポルタメント無効化
-                case "off":
+                case PortamentOperate.Off:
                     this.portament = false;
                     break;
 
+                // ポルタメント有効化
+                case PortamentOperate.On:
+                    this.portament = true;
+                    break;
+
                 // ポルタメントスピード
-                case "speed":
-                    this.portamentSpeed = parameter.Value * 0.001 * (44100.0 * this.SampleDeltaTime);
+                case PortamentOperate.Speed:
+                    this.portamentSpeed = data2.Clamp(1000.0f, float.Epsilon * 1000.0f) * (0.001 * 44100.0) * this.SampleDeltaTime;
                     break;
 
                 default:

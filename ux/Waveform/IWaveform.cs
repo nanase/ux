@@ -5,25 +5,38 @@
 namespace ux.Component
 {
     /// <summary>
-    /// ���g���ƈʑ�����g�`�𐶐�����E�F�[�u�W�F�l���[�^�̃C���^�t�F�[�X�ł��B
+    /// 周波数と位相から波形を生成するウェーブジェネレータのインタフェースです。
     /// </summary>
-	interface IWaveform
-	{
-		#region Methods
+    interface IWaveform
+    {
+        #region Method
         /// <summary>
-        /// �^����ꂽ���g���ƈʑ�����g�`�𐶐����܂��B
+        /// 与えられた周波数と位相から波形を生成します。
         /// </summary>
-        /// <param name="data">�������ꂽ�g�`�f�[�^����������z��B</param>
-        /// <param name="frequency">�����Ɏg�p�������g���̔z��B</param>
-        /// <param name="phase">�����Ɏg�p�����ʑ��̔z��B</param>
-        /// <param name="count">�z��ɑ�������f�[�^�̐��B</param>
-		void GetWaveforms(float[] data, double[] frequency, double[] phase, int count);
+        /// <param name="data">生成された波形データが代入される配列。</param>
+        /// <param name="frequency">生成に使用される周波数の配列。</param>
+        /// <param name="phase">生成に使用される位相の配列。</param>
+        /// <param name="sampleTime">波形が開始されるサンプル時間。</param>
+        /// <param name="count">配列に代入されるデータの数。</param>
+        void GetWaveforms(float[] data, double[] frequency, double[] phase, int sampleTime, int count);
 
         /// <summary>
-        /// �p�����[�^���w�肵�Ĕg�`�̐ݒ�l��ύX���܂��B
+        /// パラメータを指定して波形の設定値を変更します。
         /// </summary>
-        /// <param name="parameter">�p�����[�^�I�u�W�F�N�g�ƂȂ� PValue �l�B</param>
-		void SetParameter (PValue parameter);
-		#endregion
-	}
+        /// <param name="data1">整数パラメータ。</param>
+        /// <param name="data2">実数パラメータ。</param>
+        void SetParameter(int data1, float data2);
+
+        /// <summary>
+        /// エンベロープをアタック状態に遷移させます。
+        /// </summary>
+        void Attack();
+
+        /// <summary>
+        /// エンベロープをリリース状態に遷移させます。
+        /// </summary>
+        /// <param name="time">リリースされたサンプル時間。</param>
+        void Release(int time);
+        #endregion
+    }
 }

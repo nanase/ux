@@ -5,13 +5,13 @@
 namespace ux.Waveform
 {
     /// <summary>
-    /// üŒ`‹AŠÒƒVƒtƒgƒŒƒWƒXƒ^‚ð—p‚¢‚½’·ŽüŠú‹[Ž—ƒmƒCƒYƒWƒFƒlƒŒ[ƒ^‚Å‚·B
+    /// ç·šå½¢å¸°é‚„ã‚·ãƒ•ãƒˆãƒ¬ã‚¸ã‚¹ã‚¿ã‚’ç”¨ã„ãŸé•·å‘¨æœŸæ“¬ä¼¼ãƒŽã‚¤ã‚ºã‚¸ã‚§ãƒãƒ¬ãƒ¼ã‚¿ã§ã™ã€‚
     /// </summary>
 	class LongNoise : StepWaveform
 	{
 		#region Constructors
         /// <summary>
-        /// V‚µ‚¢ LongNoise ƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ð‰Šú‰»‚µ‚Ü‚·B
+        /// æ–°ã—ã„ LongNoise ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
         /// </summary>
 		public LongNoise ()
 			: base()
@@ -32,13 +32,13 @@ namespace ux.Waveform
 	}
 
     /// <summary>
-    /// üŒ`‹AŠÒƒVƒtƒgƒŒƒWƒXƒ^‚ð—p‚¢‚½’ZŽüŠú‹[Ž—ƒmƒCƒYƒWƒFƒlƒŒ[ƒ^‚Å‚·B
+    /// ç·šå½¢å¸°é‚„ã‚·ãƒ•ãƒˆãƒ¬ã‚¸ã‚¹ã‚¿ã‚’ç”¨ã„ãŸçŸ­å‘¨æœŸæ“¬ä¼¼ãƒŽã‚¤ã‚ºã‚¸ã‚§ãƒãƒ¬ãƒ¼ã‚¿ã§ã™ã€‚
     /// </summary>
     class ShortNoise : StepWaveform
     {
         #region Constructors
         /// <summary>
-        /// V‚µ‚¢ ShortNoise ƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ð‰Šú‰»‚µ‚Ü‚·B
+        /// æ–°ã—ã„ ShortNoise ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
         /// </summary>
         public ShortNoise()
             : base()

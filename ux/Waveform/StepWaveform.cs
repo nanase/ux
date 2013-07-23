@@ -1,46 +1,48 @@
 /* ux - Micro Xylph / Software Synthesizer Core Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using ux.Component;
+using ux.Utils;
 
 namespace ux.Waveform
 {
     /// <summary>
-    /// ƒXƒeƒbƒv (ŠK’ió) ”gŒ`‚ğ¶¬‚Å‚«‚éƒWƒFƒlƒŒ[ƒ^ƒNƒ‰ƒX‚Å‚·B
+    /// ã‚¹ãƒ†ãƒƒãƒ— (éšæ®µçŠ¶) æ³¢å½¢ã‚’ç”Ÿæˆã§ãã‚‹ã‚¸ã‚§ãƒãƒ¬ãƒ¼ã‚¿ã‚¯ãƒ©ã‚¹ã§ã™ã€‚
     /// </summary>
     class StepWaveform : IWaveform
     {
         #region Protected Field
         /// <summary>
-        /// ‰~ü—¦ Math.PI ‚ğ Single Œ^‚ÉƒLƒƒƒXƒg‚µ‚½’è”’l‚Å‚·B
+        /// å††å‘¨ç‡ Math.PI ã‚’ Single å‹ã«ã‚­ãƒ£ã‚¹ãƒˆã—ãŸå®šæ•°å€¤ã§ã™ã€‚
         /// </summary>
         protected const float PI = (float)Math.PI;
 
         /// <summary>
-        /// ‰~ü—¦ Math.PI ‚ğ 2 ”{‚µ Single Œ^‚ÉƒLƒƒƒXƒg‚µ‚½’è”’l‚Å‚·B
+        /// å††å‘¨ç‡ Math.PI ã‚’ 2 å€ã— Single å‹ã«ã‚­ãƒ£ã‚¹ãƒˆã—ãŸå®šæ•°å€¤ã§ã™ã€‚
         /// </summary>
         protected const float PI2 = (float)(Math.PI * 2.0);
 
         /// <summary>
-        /// ‰~ü—¦ Math.PI ‚ğ 0.5 ”{‚µ Single Œ^‚ÉƒLƒƒƒXƒg‚µ‚½’è”’l‚Å‚·B
+        /// å††å‘¨ç‡ Math.PI ã‚’ 0.5 å€ã— Single å‹ã«ã‚­ãƒ£ã‚¹ãƒˆã—ãŸå®šæ•°å€¤ã§ã™ã€‚
         /// </summary>
         protected const float PI_2 = (float)(Math.PI * 0.5);
 
         /// <summary>
-        /// ”gŒ`¶¬‚É—p‚¢‚ç‚ê‚é¶ƒf[ƒ^‚Ì”z—ñ‚Å‚·B
+        /// æ³¢å½¢ç”Ÿæˆã«ç”¨ã„ã‚‰ã‚Œã‚‹ç”Ÿãƒ‡ãƒ¼ã‚¿ã®é…åˆ—ã§ã™ã€‚
         /// </summary>
         protected float[] value;
 
         /// <summary>
-        /// ”gŒ`¶¬‚É—p‚¢‚ç‚ê‚éƒf[ƒ^’·‚Ì’·‚³‚Å‚·B
+        /// æ³¢å½¢ç”Ÿæˆã«ç”¨ã„ã‚‰ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿é•·ã®é•·ã•ã§ã™ã€‚
         /// </summary>
         protected float length;
 
         /// <summary>
-        /// ”gŒ`¶¬‚É—p‚¢‚ç‚ê‚éü”g”•â³ŒW”‚Å‚·B
+        /// æ³¢å½¢ç”Ÿæˆã«ç”¨ã„ã‚‰ã‚Œã‚‹å‘¨æ³¢æ•°è£œæ­£ä¿‚æ•°ã§ã™ã€‚
         /// </summary>
         protected double freqFactor = 1.0;
         #endregion
@@ -51,7 +53,7 @@ namespace ux.Waveform
 
         #region Constructors
         /// <summary>
-        /// ‹ó‚Ì”gŒ`ƒf[ƒ^‚ğg‚Á‚ÄV‚µ‚¢ StepWaveform ƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ‰Šú‰»‚µ‚Ü‚·B
+        /// ç©ºã®æ³¢å½¢ãƒ‡ãƒ¼ã‚¿ã‚’ä½¿ã£ã¦æ–°ã—ã„ StepWaveform ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
         /// </summary>
         public StepWaveform()
         {
@@ -61,19 +63,20 @@ namespace ux.Waveform
 
         #region IWaveform implementation
         /// <summary>
-        /// —^‚¦‚ç‚ê‚½ü”g”‚ÆˆÊ‘Š‚©‚çƒXƒeƒbƒv”gŒ`‚ğ¶¬‚µ‚Ü‚·B
+        /// ä¸ãˆã‚‰ã‚ŒãŸå‘¨æ³¢æ•°ã¨ä½ç›¸ã‹ã‚‰ã‚¹ãƒ†ãƒƒãƒ—æ³¢å½¢ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
         /// </summary>
-        /// <param name="data">¶¬‚³‚ê‚½”gŒ`ƒf[ƒ^‚ª‘ã“ü‚³‚ê‚é”z—ñB</param>
-        /// <param name="frequency">¶¬‚Ég—p‚³‚ê‚éü”g”‚Ì”z—ñB</param>
-        /// <param name="phase">¶¬‚Ég—p‚³‚ê‚éˆÊ‘Š‚Ì”z—ñB</param>
-        /// <param name="count">”z—ñ‚É‘ã“ü‚³‚ê‚éƒf[ƒ^‚Ì”B</param>
-        public virtual void GetWaveforms(float[] data, double[] frequency, double[] phase, int count)
+        /// <param name="data">ç”Ÿæˆã•ã‚ŒãŸæ³¢å½¢ãƒ‡ãƒ¼ã‚¿ãŒä»£å…¥ã•ã‚Œã‚‹é…åˆ—ã€‚</param>
+        /// <param name="frequency">ç”Ÿæˆã«ä½¿ç”¨ã•ã‚Œã‚‹å‘¨æ³¢æ•°ã®é…åˆ—ã€‚</param>
+        /// <param name="phase">ç”Ÿæˆã«ä½¿ç”¨ã•ã‚Œã‚‹ä½ç›¸ã®é…åˆ—ã€‚</param>
+        /// <param name="sampleTime">æ³¢å½¢ãŒé–‹å§‹ã•ã‚Œã‚‹ã‚µãƒ³ãƒ—ãƒ«æ™‚é–“ã€‚</param>
+        /// <param name="count">é…åˆ—ã«ä»£å…¥ã•ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ã®æ•°ã€‚</param>
+        public virtual void GetWaveforms(float[] data, double[] frequency, double[] phase, int sampleTime, int count)
         {
             float tmp;
             for (int i = 0; i < count; i++)
             {
                 tmp = (float)(phase[i] * frequency[i] * freqFactor);
-                if (float.IsInfinity(tmp) || float.IsNaN(tmp) || tmp < 0.0f)
+                if (tmp < 0.0f)
                     data[i] = 0.0f;
                 else
                     data[i] = this.value[(int)(tmp * this.length) % this.value.Length];
@@ -81,35 +84,36 @@ namespace ux.Waveform
         }
 
         /// <summary>
-        /// ƒpƒ‰ƒ[ƒ^‚ğw’è‚µ‚Ä‚±‚Ì”gŒ`‚Ìİ’è’l‚ğ•ÏX‚µ‚Ü‚·B
+        /// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’æŒ‡å®šã—ã¦ã“ã®æ³¢å½¢ã®è¨­å®šå€¤ã‚’å¤‰æ›´ã—ã¾ã™ã€‚
         /// </summary>
-        /// <param name="parameter">ƒpƒ‰ƒ[ƒ^ƒIƒuƒWƒFƒNƒg‚Æ‚È‚é PValue ’lB</param>
-        public virtual void SetParameter(PValue parameter)
+        /// <param name="data1">æ•´æ•°ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã€‚</param>
+        /// <param name="data2">å®Ÿæ•°ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã€‚</param>
+        public virtual void SetParameter(int data1, float data2)
         {
-            switch (parameter.Name)
+            switch ((StepWaveformOperate)data1)
             {
-                case "freqfactor":
-                    this.freqFactor = parameter.Value * 0.001;
+                case StepWaveformOperate.FreqFactor:
+                    this.freqFactor = data2.Clamp(float.MaxValue, 0.0f) * 0.001;
                     break;
 
-                case "begin":
+                case StepWaveformOperate.Begin:
                     this.queue = new Queue<byte>();
-                    this.queue.Enqueue((byte)parameter.Value);
+                    this.queue.Enqueue((byte)data2.Clamp(255.0f, 0.0f));
                     break;
 
-                case "end":
+                case StepWaveformOperate.End:
                     if (this.queue != null)
                     {
-                        this.queue.Enqueue((byte)parameter.Value);
+                        this.queue.Enqueue((byte)data2.Clamp(255.0f, 0.0f));
                         if (this.queue.Count <= 32767)
                             this.SetStep(this.queue.ToArray());
                     }
                     this.queue = null;
                     break;
 
-                case "queue":
+                case StepWaveformOperate.Queue:
                     if (this.queue != null)
-                        this.queue.Enqueue((byte)parameter.Value);
+                        this.queue.Enqueue((byte)data2.Clamp(255.0f, 0.0f));
                     break;
 
                 default:
@@ -118,15 +122,15 @@ namespace ux.Waveform
         }
 
         /// <summary>
-        /// w’è‚³‚ê‚½ƒXƒeƒbƒvƒf[ƒ^‚©‚ç”gŒ`¶¬—p‚Ìƒf[ƒ^‚ğì¬‚µ‚Ü‚·B
+        /// æŒ‡å®šã•ã‚ŒãŸã‚¹ãƒ†ãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰æ³¢å½¢ç”Ÿæˆç”¨ã®ãƒ‡ãƒ¼ã‚¿ã‚’ä½œæˆã—ã¾ã™ã€‚
         /// </summary>
-        /// <param name="data">”gŒ`¶¬‚Ìƒx[ƒX‚Æ‚È‚éƒXƒeƒbƒvƒf[ƒ^B</param>
+        /// <param name="data">æ³¢å½¢ç”Ÿæˆã®ãƒ™ãƒ¼ã‚¹ã¨ãªã‚‹ã‚¹ãƒ†ãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã€‚</param>
         public void SetStep(byte[] data)
         {
             if (data == null)
                 throw new ArgumentNullException();
             if (data.Length > 32767)
-                throw new ArgumentException("ƒXƒeƒbƒvƒf[ƒ^‚Í 32767 ƒoƒCƒgˆÈ‰º‚Å‚È‚¯‚ê‚Î‚È‚è‚Ü‚¹‚ñB");
+                throw new ArgumentException("ã‚¹ãƒ†ãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã¯ 32767 ãƒã‚¤ãƒˆä»¥ä¸‹ã§ãªã‘ã‚Œã°ãªã‚Šã¾ã›ã‚“ã€‚");
 
             float max = data.Max(),
             min = data.Min(),
@@ -139,6 +143,21 @@ namespace ux.Waveform
 
             for (int i = 0; i < data.Length; i++)
                 this.value[i] = (data[i] - min) * a - 1.0f;
+        }
+
+        /// <summary>
+        /// ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã‚’ã‚¢ã‚¿ãƒƒã‚¯çŠ¶æ…‹ã«é·ç§»ã•ã›ã¾ã™ã€‚
+        /// </summary>
+        public void Attack()
+        {
+        }
+
+        /// <summary>
+        /// ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã‚’ãƒªãƒªãƒ¼ã‚¹çŠ¶æ…‹ã«é·ç§»ã•ã›ã¾ã™ã€‚
+        /// </summary>
+        /// <param name="time">ãƒªãƒªãƒ¼ã‚¹ã•ã‚ŒãŸã‚µãƒ³ãƒ—ãƒ«æ™‚é–“ã€‚</param>
+        public void Release(int time)
+        {
         }
         #endregion
     }

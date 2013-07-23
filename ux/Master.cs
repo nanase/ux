@@ -1,6 +1,7 @@
 ﻿/* ux - Micro Xylph / Software Synthesizer Core Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,19 +17,16 @@ namespace ux
     {
         #region Private Constant Field
         private const float DefaultSamplingFreq = 44100.0f;
-        private const int PartCount = 16;
+        private const int DefaultPartCount = 16;
         #endregion
 
         #region Private Field
-        
         private float compressorThreshold = 0.8f;
         private float compressorRatio = 1.0f / 2.0f;
         private readonly float samplingFreq;
-        private readonly Part[] parts = new Part[PartCount];
+        private readonly Part[] parts;
         private readonly Queue<Handle> handleQueue;
-        #endregion
-
-        #region Internal Field
+        private readonly int partCount;
         private float masterVolume;
         #endregion
 
@@ -86,7 +84,7 @@ namespace ux
         /// 引数を指定せずに新しい Master クラスのインスタンスを初期化します。
         /// </summary>
         public Master()
-            : this(Master.DefaultSamplingFreq)
+            : this(Master.DefaultSamplingFreq, Master.DefaultPartCount)
         {
         }
 
@@ -94,14 +92,21 @@ namespace ux
         /// サンプリング周波数を指定して新しい Master クラスのインスタンスを初期化します。
         /// </summary>
         /// <param name="samplingFreq">演奏に使用されるサンプリング周波数。</param>
-        public Master(float samplingFreq)
+        public Master(float samplingFreq, int partCount)
         {
             if (samplingFreq > 0.0f && samplingFreq <= float.MaxValue)
                 this.samplingFreq = samplingFreq;
             else
-                throw new ArgumentOutOfRangeException("samplingFreq", String.Format("指定されたサンプリング周波数は無効です: {0:f0} Hz", samplingFreq));
+                throw new ArgumentOutOfRangeException("samplingFreq", samplingFreq, "指定されたサンプリング周波数は無効です。");
 
-            for (int i = 0; i < Master.PartCount; i++)
+            if (partCount < 0)
+                throw new ArgumentOutOfRangeException("partCount", partCount, "無効なパート数が渡されました。");
+
+            this.partCount = partCount;
+
+            this.parts = new Part[partCount];
+
+            for (int i = 0; i < this.partCount; i++)
                 this.parts[i] = new Part(this);
 
             this.handleQueue = new Queue<Handle>();
@@ -153,11 +158,23 @@ namespace ux
         }
 
         /// <summary>
+        /// 複数のハンドルを指定されたパートに適用するようキューにプッシュします。
+        /// </summary>
+        /// <param name="handles">複数ハンドルを列挙する IEnumerable<Handle> インスタンス。</param>
+        /// <param name="targetPart">ハンドルが適用されるパート。</param>
+        public void PushHandle(IEnumerable<Handle> handles, int targetPart)
+        {
+            lock (((ICollection)this.handleQueue).SyncRoot)
+                foreach (var handle in handles)
+                    this.handleQueue.Enqueue(new Handle(handle, targetPart));
+        }
+
+        /// <summary>
         /// 全てのパートにリリースを送信します。
         /// </summary>
         public void Release()
         {
-            for (int i = 0; i < Master.PartCount; i++)
+            for (int i = 0; i < this.partCount; i++)
                 this.parts[i].Release();
         }
 
@@ -166,7 +183,7 @@ namespace ux
         /// </summary>
         public void Silence()
         {
-            for (int i = 0; i < Master.PartCount; i++)
+            for (int i = 0; i < this.partCount; i++)
                 this.parts[i].Silence();
         }
 
@@ -187,7 +204,7 @@ namespace ux
 
             // count は バイト数
             // Part.Generate にはサンプル数を与える
-            for (int k = 0; k < Master.PartCount; k++)
+            for (int k = 0; k < this.partCount; k++)
             {
                 if (!this.parts[k].IsSounding)
                     continue;
@@ -204,7 +221,10 @@ namespace ux
 
             for (int i = offset, j = 0, length = offset + count; i < length; i++, j++)
             {
-                float output = buffer[i];
+                float output = buffer[i] * this.masterVolume;
+
+                if (output == 0.0f)
+                    continue;
 
                 // 圧縮
                 output =
@@ -225,9 +245,9 @@ namespace ux
         /// </summary>
         public void Reset()
         {
-            this.masterVolume = 0.8f;
+            this.masterVolume = 1.0f;
 
-            for (int i = 0; i < Master.PartCount; i++)
+            for (int i = 0; i < this.partCount; i++)
                 this.parts[i].Reset();
         }
         #endregion
@@ -238,6 +258,9 @@ namespace ux
         /// </summary>
         private void ApplyHandle()
         {
+            if (this.handleQueue.Count == 0)
+                return;
+
             var list = new List<Handle>();
 
             // リストに一時転送
@@ -253,14 +276,13 @@ namespace ux
                     switch (handle.Type)
                     {
                         case HandleType.Volume:
-
-                            this.masterVolume = handle.Parameter.Value.Clamp(2.0f, 0.0f);
+                            this.masterVolume = (float)Math.Pow(handle.Data2.Clamp(2.0f, 0.0f), 2.0);
                             break;
 
                         default:
                             break;
                     }
-                else if (handle.TargetPart >= 1 && handle.TargetPart <= Master.PartCount)
+                else if (handle.TargetPart >= 1 && handle.TargetPart <= this.partCount)
                     this.parts[handle.TargetPart - 1].ApplyHandle(handle);
             }
         }

@@ -1,7 +1,9 @@
 ﻿/* ux - Micro Xylph / Software Synthesizer Core Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
+
 using ux.Component;
+using ux.Utils;
 
 namespace ux.Waveform
 {
@@ -25,16 +27,17 @@ namespace ux.Waveform
         /// <summary>
         /// パラメータを指定してこの波形の設定値を変更します。
         /// </summary>
-        /// <param name="parameter">パラメータオブジェクトとなる PValue 値。</param>
-        public override void SetParameter(PValue parameter)
+        /// <param name="data1">整数パラメータ。</param>
+        /// <param name="data2">実数パラメータ。</param>
+        public override void SetParameter(int data1, float data2)
         {
-            switch (parameter.Name)
+            switch ((BasicWaveformOperate)data1)
             {
-                case "duty":
-                    this.GenerateStep(parameter.Value);
+                case BasicWaveformOperate.Duty:
+                    this.GenerateStep(data2.Clamp(1.0f, 0.0f));
                     break;
                 default:
-                    base.SetParameter(parameter);
+                    base.SetParameter(data1, data2);
                     break;
             }
         }
@@ -95,16 +98,16 @@ namespace ux.Waveform
         /// パラメータを指定してこの波形の設定値を変更します。
         /// </summary>
         /// <param name="parameter">パラメータオブジェクトとなる PValue 値。</param>
-        public override void SetParameter(PValue parameter)
+        public override void SetParameter(int data1, float data2)
         {
-            switch (parameter.Name)
+            switch ((BasicWaveformOperate)data1)
             {
-                case "type":
-                    this.GenerateStep((int)parameter.Value);
+                case BasicWaveformOperate.Type:
+                    this.GenerateStep((int)data2.Clamp(int.MaxValue, 1f));
                     break;
 
                 default:
-                    base.SetParameter(parameter);
+                    base.SetParameter(data1, data2);
                     break;
             }
         }

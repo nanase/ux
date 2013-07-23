@@ -1,151 +1,239 @@
 /* ux - Micro Xylph / Software Synthesizer Core Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
+
 using System;
 using ux.Component;
+using ux.Utils;
 
 namespace ux.Waveform
 {
     /// <summary>
-    /// FM (ü”g”•Ï’²) ‚ğ—p‚¢‚½”gŒ`ƒWƒFƒlƒŒ[ƒ^ƒNƒ‰ƒX‚Å‚·B
+    /// FM (å‘¨æ³¢æ•°å¤‰èª¿) ã‚’ç”¨ã„ãŸæ³¢å½¢ã‚¸ã‚§ãƒãƒ¬ãƒ¼ã‚¿ã‚¯ãƒ©ã‚¹ã§ã™ã€‚
     /// </summary>
     class FM : IWaveform
     {
         #region Private Field
-        private readonly Operator op0, op1, op2, op3;
+        private readonly float samplingFreq;
+        private Operator op0, op1, op2, op3;
         #endregion
 
         #region Constructor
         /// <summary>
-        /// V‚µ‚¢ FM ƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ‰Šú‰»‚µ‚Ü‚·B
+        /// æ–°ã—ã„ FM ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
         /// </summary>
-        public FM()
+        public FM(float samplingFreq)
         {
-            this.op0 = new Operator();
-            this.op1 = new Operator();
-            this.op2 = new Operator();
-            this.op3 = new Operator();
+            this.op0 = new Operator(samplingFreq);
+            this.op1 = new Operator(samplingFreq);
+            this.op2 = new Operator(samplingFreq);
+            this.op3 = new Operator(samplingFreq);
 
             this.op0.OutAmplifier = 1.0;
-            this.op0.Send0 = 0.75;
-            this.op1.Send0 = 0.5;
+
+            this.samplingFreq = samplingFreq;
         }
         #endregion
 
         #region IWaveform implementation
         /// <summary>
-        /// —^‚¦‚ç‚ê‚½ü”g”‚ÆˆÊ‘Š‚©‚ç”gŒ`‚ğ¶¬‚µ‚Ü‚·B
+        /// ä¸ãˆã‚‰ã‚ŒãŸå‘¨æ³¢æ•°ã¨ä½ç›¸ã‹ã‚‰æ³¢å½¢ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
         /// </summary>
-        /// <param name="data">¶¬‚³‚ê‚½”gŒ`ƒf[ƒ^‚ª‘ã“ü‚³‚ê‚é”z—ñB</param>
-        /// <param name="frequency">¶¬‚Ég—p‚³‚ê‚éü”g”‚Ì”z—ñB</param>
-        /// <param name="phase">¶¬‚Ég—p‚³‚ê‚éˆÊ‘Š‚Ì”z—ñB</param>
-        /// <param name="count">”z—ñ‚É‘ã“ü‚³‚ê‚éƒf[ƒ^‚Ì”B</param>
-        public void GetWaveforms(float[] data, double[] frequency, double[] phase, int count)
+        /// <param name="data">ç”Ÿæˆã•ã‚ŒãŸæ³¢å½¢ãƒ‡ãƒ¼ã‚¿ãŒä»£å…¥ã•ã‚Œã‚‹é…åˆ—ã€‚</param>
+        /// <param name="frequency">ç”Ÿæˆã«ä½¿ç”¨ã•ã‚Œã‚‹å‘¨æ³¢æ•°ã®é…åˆ—ã€‚</param>
+        /// <param name="phase">ç”Ÿæˆã«ä½¿ç”¨ã•ã‚Œã‚‹ä½ç›¸ã®é…åˆ—ã€‚</param>
+        /// <param name="sampleTime">æ³¢å½¢ãŒé–‹å§‹ã•ã‚Œã‚‹ã‚µãƒ³ãƒ—ãƒ«æ™‚é–“ã€‚</param>
+        /// <param name="count">é…åˆ—ã«ä»£å…¥ã•ã‚Œã‚‹ãƒ‡ãƒ¼ã‚¿ã®æ•°ã€‚</param>
+        public virtual void GetWaveforms(float[] data, double[] frequency, double[] phase, int sampleTime, int count)
         {
-            double omega, tmp0, tmp1, tmp2, tmp3;
+            double omega, old0, old1, old2, old3, tmp;
+            Operator op0, op1, op2, op3;
+
+            this.op0.GenerateEnvelope(sampleTime, count);
+            this.op1.GenerateEnvelope(sampleTime, count);
+            this.op2.GenerateEnvelope(sampleTime, count);
+            this.op3.GenerateEnvelope(sampleTime, count);
+
+            op0 = this.op0;
+            op1 = this.op1;
+            op2 = this.op2;
+            op3 = this.op3;
+
+            old0 = op0.Old;
+            old1 = op1.Old;
+            old2 = op2.Old;
+            old3 = op3.Old;
 
             for (int i = 0; i < count; i++)
             {
                 omega = 2.0 * Math.PI * phase[i] * frequency[i];
-                tmp3 = tmp2 = tmp1 = tmp0 = 0.0;
+                tmp = 0.0;
 
-                if (this.op0.IsSelected)
-                    tmp0 =
-                        Math.Sin(omega * this.op0.FreqFactor +
-                        this.op0.Send0 * this.op0.Old +
-                        this.op1.Send0 * this.op1.Old +
-                        this.op2.Send0 * this.op2.Old +
-                        this.op3.Send0 * this.op3.Old) * this.op0.Amplifier;
+                if (op0.IsSelected)
+                {
+                    old0 =
+                        Math.Sin(omega * op0.FreqFactor +
+                        op0.Send0 * old0 * op0.Send0EnvelopeBuffer[i] +
+                        op1.Send0 * old1 * op1.Send0EnvelopeBuffer[i] +
+                        op2.Send0 * old2 * op2.Send0EnvelopeBuffer[i] +
+                        op3.Send0 * old3 * op3.Send0EnvelopeBuffer[i]);
+                    tmp += op0.OutAmplifier * old0 * op0.OutAmplifierEnvelopeBuffer[i];
+                }
 
-                if (this.op1.IsSelected)
-                    tmp1 =
-                        Math.Sin(omega * this.op1.FreqFactor +
-                        this.op0.Send1 * this.op0.Old +
-                        this.op1.Send1 * this.op1.Old +
-                        this.op2.Send1 * this.op2.Old +
-                        this.op3.Send1 * this.op3.Old) * this.op1.Amplifier;
+                if (op1.IsSelected)
+                {
+                    old1 =
+                        Math.Sin(omega * op1.FreqFactor +
+                        op0.Send1 * old0 * op0.Send1EnvelopeBuffer[i] +
+                        op1.Send1 * old1 * op1.Send1EnvelopeBuffer[i] +
+                        op2.Send1 * old2 * op2.Send1EnvelopeBuffer[i] +
+                        op3.Send1 * old3 * op3.Send1EnvelopeBuffer[i]);
+                    tmp += op1.OutAmplifier * old1 * op1.OutAmplifierEnvelopeBuffer[i];
+                }
 
-                if (this.op2.IsSelected)
-                    tmp2 =
-                        Math.Sin(omega * this.op2.FreqFactor +
-                        this.op0.Send2 * this.op0.Old +
-                        this.op1.Send2 * this.op1.Old +
-                        this.op2.Send2 * this.op2.Old +
-                        this.op3.Send2 * this.op3.Old) * this.op2.Amplifier;
+                if (op2.IsSelected)
+                {
+                    old2 =
+                       Math.Sin(omega * op2.FreqFactor +
+                       op0.Send2 * old0 * op0.Send2EnvelopeBuffer[i] +
+                       op1.Send2 * old1 * op1.Send2EnvelopeBuffer[i] +
+                       op2.Send2 * old2 * op2.Send2EnvelopeBuffer[i] +
+                       op3.Send2 * old3 * op3.Send2EnvelopeBuffer[i]);
+                    tmp += op2.OutAmplifier * old2 * op2.OutAmplifierEnvelopeBuffer[i];
+                }
 
-                if (this.op3.IsSelected)
-                    tmp3 =
-                        Math.Sin(omega * this.op3.FreqFactor +
-                        this.op0.Send3 * this.op0.Old +
-                        this.op1.Send3 * this.op1.Old +
-                        this.op2.Send3 * this.op2.Old +
-                        this.op3.Send3 * this.op3.Old) * this.op3.Amplifier;
+                if (op3.IsSelected)
+                {
+                    old3 =
+                        Math.Sin(omega * op3.FreqFactor +
+                        op0.Send3 * old0 * op0.Send3EnvelopeBuffer[i] +
+                        op1.Send3 * old1 * op1.Send3EnvelopeBuffer[i] +
+                        op2.Send3 * old2 * op2.Send3EnvelopeBuffer[i] +
+                        op3.Send3 * old3 * op3.Send3EnvelopeBuffer[i]);
+                    tmp += op3.OutAmplifier * old3 * op3.OutAmplifierEnvelopeBuffer[i];
+                }
 
-                this.op0.Old = tmp0;
-                this.op1.Old = tmp1;
-                this.op2.Old = tmp2;
-                this.op3.Old = tmp3;
-
-                data[i] = (float)(this.op0.OutAmplifier * tmp0 +
-                    this.op1.OutAmplifier * tmp1 +
-                    this.op2.OutAmplifier * tmp2 +
-                    this.op3.OutAmplifier * tmp3);
+                data[i] = (float)tmp;
             }
+
+            this.op0.Old = old0;
+            this.op1.Old = old1;
+            this.op2.Old = old2;
+            this.op3.Old = old3;
         }
 
         /// <summary>
-        /// ƒpƒ‰ƒ[ƒ^‚ğw’è‚µ‚Ä”gŒ`‚Ìİ’è’l‚ğ•ÏX‚µ‚Ü‚·B
+        /// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’æŒ‡å®šã—ã¦æ³¢å½¢ã®è¨­å®šå€¤ã‚’å¤‰æ›´ã—ã¾ã™ã€‚
         /// </summary>
-        /// <param name="parameter">ƒpƒ‰ƒ[ƒ^ƒIƒuƒWƒFƒNƒg‚Æ‚È‚é PValue ’lB</param>
-        public void SetParameter(PValue parameter)
+        /// <param name="parameter">ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ãªã‚‹ PValue å€¤ã€‚</param>
+        public void SetParameter(int data1, float data2)
         {
-            if (parameter.Name.Length < 4)
-                return;
-
             Operator op;
-            switch (parameter.Name.Substring(0, 3))
+            switch ((FMOperate)(data1 & 0xf000))
             {
-                case "op0": op = this.op0; break;
-                case "op1": op = this.op1; break;
-                case "op2": op = this.op2; break;
-                case "op3": op = this.op3; break;
+                case FMOperate.Operator0: op = this.op0; break;
+                case FMOperate.Operator1: op = this.op1; break;
+                case FMOperate.Operator2: op = this.op2; break;
+                case FMOperate.Operator3: op = this.op3; break;
                 default:
                     return;
             }
 
-            switch (parameter.Name.Substring(3))
+            if ((data1 & 0x00ff) == 0)
             {
-                case "out":
-                    op.OutAmplifier = parameter.Value;
-                    break;
-                case "amp":
-                    op.Amplifier = parameter.Value;
-                    break;
-                case "freq":
-                    op.FreqFactor = parameter.Value;
-                    break;
-                case "send0":
-                    op.Send0 = parameter.Value;
-                    break;
-                case "send1":
-                    op.Send1 = parameter.Value;
-                    break;
-                case "send2":
-                    op.Send2 = parameter.Value;
-                    break;
-                case "send3":
-                    op.Send3 = parameter.Value;
-                    break;
+                switch ((FMOperate)(data1 & 0x0f00))
+                {
+                    case FMOperate.Output:
+                        op.OutAmplifier = data2.Clamp(2.0f, 0.0f);
+                        break;
 
+                    case FMOperate.Frequency:
+                        op.FreqFactor = data2;
+                        break;
+
+                    case FMOperate.Send0:
+                        op.Send0 = data2;
+                        break;
+
+                    case FMOperate.Send1:
+                        op.Send1 = data2;
+                        break;
+
+                    case FMOperate.Send2:
+                        op.Send2 = data2;
+                        break;
+
+                    case FMOperate.Send3:
+                        op.Send3 = data2;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                switch ((FMOperate)(data1 & 0x0f00))
+                {
+                    case FMOperate.Output:
+                        if (op.OutAmplifierEnvelope == null)
+                            op.OutAmplifierEnvelope = Envelope.CreateConstant(this.samplingFreq);
+
+                        op.OutAmplifierEnvelope.SetParameter(data1 & 0x00ff, data2);
+                        break;
+
+                    case FMOperate.Frequency:
+                        // Frequency ã«å¯¾ã™ã‚‹ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã¯å®Ÿè£…ã—ã¦ã„ãªã„
+                        break;
+
+                    case FMOperate.Send0:
+                        if (op.Send0Envelope == null)
+                            op.Send0Envelope = Envelope.CreateConstant(this.samplingFreq);
+
+                        op.Send0Envelope.SetParameter(data1 & 0x00ff, data2);
+                        break;
+
+                    case FMOperate.Send1:
+                        if (op.Send1Envelope == null)
+                            op.Send1Envelope = Envelope.CreateConstant(this.samplingFreq);
+
+                        op.Send1Envelope.SetParameter(data1 & 0x00ff, data2);
+                        break;
+
+                    case FMOperate.Send2:
+                        if (op.Send2Envelope == null)
+                            op.Send2Envelope = Envelope.CreateConstant(this.samplingFreq);
+
+                        op.Send2Envelope.SetParameter(data1 & 0x00ff, data2);
+                        break;
+
+                    case FMOperate.Send3:
+                        if (op.Send3Envelope == null)
+                            op.Send3Envelope = Envelope.CreateConstant(this.samplingFreq);
+
+                        op.Send3Envelope.SetParameter(data1 & 0x00ff, data2);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            switch ((FMOperate)(data1 & 0xf000))
+            {
+                case FMOperate.Operator0: this.op0 = op; break;
+                case FMOperate.Operator1: this.op1 = op; break;
+                case FMOperate.Operator2: this.op2 = op; break;
+                case FMOperate.Operator3: this.op3 = op; break;
                 default:
-                    break;
+                    return;
             }
 
             this.SelectProcessingOperator();
         }
 
         /// <summary>
-        /// ŒvZ•s—v‚ÈƒIƒyƒŒ[ƒ^‚ğŒŸo‚µA‘I‘ğ‚µ‚Ü‚·B
+        /// è¨ˆç®—ä¸è¦ãªã‚ªãƒšãƒ¬ãƒ¼ã‚¿ã‚’æ¤œå‡ºã—ã€é¸æŠã—ã¾ã™ã€‚
         /// </summary>
         private void SelectProcessingOperator()
         {
@@ -194,57 +282,207 @@ namespace ux.Waveform
                     this.op2.IsSelected = true;
             }
         }
+
+        /// <summary>
+        /// ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã‚’ã‚¢ã‚¿ãƒƒã‚¯çŠ¶æ…‹ã«é·ç§»ã•ã›ã¾ã™ã€‚
+        /// </summary>
+        public void Attack()
+        {
+            this.op0.Attack();
+            this.op1.Attack();
+            this.op2.Attack();
+            this.op3.Attack();
+        }
+
+        /// <summary>
+        /// ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã‚’ãƒªãƒªãƒ¼ã‚¹çŠ¶æ…‹ã«é·ç§»ã•ã›ã¾ã™ã€‚
+        /// </summary>
+        /// <param name="time">ãƒªãƒªãƒ¼ã‚¹ã•ã‚ŒãŸã‚µãƒ³ãƒ—ãƒ«æ™‚é–“ã€‚</param>
+        public void Release(int time)
+        {
+            this.op0.Release(time);
+            this.op1.Release(time);
+            this.op2.Release(time);
+            this.op3.Release(time);
+        }
         #endregion
 
         /// <summary>
-        /// FM ‰¹Œ¹‚Ì 1 ƒ‚ƒWƒ…[ƒ‹‚Æ‚È‚éƒIƒyƒŒ[ƒ^ƒNƒ‰ƒX‚Å‚·B
+        /// FM éŸ³æºã® 1 ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ã¨ãªã‚‹ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ã‚¯ãƒ©ã‚¹ã§ã™ã€‚
         /// </summary>
-        class Operator
+        struct Operator
         {
             /// <summary>
-            /// o—Í‚ÉÚ‘±‚³‚ê‚é‘•“xB
+            /// å‡ºåŠ›ã«æ¥ç¶šã•ã‚Œã‚‹å¢—å¹…åº¦ã€‚
             /// </summary>
-            public double OutAmplifier = 0.0f;
+            public double OutAmplifier;
 
             /// <summary>
-            /// ŠeƒIƒyƒŒ[ƒ^‚É‘—M‚³‚ê‚éƒŒƒxƒ‹‚Ì‘•“xB
+            /// ã“ã®ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ãŒç™ºæŒ¯ã™ã‚‹å‘¨æ³¢æ•°ã®è£œæ­£ä¿‚æ•°ã€‚
             /// </summary>
-            public double Amplifier = 1.0f;
+            public double FreqFactor;
 
             /// <summary>
-            /// ‚±‚ÌƒIƒyƒŒ[ƒ^‚ª”­U‚·‚éü”g”‚Ì•â³ŒW”B
+            /// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ 0 ã«é€ä¿¡ã•ã‚Œã‚‹æ³¢å½¢ã®ãƒ¬ãƒ™ãƒ«ã€‚
             /// </summary>
-            public double FreqFactor = 1.0f;
+            public double Send0;
 
             /// <summary>
-            /// ƒIƒyƒŒ[ƒ^ 0 ‚É‘—M‚³‚ê‚é”gŒ`‚ÌƒŒƒxƒ‹B
+            /// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ 1 ã«é€ä¿¡ã•ã‚Œã‚‹æ³¢å½¢ã®ãƒ¬ãƒ™ãƒ«ã€‚
             /// </summary>
-            public double Send0 = 0.0f;
+            public double Send1;
 
             /// <summary>
-            /// ƒIƒyƒŒ[ƒ^ 1 ‚É‘—M‚³‚ê‚é”gŒ`‚ÌƒŒƒxƒ‹B
+            /// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ 2 ã«é€ä¿¡ã•ã‚Œã‚‹æ³¢å½¢ã®ãƒ¬ãƒ™ãƒ«ã€‚
             /// </summary>
-            public double Send1 = 0.0f;
+            public double Send2;
 
             /// <summary>
-            /// ƒIƒyƒŒ[ƒ^ 2 ‚É‘—M‚³‚ê‚é”gŒ`‚ÌƒŒƒxƒ‹B
+            /// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ 3 ã«é€ä¿¡ã•ã‚Œã‚‹æ³¢å½¢ã®ãƒ¬ãƒ™ãƒ«ã€‚
             /// </summary>
-            public double Send2 = 0.0f;
+            public double Send3;
 
             /// <summary>
-            /// ƒIƒyƒŒ[ƒ^ 3 ‚É‘—M‚³‚ê‚é”gŒ`‚ÌƒŒƒxƒ‹B
+            /// ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ãŒç”Ÿæˆã—ãŸå¤ã„å€¤ã€‚
             /// </summary>
-            public double Send3 = 0.0f;
+            public double Old;
 
             /// <summary>
-            /// ƒIƒyƒŒ[ƒ^‚ª¶¬‚µ‚½ŒÃ‚¢’lB
+            /// ã“ã®ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ãŒå‡¦ç†ã•ã‚Œã‚‹ã‹ã®ãƒã‚§ãƒƒã‚¯ãƒ•ãƒ©ã‚°ã€‚
             /// </summary>
-            public double Old = 0.0f;
+            public bool IsSelected;
+
+            public Envelope OutAmplifierEnvelope;
+            public Envelope Send0Envelope;
+            public Envelope Send1Envelope;
+            public Envelope Send2Envelope;
+            public Envelope Send3Envelope;
+
+            public float[] OutAmplifierEnvelopeBuffer;
+            public float[] Send0EnvelopeBuffer;
+            public float[] Send1EnvelopeBuffer;
+            public float[] Send2EnvelopeBuffer;
+            public float[] Send3EnvelopeBuffer;
+
+            public float[] ConstantValues;
+
+            private float samplingFreq;
+
+            public Operator(float samplingFreq)
+            {
+                this.samplingFreq = samplingFreq;
+
+                OutAmplifier = 0.0f;
+                FreqFactor = 1.0f;
+                Send0 = 0.0f;
+                Send1 = 0.0f;
+                Send2 = 0.0f;
+                Send3 = 0.0f;
+                Old = 0.0f;
+                IsSelected = false;
+
+                OutAmplifierEnvelope = null;
+                Send0Envelope = null;
+                Send1Envelope = null;
+                Send2Envelope = null;
+                Send3Envelope = null;
+
+                OutAmplifierEnvelopeBuffer = new float[0];
+                Send0EnvelopeBuffer = new float[0];
+                Send1EnvelopeBuffer = new float[0];
+                Send2EnvelopeBuffer = new float[0];
+                Send3EnvelopeBuffer = new float[0];
+
+                ConstantValues = new float[0];
+            }
 
             /// <summary>
-            /// ‚±‚ÌƒIƒyƒŒ[ƒ^‚ªˆ—‚³‚ê‚é‚©‚Ìƒ`ƒFƒbƒNƒtƒ‰ƒOB
+            /// ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã‚’ã‚¢ã‚¿ãƒƒã‚¯çŠ¶æ…‹ã«é·ç§»ã•ã›ã¾ã™ã€‚
             /// </summary>
-            public bool IsSelected = false;
+            public void Attack()
+            {
+                if (this.OutAmplifierEnvelope != null)
+                    this.OutAmplifierEnvelope.Attack();
+
+                if (this.Send0Envelope != null)
+                    this.Send0Envelope.Attack();
+
+                if (this.Send1Envelope != null)
+                    this.Send1Envelope.Attack();
+
+                if (this.Send2Envelope != null)
+                    this.Send2Envelope.Attack();
+
+                if (this.Send3Envelope != null)
+                    this.Send3Envelope.Attack();
+            }
+
+            /// <summary>
+            /// ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã‚’ãƒªãƒªãƒ¼ã‚¹çŠ¶æ…‹ã«é·ç§»ã•ã›ã¾ã™ã€‚
+            /// </summary>
+            /// <param name="time">ãƒªãƒªãƒ¼ã‚¹ã•ã‚ŒãŸã‚µãƒ³ãƒ—ãƒ«æ™‚é–“ã€‚</param>
+            public void Release(int time)
+            {
+                if (this.OutAmplifierEnvelope != null)
+                    this.OutAmplifierEnvelope.Release(time);
+
+                if (this.Send0Envelope != null)
+                    this.Send0Envelope.Release(time);
+
+                if (this.Send1Envelope != null)
+                    this.Send1Envelope.Release(time);
+
+                if (this.Send2Envelope != null)
+                    this.Send2Envelope.Release(time);
+
+                if (this.Send3Envelope != null)
+                    this.Send3Envelope.Release(time);
+            }
+
+            public void GenerateEnvelope(int sampleTime, int sampleCount)
+            {
+                if (this.OutAmplifierEnvelopeBuffer.Length < sampleCount)
+                    this.ExtendBuffer(sampleCount);
+
+                if (this.OutAmplifierEnvelope != null)
+                    this.OutAmplifierEnvelope.Generate(sampleTime, this.OutAmplifierEnvelopeBuffer, sampleCount);
+                else
+                    this.ConstantValues.CopyTo(this.OutAmplifierEnvelopeBuffer, 0);
+
+                if (this.Send0Envelope != null)
+                    this.Send0Envelope.Generate(sampleTime, this.Send0EnvelopeBuffer, sampleCount);
+                else
+                    this.ConstantValues.CopyTo(this.Send0EnvelopeBuffer, 0);
+
+                if (this.Send1Envelope != null)
+                    this.Send1Envelope.Generate(sampleTime, this.Send1EnvelopeBuffer, sampleCount);
+                else
+                    this.ConstantValues.CopyTo(this.Send1EnvelopeBuffer, 0);
+
+                if (this.Send2Envelope != null)
+                    this.Send2Envelope.Generate(sampleTime, this.Send2EnvelopeBuffer, sampleCount);
+                else
+                    this.ConstantValues.CopyTo(this.Send2EnvelopeBuffer, 0);
+
+                if (this.Send3Envelope != null)
+                    this.Send3Envelope.Generate(sampleTime, this.Send3EnvelopeBuffer, sampleCount);
+                else
+                    this.ConstantValues.CopyTo(this.Send3EnvelopeBuffer, 0);
+            }
+
+            private void ExtendBuffer(int length)
+            {
+                this.OutAmplifierEnvelopeBuffer = new float[length];
+                this.Send0EnvelopeBuffer = new float[length];
+                this.Send1EnvelopeBuffer = new float[length];
+                this.Send2EnvelopeBuffer = new float[length];
+                this.Send3EnvelopeBuffer = new float[length];
+
+                this.ConstantValues = new float[length];
+
+                for (int i = 0; i < length; i++)
+                    this.ConstantValues[i] = 1f;
+            }
         }
     }
 }

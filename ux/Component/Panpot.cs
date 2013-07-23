@@ -1,6 +1,7 @@
 ﻿/* ux - Micro Xylph / Software Synthesizer Core Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
+
 using System;
 using ux.Utils;
 

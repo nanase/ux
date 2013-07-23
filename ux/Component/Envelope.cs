@@ -1,186 +1,176 @@
 /* ux - Micro Xylph / Software Synthesizer Core Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
+
 using ux.Utils;
 
 namespace ux.Component
 {
     /// <summary>
-    /// ŠÔ‚É‚æ‚Á‚Ä•Ï‰»‚·‚éƒpƒ‰ƒ[ƒ^‚ğÀ‘•‚·‚é‚½‚ß‚ÌƒGƒ“ƒxƒ[ƒv (•ï—ü) ƒNƒ‰ƒX‚Å‚·B
+    /// æ™‚é–“ã«ã‚ˆã£ã¦å¤‰åŒ–ã™ã‚‹ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’å®Ÿè£…ã™ã‚‹ãŸã‚ã®ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ— (åŒ…çµ¡ç·š) ã‚¯ãƒ©ã‚¹ã§ã™ã€‚
     /// </summary>
-	class Envelope
-	{
-		#region Private Members
-		private readonly float samplingFreq;
-		private int releaseStartTime, t2, t3, t5;
-		private float da, dd, dr;
-		#endregion
+    class Envelope
+    {
+        #region Private Members
+        private readonly float samplingFreq;
+        private int releaseStartTime, t2, t3, t5, attackTime, peakTime, decayTime, releaseTime;
+        private float da, dd, dr, sustainLevel;
+        private EnvelopeState state;
+        #endregion
 
-		#region Public Proparties
+        #region Public Proparties
         /// <summary>
-        /// Œ»İ‚ÌƒGƒ“ƒxƒ[ƒv‚Ìó‘Ô‚ğ•\‚·—ñ‹“’l‚ğæ“¾‚µ‚Ü‚·B
+        /// ç¾åœ¨ã®ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã®çŠ¶æ…‹ã‚’è¡¨ã™åˆ—æŒ™å€¤ã‚’å–å¾—ã—ã¾ã™ã€‚
         /// </summary>
-		public EnvelopeState State { get; private set; }
+        public EnvelopeState State { get { return this.state; } }
+        #endregion
 
+        #region Constructor
         /// <summary>
-        /// ƒAƒ^ƒbƒNŠÔ‚ğæ“¾‚µ‚Ü‚·B
+        /// ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°å‘¨æ³¢æ•°ã‚’æŒ‡å®šã—ã¦æ–°ã—ã„ Envelope ã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
         /// </summary>
-		public int AttackTime { get; private set; }
+        /// <param name="samplingFreq">ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°å‘¨æ³¢æ•°ã€‚</param>
+        public Envelope(float samplingFreq)
+        {
+            this.samplingFreq = samplingFreq;
+            this.Reset();
+        }
+        #endregion
 
+        #region Public Methods
         /// <summary>
-        /// ƒs[ƒNŠÔ‚ğæ“¾‚µ‚Ü‚·B
+        /// å€¤ã®å¤‰åŒ–ã—ãªã„ã€å¸¸ã«ä¸€å®šå€¤ã‚’å‡ºåŠ›ã™ã‚‹ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã‚’ä½œæˆã—ã¾ã™ã€‚
         /// </summary>
-		public int PeakTime { get; private set; }
+        /// <param name="samplingFreq">ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°å‘¨æ³¢æ•°ã€‚</param>
+        /// <returns>ä¸€å®šå‡ºåŠ›å€¤ã‚’æŒã¤ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã€‚</returns>
+        public static Envelope CreateConstant(float samplingFreq)
+        {
+            Envelope envelope = new Envelope(samplingFreq);
+            envelope.attackTime = 0;
+            envelope.peakTime = 0;
+            envelope.decayTime = 0;
+            envelope.sustainLevel = 1.0f;
+            envelope.releaseTime = 0;
 
-        /// <summary>
-        /// ƒfƒBƒPƒCŠÔ‚ğæ“¾‚µ‚Ü‚·B
-        /// </summary>
-		public int DecayTime { get; private set; }
-
-        /// <summary>
-        /// ƒTƒXƒeƒBƒ“ƒŒƒxƒ‹‚ğæ“¾‚µ‚Ü‚·B
-        /// </summary>
-		public float SustainLevel { get; private set; }
-
-        /// <summary>
-        /// ƒŠƒŠ[ƒXŠÔ‚ğæ“¾‚µ‚Ü‚·B
-        /// </summary>
-		public int ReleaseTime { get; private set; }
-		#endregion
-
-		#region Constructor
-        /// <summary>
-        /// ƒTƒ“ƒvƒŠƒ“ƒOü”g”‚ğw’è‚µ‚ÄV‚µ‚¢ Envelope ƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ‰Šú‰»‚µ‚Ü‚·B
-        /// </summary>
-        /// <param name="samplingFreq">ƒTƒ“ƒvƒŠƒ“ƒOü”g”B</param>
-		public Envelope(float samplingFreq)
-		{
-			this.samplingFreq = samplingFreq;
-			this.Reset();
-		}
-		#endregion
-
-		#region Public Methods
-        /// <summary>
-        /// ‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚É‚¨‚¯‚é‚·‚×‚Ä‚Ìƒpƒ‰ƒ[ƒ^‚ğŠù’è’l‚É–ß‚µ‚Ü‚·B
-        /// </summary>
-		public void Reset()
-		{
-			this.AttackTime = (int)(0.05f * this.samplingFreq);
-			this.PeakTime = (int)(0.0f * this.samplingFreq);
-			this.DecayTime = (int)(0.0f * this.samplingFreq);
-			this.SustainLevel = 1.0f;
-			this.ReleaseTime = (int)(0.05f * this.samplingFreq);
-			this.State = EnvelopeState.Silence;
-		}
+            return envelope;
+        }
 
         /// <summary>
-        /// ƒGƒ“ƒxƒ[ƒv‚Ìó‘Ô‚ğƒAƒ^ƒbƒNó‘Ô‚É•ÏX‚µ‚Ü‚·B
+        /// ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«ãŠã‘ã‚‹ã™ã¹ã¦ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’æ—¢å®šå€¤ã«æˆ»ã—ã¾ã™ã€‚
         /// </summary>
-		public void Attack()
-		{
-			this.State = EnvelopeState.Attack;
-
-			//precalc
-			this.t2 = this.AttackTime + this.PeakTime;
-			this.t3 = t2 + this.DecayTime;
-			this.da = 1.0f / this.AttackTime;
-			this.dd = (1.0f - this.SustainLevel) / this.DecayTime;
-		}
+        public void Reset()
+        {
+            this.attackTime = (int)(0.05f * this.samplingFreq);
+            this.peakTime = (int)(0.0f * this.samplingFreq);
+            this.decayTime = (int)(0.0f * this.samplingFreq);
+            this.sustainLevel = 1.0f;
+            this.releaseTime = (int)(0.05f * this.samplingFreq);
+            this.state = EnvelopeState.Silence;
+        }
 
         /// <summary>
-        /// ƒGƒ“ƒxƒ[ƒv‚Ìó‘Ô‚ğƒŠƒŠ[ƒXó‘Ô‚É•ÏX‚µ‚Ü‚·B
+        /// ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã®çŠ¶æ…‹ã‚’ã‚¢ã‚¿ãƒƒã‚¯çŠ¶æ…‹ã«å¤‰æ›´ã—ã¾ã™ã€‚
         /// </summary>
-        /// <param name="time">ƒŠƒŠ[ƒX‚ªŠJn‚³‚ê‚½ŠÔ’lB</param>
-		public void Release(int time)
-		{
-			if (this.State == EnvelopeState.Attack)
-			{
-				this.State = EnvelopeState.Release;
-				this.releaseStartTime = time;
+        public void Attack()
+        {
+            this.state = EnvelopeState.Attack;
 
-				//precalc
-				this.t5 = time + this.ReleaseTime;
-				this.dr = this.SustainLevel / this.ReleaseTime;
-			}
-		}
+            //precalc
+            this.t2 = this.attackTime + this.peakTime;
+            this.t3 = t2 + this.decayTime;
+            this.da = 1.0f / this.attackTime;
+            this.dd = (1.0f - this.sustainLevel) / this.decayTime;
+        }
 
         /// <summary>
-        /// ƒGƒ“ƒxƒ[ƒv‚Ìó‘Ô‚ğƒTƒCƒŒƒ“ƒXó‘Ô‚É•ÏX‚µ‚Ü‚·B
+        /// ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã®çŠ¶æ…‹ã‚’ãƒªãƒªãƒ¼ã‚¹çŠ¶æ…‹ã«å¤‰æ›´ã—ã¾ã™ã€‚
         /// </summary>
-		public void Silence()
-		{
-			this.State = EnvelopeState.Silence;
-		}
+        /// <param name="time">ãƒªãƒªãƒ¼ã‚¹ãŒé–‹å§‹ã•ã‚ŒãŸæ™‚é–“å€¤ã€‚</param>
+        public void Release(int time)
+        {
+            if (this.state == EnvelopeState.Attack)
+            {
+                this.state = EnvelopeState.Release;
+                this.releaseStartTime = time;
+
+                //precalc
+                this.t5 = time + this.releaseTime;
+                this.dr = this.sustainLevel / this.releaseTime;
+            }
+        }
 
         /// <summary>
-        /// Œ»İ‚ÌƒGƒ“ƒxƒ[ƒv‚Ìó‘Ô‚ÉŠî‚Ã‚«AƒGƒ“ƒxƒ[ƒv’l‚ğo—Í‚µ‚Ü‚·B
+        /// ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã®çŠ¶æ…‹ã‚’ã‚µã‚¤ãƒ¬ãƒ³ã‚¹çŠ¶æ…‹ã«å¤‰æ›´ã—ã¾ã™ã€‚
         /// </summary>
-        /// <param name="time">ƒGƒ“ƒxƒ[ƒv‚ÌŠJnŠÔ’lB</param>
-        /// <param name="envelopes">o—Í‚ªŠi”[‚³‚ê‚éÀ”‚Ì”z—ñB</param>
-        /// <param name="offset">‘ã“ü‚ªŠJn‚³‚ê‚é”z—ñ‚ÌƒCƒ“ƒfƒbƒNƒXB</param>
-        /// <param name="count">‘ã“ü‚³‚ê‚éÀ”’l‚Ì”B</param>
-		public void Generate(int time, float[] envelopes, int offset, int count)
-		{
-			float res;
-			for (int i = offset; i < count; i++, time++)
-			{
-				if (this.State == EnvelopeState.Attack)
-					res = (time < this.AttackTime) ? time * this.da :
-					  (time < this.t2) ? 1.0f :
-					  (time < this.t3) ? 1.0f - (time - this.t2) * this.dd : this.SustainLevel;
-				else if (this.State == EnvelopeState.Release)
-					if (time < this.t5)
-						res = this.SustainLevel - (time - this.releaseStartTime) * this.dr;
-					else
-					{
-						res = 0.0f;
-						this.State = EnvelopeState.Silence;
-					}
-				else
-					res = 0.0f;
-
-				envelopes[i] = res;
-			}
-		}
+        public void Silence()
+        {
+            this.state = EnvelopeState.Silence;
+        }
 
         /// <summary>
-        /// ƒpƒ‰ƒ[ƒ^‚ğ—p‚¢‚Ä‚±‚ÌƒGƒ“ƒxƒ[ƒv‚Ìİ’è’l‚ğ•ÏX‚µ‚Ü‚·B
+        /// ç¾åœ¨ã®ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã®çŠ¶æ…‹ã«åŸºã¥ãã€ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—å€¤ã‚’å‡ºåŠ›ã—ã¾ã™ã€‚
         /// </summary>
-        /// <param name="parameter">ƒpƒ‰ƒ[ƒ^‚ğ•\‚· PValueB</param>
-		public void SetParameter(PValue parameter)
-		{
-			switch (parameter.Name)
-			{
-				case "a":
-				case "attack":
-					this.AttackTime = (int)(parameter.Value.Clamp(float.MaxValue, 0.0f) * this.samplingFreq);
-					break;
+        /// <param name="time">ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã®é–‹å§‹æ™‚é–“å€¤ã€‚</param>
+        /// <param name="envelopes">å‡ºåŠ›ãŒæ ¼ç´ã•ã‚Œã‚‹å®Ÿæ•°ã®é…åˆ—ã€‚</param>
+        /// <param name="offset">ä»£å…¥ãŒé–‹å§‹ã•ã‚Œã‚‹é…åˆ—ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã€‚</param>
+        /// <param name="count">ä»£å…¥ã•ã‚Œã‚‹å®Ÿæ•°å€¤ã®æ•°ã€‚</param>
+        public void Generate(int time, float[] envelopes, int count)
+        {
+            float res;
+            for (int i = 0; i < count; i++, time++)
+            {
+                if (this.State == EnvelopeState.Attack)
+                    res = (time < this.attackTime) ? time * this.da :
+                      (time < this.t2) ? 1.0f :
+                      (time < this.t3) ? 1.0f - (time - this.t2) * this.dd : this.sustainLevel;
+                else if (this.State == EnvelopeState.Release)
+                    if (time < this.t5)
+                        res = this.sustainLevel - (time - this.releaseStartTime) * this.dr;
+                    else
+                    {
+                        res = 0.0f;
+                        this.state = EnvelopeState.Silence;
+                    }
+                else
+                    res = 0.0f;
 
-				case "p":
-				case "peak":
-					this.PeakTime = (int)(parameter.Value.Clamp(float.MaxValue, 0.0f) * this.samplingFreq);
-					break;
+                envelopes[i] = res;
+            }
+        }
 
-				case "d":
-				case "decay":
-					this.DecayTime = (int)(parameter.Value.Clamp(float.MaxValue, 0.0f) * this.samplingFreq);
-					break;
+        /// <summary>
+        /// ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ç”¨ã„ã¦ã“ã®ã‚¨ãƒ³ãƒ™ãƒ­ãƒ¼ãƒ—ã®è¨­å®šå€¤ã‚’å¤‰æ›´ã—ã¾ã™ã€‚
+        /// </summary>
+        /// <param name="data1">æ•´æ•°ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã€‚</param>
+        /// <param name="data2">å®Ÿæ•°ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã€‚</param>
+        public void SetParameter(int data1, float data2)
+        {
+            switch ((EnvelopeOperate)data1)
+            {
+                case EnvelopeOperate.Attack:
+                    this.attackTime = (int)(data2.Clamp(float.MaxValue, 0.0f) * this.samplingFreq);
+                    break;
 
-				case "s":
-				case "sustain":
-					this.SustainLevel = parameter.Value.Clamp(1.0f, 0.0f);
-					break;
+                case EnvelopeOperate.Peak:
+                    this.peakTime = (int)(data2.Clamp(float.MaxValue, 0.0f) * this.samplingFreq);
+                    break;
 
-				case "r":
-				case "release":
-					this.ReleaseTime = (int)(parameter.Value.Clamp(float.MaxValue, 0.0f) * this.samplingFreq);
-					break;
+                case EnvelopeOperate.Decay:
+                    this.decayTime = (int)(data2.Clamp(float.MaxValue, 0.0f) * this.samplingFreq);
+                    break;
 
-				default:
-					break;
-			}
-		}
-		#endregion
-	}
+                case EnvelopeOperate.Sustain:
+                    this.sustainLevel = data2.Clamp(1.0f, 0.0f);
+                    break;
+
+                case EnvelopeOperate.Release:
+                    this.releaseTime = (int)(data2.Clamp(float.MaxValue, 0.0f) * this.samplingFreq);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        #endregion
+    }
 }
