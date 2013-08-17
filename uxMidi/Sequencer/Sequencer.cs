@@ -1,4 +1,4 @@
-﻿/* ux - Micro Xylph / Software Synthesizer Core Library
+﻿/* uxMidi / Software Synthesizer Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
 
@@ -47,7 +47,7 @@ namespace uxMidi.Sequencer
         public double Tempo { get { return this.tempo; } }
 
         /// <summary>
-        /// シーケンサの現在のティックを取得します。
+        /// シーケンサの現在のティックを取得または設定します。
         /// </summary>
         public long Tick
         {
@@ -163,7 +163,7 @@ namespace uxMidi.Sequencer
                 return;
 
             if (this.SequenceStarted != null)
-                Task.Factory.StartNew(() => this.SequenceStarted(this, new EventArgs()));
+                this.SequenceStarted(this, new EventArgs());
 
             this.reqEnd = false;
             this.sequenceTask = Task.Factory.StartNew(this.Update);
@@ -178,9 +178,12 @@ namespace uxMidi.Sequencer
                 return;
 
             if (this.SequenceStopped != null)
-                Task.Factory.StartNew(() => this.SequenceStopped(this, new EventArgs()));
+                this.SequenceStopped(this, new EventArgs());
 
             this.reqEnd = true;
+
+            if (Task.CurrentId.HasValue && Task.CurrentId.Value == this.sequenceTask.Id)
+                return;
 
             this.sequenceTask.Wait();
             this.sequenceTask.Dispose();
@@ -228,7 +231,7 @@ namespace uxMidi.Sequencer
                     startTick = this.tick;
                     endTick = startTick + processTick;
 
-                    this.OutputEvents(this.SelectEvents(startTick, endTick));
+                    this.OutputEvents(this.SelectEvents(startTick, endTick).ToList());
 
                     oldTick = nowTick;
                     this.tick += processTick;
@@ -236,12 +239,14 @@ namespace uxMidi.Sequencer
                     if (this.tick >= this.endOfTick)
                     {
                         if (this.SequenceEnd != null)
-                            Task.Factory.StartNew(() => this.SequenceEnd(this, new EventArgs()));
+                            this.SequenceEnd(this, new EventArgs());
 
                         break;
                     }
                 }
             }
+
+            this.tick = -(long)(this.Sequence.Resolution * 1.0);
 
             stopwatch.Stop();
         }
@@ -256,7 +261,7 @@ namespace uxMidi.Sequencer
 
             this.eventIndex = this.events.FindIndex(this.eventIndex, e => e.Tick >= start);
 
-            while (this.eventIndex < this.events.Count && this.events[this.eventIndex].Tick < end)
+            while (this.eventIndex >= 0 && this.eventIndex < this.events.Count && this.events[this.eventIndex].Tick < end)
             {
                 @event = this.events[this.eventIndex++];
 
@@ -279,7 +284,7 @@ namespace uxMidi.Sequencer
             double oldTempo = this.tempo;
 
             if (this.TempoChanged != null)
-                Task.Factory.StartNew(() => this.TempoChanged(this, new TempoChangedEventArgs(oldTempo, newTempo)));
+                this.TempoChanged(this, new TempoChangedEventArgs(oldTempo, newTempo));
 
             this.tempo = newTempo;
             this.RecalcTickTime();
@@ -288,7 +293,7 @@ namespace uxMidi.Sequencer
         private void OutputEvents(IEnumerable<Event> events)
         {
             if (this.OnTrackEvent != null)
-                Task.Factory.StartNew(() => this.OnTrackEvent(this, new TrackEventArgs(events)));
+                this.OnTrackEvent(this, new TrackEventArgs(events));
         }
 
         private void RecalcTickTime()

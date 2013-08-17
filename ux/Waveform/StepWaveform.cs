@@ -148,7 +148,7 @@ namespace ux.Waveform
         /// <summary>
         /// エンベロープをアタック状態に遷移させます。
         /// </summary>
-        public void Attack()
+        public virtual void Attack()
         {
         }
 
@@ -156,9 +156,17 @@ namespace ux.Waveform
         /// エンベロープをリリース状態に遷移させます。
         /// </summary>
         /// <param name="time">リリースされたサンプル時間。</param>
-        public void Release(int time)
+        public virtual void Release(int time)
         {
         }
-        #endregion
+
+        /// <summary>
+        /// 波形のパラメータをリセットします。
+        /// </summary>
+        public virtual void Reset()
+        {
+            this.SetStep(new byte[] { 0 });
+        }
+        #endregion        
     }
 }

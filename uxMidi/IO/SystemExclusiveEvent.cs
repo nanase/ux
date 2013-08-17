@@ -1,4 +1,4 @@
-﻿/* ux - Micro Xylph / Software Synthesizer Core Library
+﻿/* uxMidi / Software Synthesizer Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
 

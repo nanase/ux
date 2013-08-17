@@ -41,6 +41,14 @@ namespace ux.Waveform
                     break;
             }
         }
+
+        /// <summary>
+        /// 波形のパラメータをリセットします。
+        /// </summary>
+        public override void Reset()
+        {
+            this.GenerateStep(0.5f);
+        }
         #endregion
 
         #region Private Methods
@@ -110,6 +118,14 @@ namespace ux.Waveform
                     base.SetParameter(data1, data2);
                     break;
             }
+        }
+
+        /// <summary>
+        /// 波形のパラメータをリセットします。
+        /// </summary>
+        public override void Reset()
+        {
+            this.GenerateStep(16);
         }
         #endregion
 

@@ -1,4 +1,4 @@
-﻿/* ux - Micro Xylph / Software Synthesizer Core Library
+﻿/* uxMidi / Software Synthesizer Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
 
@@ -6,11 +6,7 @@
  *          http://www2s.biglobe.ne.jp/~yyagi/material/smfspec.html
  */
 
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace uxMidi.IO
 {

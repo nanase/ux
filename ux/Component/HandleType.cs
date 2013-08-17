@@ -53,6 +53,7 @@ namespace ux.Component
         /// 波形のパラメータを編集します。
         /// </summary>
 		EditWaveform,
+        Edit = EditWaveform,
 
         /// <summary>
         /// パートの音量エンベロープを変更します。

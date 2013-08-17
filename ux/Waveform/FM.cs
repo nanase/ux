@@ -24,13 +24,7 @@ namespace ux.Waveform
         /// </summary>
         public FM(float samplingFreq)
         {
-            this.op0 = new Operator(samplingFreq);
-            this.op1 = new Operator(samplingFreq);
-            this.op2 = new Operator(samplingFreq);
-            this.op3 = new Operator(samplingFreq);
-
-            this.op0.OutAmplifier = 1.0;
-
+            this.Reset();
             this.samplingFreq = samplingFreq;
         }
         #endregion
@@ -44,7 +38,7 @@ namespace ux.Waveform
         /// <param name="phase">生成に使用される位相の配列。</param>
         /// <param name="sampleTime">波形が開始されるサンプル時間。</param>
         /// <param name="count">配列に代入されるデータの数。</param>
-        public virtual void GetWaveforms(float[] data, double[] frequency, double[] phase, int sampleTime, int count)
+        public void GetWaveforms(float[] data, double[] frequency, double[] phase, int sampleTime, int count)
         {
             double omega, old0, old1, old2, old3, tmp;
             Operator op0, op1, op2, op3;
@@ -305,13 +299,31 @@ namespace ux.Waveform
             this.op2.Release(time);
             this.op3.Release(time);
         }
+
+        /// <summary>
+        /// 波形のパラメータをリセットします。
+        /// </summary>
+        public void Reset()
+        {
+            this.op0 = new Operator(samplingFreq);
+            this.op1 = new Operator(samplingFreq);
+            this.op2 = new Operator(samplingFreq);
+            this.op3 = new Operator(samplingFreq);
+
+            this.op0.OutAmplifier = 1.0;
+            this.op0.Send0 = 0.75;
+            this.op1.Send0 = 0.5;
+
+            this.SelectProcessingOperator();
+        }
         #endregion
 
         /// <summary>
         /// FM 音源の 1 モジュールとなるオペレータクラスです。
         /// </summary>
-        struct Operator
+        internal struct Operator
         {
+            #region Public Field           
             /// <summary>
             /// 出力に接続される増幅度。
             /// </summary>
@@ -365,9 +377,13 @@ namespace ux.Waveform
             public float[] Send3EnvelopeBuffer;
 
             public float[] ConstantValues;
+            #endregion
 
+            #region Private Field
             private float samplingFreq;
+            #endregion
 
+            #region Constructor
             public Operator(float samplingFreq)
             {
                 this.samplingFreq = samplingFreq;
@@ -395,7 +411,9 @@ namespace ux.Waveform
 
                 ConstantValues = new float[0];
             }
+            #endregion
 
+            #region Public Method            
             /// <summary>
             /// エンベロープをアタック状態に遷移させます。
             /// </summary>
@@ -469,7 +487,9 @@ namespace ux.Waveform
                 else
                     this.ConstantValues.CopyTo(this.Send3EnvelopeBuffer, 0);
             }
+            #endregion
 
+            #region Private Method
             private void ExtendBuffer(int length)
             {
                 this.OutAmplifierEnvelopeBuffer = new float[length];
@@ -483,6 +503,7 @@ namespace ux.Waveform
                 for (int i = 0; i < length; i++)
                     this.ConstantValues[i] = 1f;
             }
+            #endregion
         }
     }
 }

@@ -1,11 +1,9 @@
-﻿/* ux - Micro Xylph / Software Synthesizer Core Library
+﻿/* uxMidi / Software Synthesizer Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Xml.Linq;
 
 namespace uxMidi
 {
@@ -48,6 +46,12 @@ namespace uxMidi
             var array = BitConverter.GetBytes(value);
             Array.Reverse(array);
             return BitConverter.ToUInt32(array, 0);
+        }
+
+        public static string GetAttribute(this XElement element, XName name)
+        {
+            var result = element.Attribute(name);
+            return result == null ? null : result.Value;
         }
     }
 }

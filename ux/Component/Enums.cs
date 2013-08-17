@@ -5,6 +5,21 @@
 namespace ux.Component
 {
     /// <summary>
+    /// 擬似乱数ジェネレータに作用するオプションを表した列挙体です。
+    /// </summary>
+    public enum RandomNoiseOperate
+    {
+        /// <summary>
+        ///擬似乱数ジェネレータのシード値。
+        /// </summary>
+        Seed = 0x0100,
+        /// <summary>
+        /// 擬似乱数の周期。
+        /// </summary>
+        Length,
+    }
+
+    /// <summary>
     /// 基本波形クラスに作用するオプションを表した列挙体です。
     /// </summary>
     public enum BasicWaveformOperate
@@ -75,33 +90,38 @@ namespace ux.Component
         /// 出力キャリア振幅。
         /// </summary>
         Output = 0x0400,
+        Out = Output,
 
         /// <summary>
         /// キャリア周波数。
         /// </summary>
         Frequency = 0x0500,
-
+        Freq = Frequency,
         //
 
         /// <summary>
         /// オペレータ 0。
         /// </summary>
         Operator0 = 0x0000,
+        Op0 = Operator0,
 
         /// <summary>
         /// オペレータ 1。
         /// </summary>
         Operator1 = 0x1000,
+        Op1 = Operator1,
 
         /// <summary>
         /// オペレータ 2。
         /// </summary>
         Operator2 = 0x2000,
+        Op2 = Operator2,
 
         /// <summary>
         /// オペレータ 3。
         /// </summary>
         Operator3 = 0x3000,
+        Op3 = Operator3,
     }
 
     /// <summary>
@@ -246,6 +266,11 @@ namespace ux.Component
         /// 線形帰還シフトレジスタによる長周期ノイズ。
         /// </summary>
         LongNoise,
+
+        /// <summary>
+        /// 擬似乱数ジェネレータによるノイズ。
+        /// </summary>
+        RandomNoise,
 
         /// <summary>
         /// FM 音源。

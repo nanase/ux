@@ -5,6 +5,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using ux.Component;
 using ux.Utils;
 
@@ -43,6 +44,16 @@ namespace ux
         /// 現在演奏を受け付けているかを表す真偽値を取得します。
         /// </summary>
         public bool Playing { get; private set; }
+
+        /// <summary>
+        /// パートの数を取得します。
+        /// </summary>
+        public int PartCount { get { return this.partCount; } }
+
+        /// <summary>
+        /// 発音しているパートの数を取得します。
+        /// </summary>
+        public int ToneCount { get { return this.parts.Count(p => p.IsSounding); } }
 
         /// <summary>
         /// コンプレッサのしきい値を表す実数値を取得または設定します。
@@ -149,7 +160,7 @@ namespace ux
         /// <summary>
         /// 複数のハンドルをキューにプッシュします。
         /// </summary>
-        /// <param name="handles">複数ハンドルを列挙する IEnumerable<Handle> インスタンス。</param>
+        /// <param name="handles">複数ハンドルを列挙する IEnumerable&lt;Handle&gt; インスタンス。</param>
         public void PushHandle(IEnumerable<Handle> handles)
         {
             lock (((ICollection)this.handleQueue).SyncRoot)
@@ -160,7 +171,7 @@ namespace ux
         /// <summary>
         /// 複数のハンドルを指定されたパートに適用するようキューにプッシュします。
         /// </summary>
-        /// <param name="handles">複数ハンドルを列挙する IEnumerable<Handle> インスタンス。</param>
+        /// <param name="handles">複数ハンドルを列挙する IEnumerable&lt;Handle&gt; インスタンス。</param>
         /// <param name="targetPart">ハンドルが適用されるパート。</param>
         public void PushHandle(IEnumerable<Handle> handles, int targetPart)
         {

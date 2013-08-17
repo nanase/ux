@@ -278,7 +278,7 @@ namespace ux.Component
 
                 //キーシフト
                 case HandleType.KeyShift:
-                    this.keyShift = handle.Data1.Clamp(128, - 128);
+                    this.keyShift = handle.Data1.Clamp(128, -128);
                     break;
 
                 //ポルタメント
@@ -400,23 +400,45 @@ namespace ux.Component
             switch ((WaveformType)data1)
             {
                 case WaveformType.Square:
-                    this.waveform = new Square();
+                    if (this.waveform is Square)
+                        this.waveform.Reset();
+                    else
+                        this.waveform = new Square();
                     break;
 
                 case WaveformType.Triangle:
-                    this.waveform = new Triangle();
+                    if (this.waveform is Triangle)
+                        this.waveform.Reset();
+                    else
+                        this.waveform = new Triangle();
                     break;
 
                 case WaveformType.ShortNoise:
-                    this.waveform = new ShortNoise();
+                    if (this.waveform is ShortNoise)
+                        this.waveform.Reset();
+                    else
+                        this.waveform = new ShortNoise();
                     break;
 
                 case WaveformType.LongNoise:
-                    this.waveform = new LongNoise();
+                    if (this.waveform is LongNoise)
+                        this.waveform.Reset();
+                    else
+                        this.waveform = new LongNoise();
+                    break;
+
+                case WaveformType.RandomNoise:
+                    if (this.waveform is RandomNoise)
+                        this.waveform.Reset();
+                    else
+                        this.waveform = new RandomNoise();
                     break;
 
                 case WaveformType.FM:
-                    this.waveform = new FM(this.master.SamplingFreq);
+                    if (this.waveform is FM)
+                        this.waveform.Reset();
+                    else
+                        this.waveform = new FM(this.master.SamplingFreq);
                     break;
 
                 default:

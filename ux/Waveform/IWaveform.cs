@@ -37,6 +37,11 @@ namespace ux.Component
         /// </summary>
         /// <param name="time">リリースされたサンプル時間。</param>
         void Release(int time);
+
+        /// <summary>
+        /// 波形のパラメータをリセットします。
+        /// </summary>
+        void Reset();
         #endregion
     }
 }

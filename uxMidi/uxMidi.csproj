@@ -59,14 +59,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extension.cs" />
+    <Compile Include="HandleCreator.cs" />
     <Compile Include="IO\Event.cs" />
     <Compile Include="IO\MidiEvent.cs" />
     <Compile Include="IO\Track.cs" />
     <Compile Include="IO\SystemExclusiveEvent.cs" />
     <Compile Include="IO\MetaEvent.cs" />
+    <Compile Include="MidiConnector.cs" />
+    <Compile Include="PresetReader.cs" />
+    <Compile Include="ProgramPreset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sequencer\Sequence.cs" />
     <Compile Include="Sequencer\Sequencer.cs" />
+    <Compile Include="SmfConnector.cs" />
+    <Compile Include="MidiInConnector.cs" />
+    <Compile Include="DrumPreset.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ux\ux.csproj">

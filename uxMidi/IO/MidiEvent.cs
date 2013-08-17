@@ -1,4 +1,4 @@
-﻿/* ux - Micro Xylph / Software Synthesizer Core Library
+﻿/* uxMidi / Software Synthesizer Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
 
@@ -48,6 +48,15 @@ namespace uxMidi.IO
             this.Channel = channel;
 
             this.Load(br);
+        }
+
+        public MidiEvent(EventType type, int channel, int data1, int data2)
+            : base(0, 0)
+        {
+            this.Type = type;
+            this.Channel = channel;
+            this.Data1 = data1;
+            this.Data2 = data2;
         }
 
         /// <summary>

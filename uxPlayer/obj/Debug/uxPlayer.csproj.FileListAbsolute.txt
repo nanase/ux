@@ -1,0 +1,8 @@
+C:\Users\13y-yamamoto\Dropbox\Program\Projects\ux\uxPlayer\bin\Debug\uxPlayer.exe
+C:\Users\13y-yamamoto\Dropbox\Program\Projects\ux\uxPlayer\bin\Debug\uxPlayer.pdb
+C:\Users\13y-yamamoto\Dropbox\Program\Projects\ux\uxPlayer\obj\Debug\uxPlayer.csprojResolveAssemblyReference.cache
+C:\Users\13y-yamamoto\Dropbox\Program\Projects\ux\uxPlayer\obj\Debug\uxPlayer.MainForm.resources
+C:\Users\13y-yamamoto\Dropbox\Program\Projects\ux\uxPlayer\obj\Debug\uxPlayer.Properties.Resources.resources
+C:\Users\13y-yamamoto\Dropbox\Program\Projects\ux\uxPlayer\obj\Debug\uxPlayer.csproj.GenerateResource.Cache
+C:\Users\13y-yamamoto\Dropbox\Program\Projects\ux\uxPlayer\obj\Debug\uxPlayer.exe
+C:\Users\13y-yamamoto\Dropbox\Program\Projects\ux\uxPlayer\obj\Debug\uxPlayer.pdb

@@ -120,7 +120,7 @@ namespace ux.Component
 		/// <summary>
 		/// このクラスのインスタンスを表す文字列を取得します。
 		/// </summary>
-		/// <returns></returns>
+        /// <returns>このクラスのインスタンスを表す文字列。</returns>
 		public override string ToString()
 		{
 			return String.Format("{0} Part:{1}, Data1:{2}, Data2:{3:f2}", this.type, this.targetPart, this.data1, this.data2);
