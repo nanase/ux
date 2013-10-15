@@ -20,7 +20,7 @@ namespace uxConsole
             if (args.Any(s => !s.StartsWith("-")))
             {
                 connector = new SmfConnector(frequencty);
-                ((SmfConnector)connector).Load(args.First(s => s.StartsWith("-")));
+                ((SmfConnector)connector).Load(args.First(s => !s.StartsWith("-")));
             }
             else
             {
@@ -29,8 +29,9 @@ namespace uxConsole
 
             foreach (var preset in args.Where(a => a.StartsWith("-p:")).Select(a => a.Substring(3)))
             {
-                Console.WriteLine("Preset: " + preset);
+                Console.Write("Preset: " + preset);
                 connector.AddPreset(preset);
+                Console.WriteLine(" ... [OK]");
             }
 
             Console.WriteLine("[q] Quit, [r] Reload Presets");
@@ -40,6 +41,7 @@ namespace uxConsole
             var setting = new PlayerSettings() { BufferSize = 512, BufferCount = 64, BitPerSample = 16, SamplingFrequency = frequencty };
             using (var l = new SinglePlayer(process, setting))
             {
+                Console.WriteLine("Playing!");
                 l.Play();
                 connector.Play();
 

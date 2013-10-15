@@ -71,6 +71,8 @@ namespace uxMidi.Sequencer
             if (!File.Exists(filename))
                 throw new FileNotFoundException();
 
+            Console.WriteLine("Loading: " + filename);
+
             using (Stream stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
             using (BinaryReader br = new BinaryReader(stream))
             {
