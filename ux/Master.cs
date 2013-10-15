@@ -228,21 +228,23 @@ namespace ux
             }
 
             // コンプレッサ増幅度
-            float gain = 1.0f / (this.compressorThreshold + (1.0f - this.compressorThreshold) * this.compressorRatio);
+            float threshold = this.compressorThreshold;
+            float ratio = this.compressorRatio;
+            float gain = 1.0f / (threshold + (1.0f - threshold) * ratio);
+            float upover = threshold * (1.0f - ratio);
+            float downover = -threshold * (1.0f - ratio);
 
-            for (int i = offset, j = 0, length = offset + count; i < length; i++, j++)
+            for (int i = offset, length = offset + count; i < length; i++)
             {
-                float output = buffer[i] * this.masterVolume;
+                float output = buffer[i] * this.masterVolume * gain;
 
                 if (output == 0.0f)
                     continue;
 
                 // 圧縮
                 output =
-                    gain *
-                    ((output > this.compressorThreshold) ? this.compressorThreshold + (output - this.compressorThreshold) * this.compressorRatio :
-                    (output < -this.compressorThreshold) ? -this.compressorThreshold + (output + this.compressorThreshold) * this.compressorRatio :
-                    output);
+                    ((output > threshold) ? upover + ratio * output :
+                    (output < -threshold) ? downover + ratio * output : output);
 
                 // クリッピングと代入
                 buffer[i] = (output > 1.0f) ? 1.0f : (output < -1.0f) ? -1.0f : output;
