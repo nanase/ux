@@ -12,11 +12,11 @@ namespace ux.Component
     /// </summary>
     struct Panpot
     {
-        #region Private Fields
+        #region -- Private Fields --
         private readonly float l, r;
         #endregion
 
-        #region Public Property
+        #region -- Public Properties --
         /// <summary>
         /// 左チャネルのレベルを取得または設定します。
         /// </summary>
@@ -28,7 +28,7 @@ namespace ux.Component
         public float R { get { return this.r; } }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// 左右チャネルのレベルを指定して新しい Panpot 構造体のインスタンスを初期化します。
         /// </summary>
