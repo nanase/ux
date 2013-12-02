@@ -227,7 +227,48 @@ namespace ux.Waveform
         }
 
         /// <summary>
+        /// エンベロープをアタック状態に遷移させます。
+        /// </summary>
+        public void Attack()
+        {
+            this.op0.Attack();
+            this.op1.Attack();
+            this.op2.Attack();
+            this.op3.Attack();
+        }
+
+        /// <summary>
+        /// エンベロープをリリース状態に遷移させます。
+        /// </summary>
+        /// <param name="time">リリースされたサンプル時間。</param>
+        public void Release(int time)
+        {
+            this.op0.Release(time);
+            this.op1.Release(time);
+            this.op2.Release(time);
+            this.op3.Release(time);
+        }
+
+        /// <summary>
+        /// 波形のパラメータをリセットします。
+        /// </summary>
+        public void Reset()
+        {
+            this.op0 = new Operator(samplingFreq);
+            this.op1 = new Operator(samplingFreq);
+            this.op2 = new Operator(samplingFreq);
+            this.op3 = new Operator(samplingFreq);
+
+            this.op0.OutAmplifier = 1.0;
+            this.op0.Send0 = 0.75;
+            this.op1.Send0 = 0.5;
+
+            this.SelectProcessingOperator();
+        }
+        #endregion
+
         #region -- Private Methods --
+        /// <summary>
         /// 計算不要なオペレータを検出し、選択します。
         /// </summary>
         private void SelectProcessingOperator()
@@ -276,46 +317,6 @@ namespace ux.Waveform
                 if (!this.op2.IsSelected && this.op2.Send3 != 0.0)
                     this.op2.IsSelected = true;
             }
-        }
-
-        /// <summary>
-        /// エンベロープをアタック状態に遷移させます。
-        /// </summary>
-        public void Attack()
-        {
-            this.op0.Attack();
-            this.op1.Attack();
-            this.op2.Attack();
-            this.op3.Attack();
-        }
-
-        /// <summary>
-        /// エンベロープをリリース状態に遷移させます。
-        /// </summary>
-        /// <param name="time">リリースされたサンプル時間。</param>
-        public void Release(int time)
-        {
-            this.op0.Release(time);
-            this.op1.Release(time);
-            this.op2.Release(time);
-            this.op3.Release(time);
-        }
-
-        /// <summary>
-        /// 波形のパラメータをリセットします。
-        /// </summary>
-        public void Reset()
-        {
-            this.op0 = new Operator(samplingFreq);
-            this.op1 = new Operator(samplingFreq);
-            this.op2 = new Operator(samplingFreq);
-            this.op3 = new Operator(samplingFreq);
-
-            this.op0.OutAmplifier = 1.0;
-            this.op0.Send0 = 0.75;
-            this.op1.Send0 = 0.5;
-
-            this.SelectProcessingOperator();
         }
         #endregion
 
