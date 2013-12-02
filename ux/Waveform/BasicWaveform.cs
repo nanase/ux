@@ -12,7 +12,7 @@ namespace ux.Waveform
     /// </summary>
     class Square : StepWaveform
     {
-        #region Constructors
+        #region -- Constructors --
         /// <summary>
         /// 新しい Square クラスのインスタンスを初期化します。
         /// </summary>
@@ -23,7 +23,7 @@ namespace ux.Waveform
         }
         #endregion
 
-        #region Public Override Methods
+        #region -- Public Methods --
         /// <summary>
         /// パラメータを指定してこの波形の設定値を変更します。
         /// </summary>
@@ -51,7 +51,7 @@ namespace ux.Waveform
         }
         #endregion
 
-        #region Private Methods
+        #region -- Private Methods --
         /// <summary>
         /// デューティ比を指定して新しい矩形波を設定します。
         /// </summary>
