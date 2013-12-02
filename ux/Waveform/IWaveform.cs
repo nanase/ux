@@ -9,7 +9,7 @@ namespace ux.Component
     /// </summary>
     interface IWaveform
     {
-        #region Method
+        #region -- Methods --
         /// <summary>
         /// 与えられた周波数と位相から波形を生成します。
         /// </summary>
