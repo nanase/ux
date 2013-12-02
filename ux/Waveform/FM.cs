@@ -13,12 +13,12 @@ namespace ux.Waveform
     /// </summary>
     class FM : IWaveform
     {
-        #region Private Field
+        #region -- Private Fields --
         private readonly float samplingFreq;
         private Operator op0, op1, op2, op3;
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// 新しい FM クラスのインスタンスを初期化します。
         /// </summary>
@@ -29,7 +29,7 @@ namespace ux.Waveform
         }
         #endregion
 
-        #region IWaveform implementation
+        #region -- Public Methods --
         /// <summary>
         /// 与えられた周波数と位相から波形を生成します。
         /// </summary>
@@ -227,6 +227,7 @@ namespace ux.Waveform
         }
 
         /// <summary>
+        #region -- Private Methods --
         /// 計算不要なオペレータを検出し、選択します。
         /// </summary>
         private void SelectProcessingOperator()
