@@ -16,12 +16,10 @@ namespace ux
     /// </summary>
     public class Master
     {
-        #region Private Constant Field
+        #region -- Private Fields --
         private const float DefaultSamplingFreq = 44100.0f;
         private const int DefaultPartCount = 16;
-        #endregion
 
-        #region Private Field
         private float compressorThreshold = 0.8f;
         private float compressorRatio = 1.0f / 2.0f;
         private readonly float samplingFreq;
@@ -31,7 +29,7 @@ namespace ux
         private float masterVolume;
         #endregion
 
-        #region Public Property
+        #region -- Public Properties --
         /// <summary>
         /// 再生に用いられるサンプリング周波数を取得します。
         /// </summary>
@@ -87,7 +85,7 @@ namespace ux
         }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// 引数を指定せずに新しい Master クラスのインスタンスを初期化します。
         /// </summary>
@@ -123,7 +121,7 @@ namespace ux
         }
         #endregion
 
-        #region Public Method
+        #region -- Public Methods --
         /// <summary>
         /// 再生を開始します。
         /// </summary>
@@ -262,7 +260,7 @@ namespace ux
         }
         #endregion
 
-        #region Private Method
+        #region -- Private Methods --
         /// <summary>
         /// キューからハンドルをポップし、各パートに送信します。
         /// </summary>
