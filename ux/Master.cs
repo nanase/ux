@@ -35,9 +35,6 @@ namespace ux
         /// <summary>
         /// 再生に用いられるサンプリング周波数を取得します。
         /// </summary>
-        /// <value>
-        /// サンプリング周波数。単位はHz。
-        /// </value>
         public float SamplingFreq { get { return this.samplingFreq; } }
 
         /// <summary>
