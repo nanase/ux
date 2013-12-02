@@ -90,7 +90,7 @@ namespace ux.Waveform
     /// </summary>
     class Triangle : StepWaveform
     {
-        #region Constructors
+        #region -- Constructors --
         /// <summary>
         /// 新しい Triangle クラスのインスタンスを初期化します。
         /// </summary>
@@ -101,7 +101,7 @@ namespace ux.Waveform
         }
         #endregion
 
-        #region Public Override Methods
+        #region -- Public Methods --
         /// <summary>
         /// パラメータを指定してこの波形の設定値を変更します。
         /// </summary>
@@ -129,7 +129,7 @@ namespace ux.Waveform
         }
         #endregion
 
-        #region Private Methods
+        #region -- Private Methods --
         /// <summary>
         /// ステップ数を指定して新しい擬似三角波を設定します。
         /// </summary>
