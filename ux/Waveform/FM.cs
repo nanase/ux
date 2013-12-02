@@ -325,7 +325,7 @@ namespace ux.Waveform
         /// </summary>
         internal struct Operator
         {
-            #region Public Field           
+            #region -- Public Fields --
             /// <summary>
             /// 出力に接続される増幅度。
             /// </summary>
@@ -381,11 +381,11 @@ namespace ux.Waveform
             public float[] ConstantValues;
             #endregion
 
-            #region Private Field
+            #region -- Private Fields --
             private float samplingFreq;
             #endregion
 
-            #region Constructor
+            #region -- Constructors --
             public Operator(float samplingFreq)
             {
                 this.samplingFreq = samplingFreq;
@@ -415,7 +415,7 @@ namespace ux.Waveform
             }
             #endregion
 
-            #region Public Method            
+            #region -- Public Methods --
             /// <summary>
             /// エンベロープをアタック状態に遷移させます。
             /// </summary>
@@ -491,7 +491,7 @@ namespace ux.Waveform
             }
             #endregion
 
-            #region Private Method
+            #region -- Private Methods --
             private void ExtendBuffer(int length)
             {
                 this.OutAmplifierEnvelopeBuffer = new float[length];
