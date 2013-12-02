@@ -1,4 +1,4 @@
-/* ux - Micro Xylph / Software Synthesizer Core Library
+﻿/* ux - Micro Xylph / Software Synthesizer Core Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
 
@@ -6,27 +6,27 @@ using System;
 
 namespace ux.Component
 {
-	/// <summary>
-	/// シンセサイザに対する命令をサポートします。
-	/// </summary>
-	public class Handle
-	{
-        #region Private Field
+    /// <summary>
+    /// シンセサイザに対する命令をサポートします。
+    /// </summary>
+    public class Handle
+    {
+        #region -- Private Fields --
         private readonly int targetPart;
         private readonly HandleType type;
         private readonly int data1;
         private readonly float data2;
         #endregion
 
-        #region Public Properties
+        #region -- Public Properties --
         /// <summary>
-		/// 対象となるパートを取得します。
-		/// </summary>
+        /// 対象となるパートを取得します。
+        /// </summary>
         public int TargetPart { get { return this.targetPart; } }
 
-		/// <summary>
-		/// ハンドルのタイプを取得します。
-		/// </summary>
+        /// <summary>
+        /// ハンドルのタイプを取得します。
+        /// </summary>
         public HandleType Type { get { return this.type; } }
 
         /// <summary>
@@ -38,22 +38,22 @@ namespace ux.Component
         /// ハンドルに対する実数パラメータを取得します。
         /// </summary>
         public float Data2 { get { return this.data2; } }
-		#endregion
+        #endregion
 
-		#region Constructor
-		/// <summary>
-		/// パラメータを指定せずに新しい Handle クラスのインスタンスを初期化します。
-		/// </summary>
+        #region -- Constructors --
+        /// <summary>
+        /// パラメータを指定せずに新しい Handle クラスのインスタンスを初期化します。
+        /// </summary>
         /// <param name="targetPart">ハンドルが適用されるパート。</param>
-		/// <param name="type">ハンドルの種類。</param>
+        /// <param name="type">ハンドルの種類。</param>
         public Handle(int targetPart, HandleType type)
-		{
-			this.targetPart = targetPart;
-			this.type = type;
+        {
+            this.targetPart = targetPart;
+            this.type = type;
 
             this.data1 = 0;
             this.data2 = 0.0f;
-		}
+        }
 
         /// <summary>
         /// パラメータを指定して新しい Handle クラスのインスタンスを初期化します。
@@ -114,17 +114,17 @@ namespace ux.Component
             this.data1 = handle.data1;
             this.data2 = handle.data2;
         }
-		#endregion
+        #endregion
 
-		#region Override Methods
-		/// <summary>
-		/// このクラスのインスタンスを表す文字列を取得します。
-		/// </summary>
+        #region -- Public Methods --
+        /// <summary>
+        /// このクラスのインスタンスを表す文字列を取得します。
+        /// </summary>
         /// <returns>このクラスのインスタンスを表す文字列。</returns>
-		public override string ToString()
-		{
-			return String.Format("{0} Part:{1}, Data1:{2}, Data2:{3:f2}", this.type, this.targetPart, this.data1, this.data2);
-		}
-		#endregion
-	}
+        public override string ToString()
+        {
+            return String.Format("{0} Part:{1}, Data1:{2}, Data2:{3:f2}", this.type, this.targetPart, this.data1, this.data2);
+        }
+        #endregion
+    }
 }
