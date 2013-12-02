@@ -37,23 +37,6 @@ namespace ux.Component
         }
         #endregion
 
-        /// <summary>
-        /// 値の変化しない、常に一定値を出力するエンベロープを作成します。
-        /// </summary>
-        /// <param name="samplingFreq">サンプリング周波数。</param>
-        /// <returns>一定出力値を持つエンベロープ。</returns>
-        public static Envelope CreateConstant(float samplingFreq)
-        {
-            Envelope envelope = new Envelope(samplingFreq);
-            envelope.attackTime = 0;
-            envelope.peakTime = 0;
-            envelope.decayTime = 0;
-            envelope.sustainLevel = 1.0f;
-            envelope.releaseTime = 0;
-
-            return envelope;
-        }
-
         #region -- Public Methods --
         /// <summary>
         /// このインスタンスにおけるすべてのパラメータを既定値に戻します。
@@ -170,6 +153,25 @@ namespace ux.Component
                 default:
                     break;
             }
+        }
+        #endregion
+
+        #region -- Public Static Methods --
+        /// <summary>
+        /// 値の変化しない、常に一定値を出力するエンベロープを作成します。
+        /// </summary>
+        /// <param name="samplingFreq">サンプリング周波数。</param>
+        /// <returns>一定出力値を持つエンベロープ。</returns>
+        public static Envelope CreateConstant(float samplingFreq)
+        {
+            Envelope envelope = new Envelope(samplingFreq);
+            envelope.attackTime = 0;
+            envelope.peakTime = 0;
+            envelope.decayTime = 0;
+            envelope.sustainLevel = 1.0f;
+            envelope.releaseTime = 0;
+
+            return envelope;
         }
         #endregion
     }
