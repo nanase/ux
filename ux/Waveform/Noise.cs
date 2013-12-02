@@ -88,12 +88,12 @@ namespace ux.Waveform
     /// </summary>
     class RandomNoise : StepWaveform
     {
-        #region Private Field
+        #region -- Private Fields --
         private int seed = 0;
         private int array_length = 1024;
         #endregion
 
-        #region Constructors
+        #region -- Constructors --
         /// <summary>
         /// 新しい RandomNoise クラスのインスタンスを初期化します。
         /// </summary>
@@ -104,7 +104,7 @@ namespace ux.Waveform
         }
         #endregion
 
-        #region Public Override Method
+        #region -- Public Methods --
         /// <summary>
         /// 波形のパラメータをリセットします。
         /// </summary>
