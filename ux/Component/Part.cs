@@ -13,13 +13,11 @@ namespace ux.Component
     /// </summary>
     class Part
     {
-        #region Static Private Field
+        #region -- Private Fields --
         private static readonly double[] NoteFactor;
         private const float Amplifier = 0.5f;
         private const double A = 2.0;
-        #endregion
 
-        #region Private Field
         private readonly double SampleDeltaTime;
         private readonly Envelope envelope;
         private readonly Master master;
@@ -38,7 +36,7 @@ namespace ux.Component
         private float[] buffer;
         #endregion
 
-        #region Public Property
+        #region -- Public Properties --
         /// <summary>
         /// 生成された波形のバッファ配列を取得します。
         /// </summary>
@@ -50,16 +48,14 @@ namespace ux.Component
         public bool IsSounding { get { return this.envelope.State != EnvelopeState.Silence; } }
         #endregion
 
-        #region Static Constructor
+        #region -- Constructors --
         static Part()
         {
             Part.NoteFactor = new double[128];
             for (int i = 0; i < 128; i++)
                 Part.NoteFactor[i] = (Math.Pow(2.0, (i - 69) / 12.0)) * 440.0;
         }
-        #endregion
 
-        #region Constructor
         /// <summary>
         /// パートの属するマスタークラスを指定して新しい Part クラスのインスタンスを初期化します。
         /// </summary>
@@ -76,7 +72,7 @@ namespace ux.Component
         }
         #endregion
 
-        #region Public Methods
+        #region -- Public Methods --
         /// <summary>
         /// 波形を生成します。
         /// </summary>
@@ -307,8 +303,8 @@ namespace ux.Component
             }
         }
         #endregion
-
-        #region Private Methods
+        
+        #region -- Private Methods --
         /// <summary>
         /// バッファを指定されたカウント数で再確保します。
         /// </summary>
