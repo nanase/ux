@@ -11,21 +11,21 @@ namespace ux.Component
     /// </summary>
     class Envelope
     {
-        #region Private Members
+        #region -- Private Members --
         private readonly float samplingFreq;
         private int releaseStartTime, t2, t3, t5, attackTime, peakTime, decayTime, releaseTime;
         private float da, dd, dr, sustainLevel;
         private EnvelopeState state;
         #endregion
 
-        #region Public Proparties
+        #region -- Public Proparties --
         /// <summary>
         /// 現在のエンベロープの状態を表す列挙値を取得します。
         /// </summary>
         public EnvelopeState State { get { return this.state; } }
         #endregion
 
-        #region Constructor
+        #region -- Constructor --
         /// <summary>
         /// サンプリング周波数を指定して新しい Envelope クラスのインスタンスを初期化します。
         /// </summary>
@@ -37,7 +37,6 @@ namespace ux.Component
         }
         #endregion
 
-        #region Public Methods
         /// <summary>
         /// 値の変化しない、常に一定値を出力するエンベロープを作成します。
         /// </summary>
@@ -55,6 +54,7 @@ namespace ux.Component
             return envelope;
         }
 
+        #region -- Public Methods --
         /// <summary>
         /// このインスタンスにおけるすべてのパラメータを既定値に戻します。
         /// </summary>
