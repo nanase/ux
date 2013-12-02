@@ -15,7 +15,7 @@ namespace ux.Waveform
     /// </summary>
     class StepWaveform : IWaveform
     {
-        #region Protected Field
+        #region -- Protected Fields --
         /// <summary>
         /// 円周率 Math.PI を Single 型にキャストした定数値です。
         /// </summary>
@@ -47,11 +47,11 @@ namespace ux.Waveform
         protected double freqFactor = 1.0;
         #endregion
 
-        #region Private Field
+        #region -- Private Fields --
         private Queue<byte> queue = null;
         #endregion
 
-        #region Constructors
+        #region -- Constructors --
         /// <summary>
         /// 空の波形データを使って新しい StepWaveform クラスのインスタンスを初期化します。
         /// </summary>
@@ -61,7 +61,7 @@ namespace ux.Waveform
         }
         #endregion
 
-        #region IWaveform implementation
+        #region -- Public Methods --
         /// <summary>
         /// 与えられた周波数と位相からステップ波形を生成します。
         /// </summary>
