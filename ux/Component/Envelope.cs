@@ -25,7 +25,7 @@ namespace ux.Component
         public EnvelopeState State { get { return this.state; } }
         #endregion
 
-        #region -- Constructor --
+        #region -- Constructors --
         /// <summary>
         /// サンプリング周波数を指定して新しい Envelope クラスのインスタンスを初期化します。
         /// </summary>
