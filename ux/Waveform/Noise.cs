@@ -50,7 +50,7 @@ namespace ux.Waveform
     /// </summary>
     class ShortNoise : StepWaveform
     {
-        #region Constructors
+        #region -- Constructors --
         /// <summary>
         /// 新しい ShortNoise クラスのインスタンスを初期化します。
         /// </summary>
@@ -61,7 +61,7 @@ namespace ux.Waveform
         }
         #endregion
 
-        #region Public Override Method
+        #region -- Public Methods --
         /// <summary>
         /// 波形のパラメータをリセットします。
         /// </summary>
