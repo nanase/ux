@@ -12,7 +12,7 @@ namespace ux.Waveform
     /// </summary>
     class LongNoise : StepWaveform
     {
-        #region Constructors
+        #region -- Constructors --
         /// <summary>
         /// 新しい LongNoise クラスのインスタンスを初期化します。
         /// </summary>
@@ -23,7 +23,7 @@ namespace ux.Waveform
         }
         #endregion
 
-        #region Public Override Method
+        #region -- Public Methods --
         /// <summary>
         /// 波形のパラメータをリセットします。
         /// </summary>
