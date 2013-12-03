@@ -96,7 +96,6 @@ namespace ux.Waveform
         public Triangle()
             : base()
         {
-            this.GenerateStep(16);
         }
         #endregion
 
