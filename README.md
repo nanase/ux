@@ -5,21 +5,35 @@ ux は軽量でシンプルな動作を目標としたソフトウェアシン�
 
 ## 概要
 
-ux は Xylph (シルフ) の後継として開発されています。Xylph の開発で得られた最低限必要な機能を絞り、なおかつ Xylph よりも軽快に動作するよう設計されています。
+ux は [Xylph](//www.johokagekkan.go.jp/2011/u-20/xylph.html) (シルフ) の後継として開発されています。Xylph の開発で得られた最低限必要な機能を絞り、なおかつ Xylph よりも軽快に動作するよう設計されています。C# で記述しつつ、極力高速な動作が目標です。
 
 ux は モノフォニック、複数パート、ポルタメント、ビブラートなどの機能を持ち、音源として矩形波、16 段三角波、ユーザ波形、線形帰還シフトレジスタによる擬似ノイズ、4 オペレータ FM 音源を搭載しています。
-
-性能を重視するためモノフォニック実装(1パート1音)です。C# で記述しつつなるべく高速な動作が目標です。
 
 現在 Wiki を構築中です。ハンドルの詳細など仕様については Wiki を参照してください: https://github.com/nanase/ux/wiki
 
 
 ## TODO in v0.2-dev
 
-- [ ] ux - #region の命名を変更
-- [ ] ux - 処理の最適化
-- [ ] uxPlayer - MIDI 接続の Linux 対応 (デバイスファイルからの読み取り)
-- [ ] uxPlayer - WAVE 出力機能の実装
+* ux (uxCore)
+  - [ ] #region の命名を変更
+  - [ ] 処理の最適化
+
+* uxPlayer
+  - [ ] MIDI 接続の Linux 対応 (デバイスファイルからの読み取り)
+  - [ ] WAVE 出力機能の実装
+  - [ ] 任意の音源定義XMLファイルの指定
+
+
+## 備考
+
+* _ux_ と表記して _Micro Xylph (マイクロシルフ)_ と呼称し、プロジェクト内での表記も `ux` です(TeX のようなものです)。
+* 性能を重視するためモノフォニック実装(1パート1音)です。ただし uxMidi でのドラムパートのみ 8 音のポリフォニックです。
+* この仕様により大抵の MIDI ファイルは正常に再生できません。特に和音を持っている部分は音が抜けます。
+* 音色がとにかく_貧弱_です。これは音源定義XMLファイルに充分な定義が無いためです。
+  - リポジトリ内の以下のファイルが音源定義XMLファイルです。
+    + [nanase/ux/uxConsole/ux_preset.xml](//github.com/nanase/ux/blob/v0.2-dev/uxConsole/ux_preset.xml)
+    + [nanase/ux/uxPlayer/ux_preset.xml](//github.com/nanase/ux/blob/v0.2-dev/uxPlayer/ux_preset.xml)
+  - 最新の定義ファイルが Gist に置いています: [gist.github.com/nanase/6068233](//gist.github.com/nanase/6068233)
 
 
 ## 動作確認
