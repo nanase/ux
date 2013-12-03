@@ -19,7 +19,6 @@ namespace ux.Waveform
         public Square()
             : base()
         {
-            this.GenerateStep(0.5f);
         }
         #endregion
 
