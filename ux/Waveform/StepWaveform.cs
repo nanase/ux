@@ -57,7 +57,7 @@ namespace ux.Waveform
         /// </summary>
         public StepWaveform()
         {
-            this.SetStep(new byte[] { 0 });
+            this.Reset();
         }
         #endregion
 
