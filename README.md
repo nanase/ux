@@ -33,7 +33,7 @@ ux は モノフォニック、複数パート、ポルタメント、ビブラ�
   - リポジトリ内の以下のファイルが音源定義XMLファイルです。
     + [nanase/ux/uxConsole/ux_preset.xml](//github.com/nanase/ux/blob/v0.2-dev/uxConsole/ux_preset.xml)
     + [nanase/ux/uxPlayer/ux_preset.xml](//github.com/nanase/ux/blob/v0.2-dev/uxPlayer/ux_preset.xml)
-  - 最新の定義ファイルが Gist に置いています: [gist.github.com/nanase/6068233](//gist.github.com/nanase/6068233)
+  - 最新の定義ファイルを Gist に置いています: [gist.github.com/nanase/6068233](//gist.github.com/nanase/6068233)
 
 
 ## 動作確認
