@@ -117,6 +117,10 @@ namespace ux.Waveform
                 this.value[i] = (float)(r.NextDouble() * 2.0 - 1.0);
         }
 
+        /// <summary>
+        /// パラメータを指定してこの波形の設定値を変更します。
+        /// </summary>
+        /// <param name="parameter">パラメータオブジェクトとなる PValue 値。</param>
         public override void SetParameter(int data1, float data2)
         {
             switch ((RandomNoiseOperate)data1)
