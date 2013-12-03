@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ux</RootNamespace>
-    <AssemblyName>uxCore</AssemblyName>
+    <AssemblyName>ux</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
