@@ -3,6 +3,8 @@
   <preset>
     <!-- msb, lsb, type, value は省略すると 0 になる -->
     <!-- type は列挙体の値を表す。カンマは OR 演算される -->
+
+    <!-- Acoustic Piano / アコースティックピアノ -->
     <program number="0">
       <waveform type="fm" />
       <edit type="op0,send0" value="0.8" />
@@ -12,6 +14,8 @@
       <envelope type="decay" value="3.0" />
       <envelope type="sustain" value="0.0" />
     </program>
+
+    <!-- Bright Piano / ブライトピアノ -->
     <program number="1">
       <waveform type="fm" />
       <edit type="op0,send0" value="1.0" />
@@ -21,6 +25,8 @@
       <envelope type="decay" value="3.0" />
       <envelope type="sustain" value="0.0" />
     </program>
+
+    <!-- Electric Grand Piano / エレクトリックグランドピアノ -->
     <program number="2">
       <waveform type="fm" />
       <edit type="op0,send0" value="0.5" />
@@ -37,6 +43,28 @@
       <envelope type="decay" value="3.0" />
       <envelope type="sustain" value="0.0" />
     </program>
+
+    <!-- Honky-tonk Piano / ホンキートンクピアノ -->
+    <program number="3">
+      <waveform type="fm" />
+      <edit type="op0,send0" value="0.5" />
+      <edit type="op1,send0" value="1.0" />
+      <edit type="op1,send1" value="0.4" />
+      <edit type="op2,send1" value="0.5" />
+      <edit type="op3,send0" value="0.5" />
+      <edit type="op1,freq" value="2.005" />
+      <edit type="op2,freq" value="0.504" />
+      <edit type="op3,freq" value="4.002" />
+      <edit type="op1,send0,decay" value="1.0" />
+      <edit type="op1,send0,sustain" value="0.5" />
+      <edit type="op2,send1,decay" value="0.1" />
+      <edit type="op2,send1,sustain" value="0.0" />
+      <envelope type="attack" value="0.0" />
+      <envelope type="decay" value="1.5" />
+      <envelope type="sustain" value="0.0" />
+    </program>
+
+    <!-- Electric Piano / エレクトリックピアノ -->
     <program number="4">
       <waveform type="fm" />
       <edit type="op0,send0" value="0.2" />
@@ -46,6 +74,8 @@
       <envelope type="decay" value="3.0" />
       <envelope type="sustain" value="0.0" />
     </program>
+
+    <!-- Electric Piano 2 / エレクトリックピアノ2 -->
     <program number="5">
       <waveform type="fm" />
       <edit type="op0,send0" value="0.5" />
@@ -56,6 +86,20 @@
       <envelope type="decay" value="3.0" />
       <envelope type="sustain" value="0.0" />
     </program>
+
+    <!-- Harpsichord / ハープシコード -->
+    <program number="6">
+      <waveform type="fm" />
+      <edit type="op0,send0" value="1.2" />
+      <edit type="op1,send0" value="0.8" />
+      <edit type="op1,send1" value="1.0" />
+      <edit type="op1,freq" value="0.5" />
+      <envelope type="attack" value="0.0" />
+      <envelope type="decay" value="1.5" />
+      <envelope type="sustain" value="0.0" />
+    </program>
+
+    <!-- Clavi / クラビ -->
     <program number="7">
       <waveform type="fm" />
       <edit type="op0,send0" value="0.8" />
@@ -66,6 +110,49 @@
       <envelope type="decay" value="3.0" />
       <envelope type="sustain" value="0.0" />
     </program>
+
+    <!-- Acoustic Guitar (nylon) / アコースティックギター（ナイロン弦） -->
+    <program number="24">
+      <waveform type="fm" />
+      <edit type="op0,send0" value="0.1" />
+      <edit type="op1,send0" value="1.2" />
+      <edit type="op1,send1" value="0.1" />
+      <edit type="op1,freq" value="4.0" />
+      <envelope type="attack" value="0.0" />
+      <envelope type="decay" value="1.5" />
+      <envelope type="sustain" value="0.0" />
+      <envelope type="release" value="1.5" />
+    </program>
+
+    <!-- Acoustic Guitar (steel) / アコースティックギター（スチール弦） -->
+    <program number="25">
+      <waveform type="fm" />
+      <edit type="op0,send0" value="1.0" />
+      <edit type="op1,send0" value="0.8" />
+      <edit type="op1,send1" value="1.0" />
+      <edit type="op1,freq" value="8.0" />
+      <envelope type="attack" value="0.0" />
+      <envelope type="decay" value="1.5" />
+      <envelope type="sustain" value="0.0" />
+      <envelope type="release" value="1.5" />
+    </program>
+
+    <!-- Distortion Guitar / ディストーションギター -->
+    <program number="30">
+      <waveform type="fm" />
+      <edit type="op0,send0" value="1.0" />
+      <edit type="op1,send0" value="1.0" />
+      <edit type="op2,send0" value="0.8" />
+      <edit type="op3,send0" value="0.8" />
+      <edit type="op1,freq" value="0.5001" />
+      <edit type="op2,freq" value="2.0021" />
+      <envelope type="attack" value="0.0" />
+      <envelope type="decay" value="2.0" />
+      <envelope type="sustain" value="0.8" />
+      <envelope type="release" value="1.0" />
+    </program>
+
+    <!-- Fretless Bass / フレットレスベース -->
     <program number="35">
       <waveform type="fm" />
       <edit type="op0,send0" value="0.5" />
@@ -74,11 +161,18 @@
       <edit type="op0,freq" value="1.0" />
       <edit type="op1,freq" value="2.01" />
       <envelope type="attack" value="0.0" />
+      <volume type="gain" value="0.8" />
     </program>
+
+    <!-- Synth Bass 1 / シンセベース -->
     <program number="38">
       <waveform type="fm" />
       <edit type="op0,send0" value="1.0" />
+      <edit type="op1,send0" value="0.5" />
+      <envelope type="attack" value="0.0" />
     </program>
+
+    <!-- String Ensemble 1 / ストリングアンサンブル 1 -->
     <program number="48">
       <waveform type="fm" />
       <edit type="op0,send0" value="0.2" />
@@ -93,6 +187,39 @@
       <envelope type="sustain" value="1.0" />
       <envelope type="release" value="0.1" />
     </program>
+
+    <!-- String Ensemble 2 / ストリングアンサンブル 2 -->
+    <program number="48">
+      <waveform type="fm" />
+      <edit type="op0,send0" value="0.2" />
+      <edit type="op1,send0" value="0.8" />
+      <edit type="op2,send0" value="0.4" />
+      <edit type="op3,send0" value="0.2" />
+      <edit type="op1,freq" value="2.001" />
+      <edit type="op2,freq" value="4.0021" />
+      <edit type="op3,freq" value="8.0041" />
+      <envelope type="attack" value="0.5" />
+      <envelope type="decay" value="0.0" />
+      <envelope type="sustain" value="1.0" />
+      <envelope type="release" value="1.0" />
+    </program>
+
+    <!-- Orchestra Hit / オーケストラヒット -->
+    <program number="55">
+      <waveform type="fm" />
+      <edit type="op0,send0" value="1.8" />
+      <edit type="op1,send0" value="1.8" />
+      <edit type="op2,send0" value="0.8" />
+      <edit type="op3,send0" value="0.8" />
+      <edit type="op1,freq" value="0.5001" />
+      <edit type="op2,freq" value="2.0021" />
+      <envelope type="attack" value="0.0" />
+      <envelope type="decay" value="1.0" />
+      <envelope type="sustain" value="0.0" />
+      <envelope type="release" value="1.0" />
+    </program>
+
+    <!-- Flute / フルート -->
     <program number="73">
       <waveform type="fm" />
       <edit type="op0,send0" value="0.2" />
@@ -103,6 +230,33 @@
       <envelope type="sustain" value="1.0" />
       <envelope type="release" value="0.1" />
     </program>
+
+    <!-- Recorder / リコーダー -->
+    <program number="74">
+      <waveform type="fm" />
+      <edit type="op0,send0" value="0.6" />
+      <edit type="op1,send0" value="0.6" />
+      <edit type="op1,freq" value="4.008" />
+      <envelope type="attack" value="0.05" />
+      <envelope type="decay" value="0.0" />
+      <envelope type="sustain" value="1.0" />
+      <envelope type="release" value="0.1" />
+    </program>
+
+    <!-- Lead 1 (square) / 矩形波 -->
+    <program number="80">
+      <waveform type="square" />
+      <edit type="duty" value="0.333" />
+      <envelope type="attack" value="0.0" />
+      <envelope type="release" value="0.1" />
+    </program>
+
+    <!-- Lead 2 (sawtooth) / ノコギリ波 -->
+    <program number="81">
+      <waveform type="fm" />
+      <edit type="op0,send0" value="1.0" />
+    </program>
+
     <!-- 将来は drum に number, msb, lsb も指定できるようになる？ -->
     <!-- note の子は program と同様に命令群を記述していく -->
     <drum>
@@ -112,16 +266,19 @@
         <envelope type="attack" value="0.0" />
         <envelope type="peak" value="0.01" />
         <envelope type="decay" value="0.25" />
+        <volume type="gain" value="0.8" />
       </note>
+
       <note number="36" note="29">
         <waveform type="longNoise" />
         <envelope type="attack" value="0.0" />
         <envelope type="peak" value="0.01" />
         <envelope type="decay" value="0.25" />
+        <volume type="gain" value="0.8" />
       </note>
 
       <note number="38" note="11">
-        <waveform type="randomNoise" />        
+        <waveform type="randomNoise" />
         <edit type="seed" value="3" />
         <edit type="length" value="2048" />
         <edit type="freqfactor" value="200" />
@@ -129,6 +286,7 @@
         <envelope type="peak" value="0.01" />
         <envelope type="decay" value="0.25" />
         <noteon type="50" value="1.0" />
+        <volume type="gain" value="0.8" />
       </note>
 
       <note number="40" note="50">
@@ -136,6 +294,7 @@
         <envelope type="attack" value="0.0" />
         <envelope type="peak" value="0.01" />
         <envelope type="decay" value="0.25" />
+        <volume type="gain" value="0.8" />
       </note>
 
       <note number="41" note="42">
@@ -144,13 +303,13 @@
         <envelope type="peak" value="0.0" />
         <envelope type="decay" value="0.25" />
       </note>
-      
+
       <note number="42" note="86">
         <waveform type="longNoise" />
         <envelope type="attack" value="0.0" />
         <envelope type="peak" value="0.01" />
         <envelope type="decay" value="0.04" />
-	<volume type="gain" value="0.7" />
+        <volume type="gain" value="0.6" />
       </note>
 
       <note number="43" note="45">
@@ -165,7 +324,7 @@
         <envelope type="attack" value="0.0" />
         <envelope type="peak" value="0.01" />
         <envelope type="decay" value="0.04" />
-		<volume type="gain" value="0.7" />
+        <volume type="gain" value="0.7" />
       </note>
 
       <note number="45" note="50">
