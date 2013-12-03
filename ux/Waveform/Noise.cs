@@ -19,7 +19,6 @@ namespace ux.Waveform
         public LongNoise()
             : base()
         {
-            this.Reset();
         }
         #endregion
 
@@ -57,7 +56,6 @@ namespace ux.Waveform
         public ShortNoise()
             : base()
         {
-            this.Reset();
         }
         #endregion
 
@@ -100,7 +98,6 @@ namespace ux.Waveform
         public RandomNoise()
             : base()
         {
-            this.Reset();
         }
         #endregion
 
