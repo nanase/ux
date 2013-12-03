@@ -55,7 +55,7 @@
   <ItemGroup>
     <Reference Include="ALSharp, Version=2.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ALSharp\bin\x86\ALSharp.dll</HintPath>
+      <HintPath>..\lib\ALSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -91,7 +91,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="ALSharp.dll.config">
+    <None Include="..\lib\ALSharp.dll.config">
+      <Link>ALSharp.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
@@ -115,12 +116,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="license.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="OpenAL32.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\arrow-circle.png" />
     <None Include="Resources\control.png" />
     <None Include="Resources\control-pause.png" />
@@ -131,10 +126,22 @@
     <None Include="Resources\plug-connect.png" />
     <None Include="Resources\plug-disconnect.png" />
     <None Include="Resources\control-stop-180.png" />
-    <Content Include="ux_preset.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\lib\license.txt">
+      <Link>license.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="wrap_oal.dll">
+    <Content Include="..\lib\OpenAL32.dll">
+      <Link>OpenAL32.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\lib\ux_preset.xml">
+      <Link>ux_preset.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\lib\wrap_oal.dll">
+      <Link>wrap_oal.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
