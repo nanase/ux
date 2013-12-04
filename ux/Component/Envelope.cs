@@ -47,7 +47,7 @@ namespace ux.Component
             this.peakTime = (int)(0.0f * this.samplingFreq);
             this.decayTime = (int)(0.0f * this.samplingFreq);
             this.sustainLevel = 1.0f;
-            this.releaseTime = (int)(0.05f * this.samplingFreq);
+            this.releaseTime = (int)(0.2f * this.samplingFreq);
             this.state = EnvelopeState.Silence;
         }
 
