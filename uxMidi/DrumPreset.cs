@@ -12,11 +12,11 @@ namespace uxMidi
     /// </summary>
     public class DrumPreset
     {
-        #region Private Field
+        #region -- Private Fields --
         private readonly List<Handle> initHandles;
         #endregion
 
-        #region Public Property
+        #region -- Public Properties --
         /// <summary>
         /// プログラムナンバーを取得します。
         /// </summary>
@@ -33,7 +33,7 @@ namespace uxMidi
         public IEnumerable<Handle> InitHandles { get { return this.initHandles; } }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// パラメータを指定して新しい DrumPreset クラスのインスタンスを初期化します。
         /// </summary>
