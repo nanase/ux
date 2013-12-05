@@ -15,14 +15,14 @@ namespace uxMidi.IO
     /// </summary>
     public class SystemExclusiveEvent : Event
     {
-        #region Property
+        #region -- Public Properties --
         /// <summary>
         /// 可変長のバイトデータを取得します。
         /// </summary>
         public byte[] Data { get; private set; }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// パラメータを指定して新しい SystemExclusiveEvent クラスのインスタンスを初期化します。
         /// </summary>
@@ -48,7 +48,7 @@ namespace uxMidi.IO
         }
         #endregion
 
-        #region Private Method
+        #region -- Private Methods --
         private void Load(BinaryReader br)
         {
             int length = br.ReadByte();
