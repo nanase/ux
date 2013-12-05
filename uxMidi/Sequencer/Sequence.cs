@@ -19,11 +19,11 @@ namespace uxMidi.Sequencer
     /// </summary>
     public class Sequence
     {
-        #region Private Field
+        #region -- Private Fields --
         private readonly List<Track> tracks;
         #endregion
 
-        #region Property
+        #region -- Public Properties --
         /// <summary>
         /// 読み込まれた SMF のフォーマットを取得します。このプロパティは 0 または 1 のみの値となります。
         /// </summary>
@@ -50,7 +50,7 @@ namespace uxMidi.Sequencer
         public IEnumerable<Track> Tracks { get { return this.tracks; } }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// ファイルを指定して新しい Sequence クラスのインスタンスを初期化します。
         /// </summary>
@@ -62,7 +62,7 @@ namespace uxMidi.Sequencer
         }
         #endregion
 
-        #region Private Method
+        #region -- Private Methods --
         private void LoadFile(string filename)
         {
             if (String.IsNullOrWhiteSpace(filename))
