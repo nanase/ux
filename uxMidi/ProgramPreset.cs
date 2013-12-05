@@ -12,12 +12,12 @@ namespace uxMidi
     /// </summary>
     public class ProgramPreset
     {
-        #region Private Field
+        #region -- Private Fields --
         private readonly List<Handle> initHandles;
         private readonly List<Handle> finalHandles;
         #endregion
 
-        #region Public Property
+        #region -- Public Properties --
         /// <summary>
         /// プログラムナンバーを取得します。
         /// </summary>
@@ -44,7 +44,7 @@ namespace uxMidi
         public IEnumerable<Handle> FinalHandles { get { return this.finalHandles; } }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// パラメータを指定して新しい ProgramPreset クラスのインスタンスを初期化します。
         /// </summary>
