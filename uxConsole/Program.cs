@@ -2,9 +2,9 @@
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
 
-using ALSharp;
 using System;
 using System.Linq;
+using ALSharp;
 using uxMidi;
 
 namespace uxConsole
