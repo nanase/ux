@@ -17,12 +17,12 @@ namespace uxMidi
     /// </summary>
     public class SmfConnector : MidiConnector
     {
-        #region Privat Field
+        #region -- Private Fields --
         private Sequence sequence;
         private Sequencer.Sequencer sequencer;
         #endregion
 
-        #region Public Property
+        #region -- Public Properties --
         /// <summary>
         /// MIDI イベントが格納されたシーケンスオブジェクトを取得します。
         /// </summary>
@@ -34,7 +34,7 @@ namespace uxMidi
         public Sequencer.Sequencer Sequencer { get { return this.sequencer; } }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// サンプリング周波数を指定して新しい SmfConnector クラスのインスタンスを初期化します。
         /// </summary>
@@ -46,7 +46,7 @@ namespace uxMidi
         }
         #endregion
 
-        #region Public Method
+        #region -- Public Methods --
         /// <summary>
         /// SMF ファイルを指定してシーケンサを初期化します。
         /// </summary>
