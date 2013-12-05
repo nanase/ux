@@ -16,12 +16,12 @@ namespace uxMidi
     /// </summary>
     public class MidiInConnector : MidiConnector
     {
-        #region Private Field
+        #region -- Private Fields --
         private NativeMethods.MidiInProc midiInProc;
         private IntPtr handle;
         #endregion
 
-        #region Public Property
+        #region -- Public Properties --
         /// <summary>
         /// MIDI-IN デバイスの数を取得します。
         /// </summary>
@@ -52,7 +52,7 @@ namespace uxMidi
         }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// サンプリング周波数とデバイス ID を指定して新しい MidiInConnector クラスのインスタンスを初期化します。
         /// </summary>
@@ -75,7 +75,7 @@ namespace uxMidi
         #endregion
 
 
-        #region Public Method
+        #region -- Public Methods --
         /// <summary>
         /// MIDI-IN からの入力を開始します。
         /// </summary>
@@ -102,7 +102,7 @@ namespace uxMidi
         }
         #endregion
 
-        #region Private Method
+        #region -- Private Methods --
         private bool Close()
         {
             bool result = (NativeMethods.midiInClose(this.handle) == NativeMethods.MMSYSERR_NOERROR);
