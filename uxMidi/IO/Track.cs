@@ -16,12 +16,12 @@ namespace uxMidi.IO
     /// </summary>
     public class Track
     {
-        #region Private Field
+        #region -- Private Fields --
         private readonly List<Event> events;
         private int dataLength;
         #endregion
 
-        #region Property
+        #region -- Public Properties --
         /// <summary>
         /// トラックの番号を取得します。
         /// </summary>
@@ -33,7 +33,7 @@ namespace uxMidi.IO
         public IEnumerable<Event> Events { get { return this.events; } }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// パラメータを指定して新しい Track クラスのインスタンスを初期化します。
         /// </summary>
@@ -47,7 +47,7 @@ namespace uxMidi.IO
         }
         #endregion
 
-        #region Public Method
+        #region -- Public Methods --
         private void LoadFromStream(BinaryReader br)
         {
             // トラックのデータ長
