@@ -17,7 +17,7 @@ namespace uxMidi.Sequencer
     /// </summary>
     public class Sequencer
     {
-        #region Private Field
+        #region -- Private Fields --
         private long tick;
         private double tempo = 120.0;
         private int interval = 5;
@@ -35,7 +35,7 @@ namespace uxMidi.Sequencer
         private volatile bool reqRewind;
         #endregion
 
-        #region Property
+        #region -- Public Properties --
         /// <summary>
         /// 一連のイベントを格納したシーケンスを取得します。
         /// </summary>
@@ -106,7 +106,7 @@ namespace uxMidi.Sequencer
         }
         #endregion
 
-        #region Event
+        #region -- Public Events --
         /// <summary>
         /// シーケンサによってスケジュールされたイベントが送出される時に発生します。
         /// </summary>
@@ -133,7 +133,7 @@ namespace uxMidi.Sequencer
         public event EventHandler SequenceEnd;
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// シーケンスを指定して新しい Sequencer クラスのインスタンスを初期化します。
         /// </summary>
@@ -153,7 +153,7 @@ namespace uxMidi.Sequencer
         }
         #endregion
 
-        #region Public Method
+        #region -- Public Methods --
         /// <summary>
         /// シーケンサを開始します。
         /// </summary>
@@ -191,7 +191,7 @@ namespace uxMidi.Sequencer
         }
         #endregion
 
-        #region Private Method
+        #region -- Private Methods --
         private void Update()
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -308,14 +308,14 @@ namespace uxMidi.Sequencer
     /// </summary>
     public class TrackEventArgs : EventArgs
     {
-        #region Property
+        #region -- Public Properties --
         /// <summary>
         /// イベントの列挙子を取得します。
         /// </summary>
         public IEnumerable<Event> Events { get; private set; }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// イベントの列挙子を指定して新しい TrackEventArgs クラスのインスタンスを初期化します。
         /// </summary>
@@ -332,7 +332,7 @@ namespace uxMidi.Sequencer
     /// </summary>
     public class TempoChangedEventArgs : EventArgs
     {
-        #region Property
+        #region -- Public Properties --
         /// <summary>
         /// 変更前のテンポを取得します。
         /// </summary>
@@ -344,7 +344,7 @@ namespace uxMidi.Sequencer
         public double NewTempo { get; private set; }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// 引数を指定して新しい TempoChangedEventArgs クラスのインスタンスを初期化します。
         /// </summary>
