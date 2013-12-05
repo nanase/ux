@@ -15,7 +15,7 @@ namespace uxMidi.IO
     /// </summary>
     public class MidiEvent : Event
     {
-        #region Property
+        #region -- Public Properties --
         /// <summary>
         /// 1つ目のパラメータを取得します。
         /// </summary>
@@ -32,7 +32,7 @@ namespace uxMidi.IO
         public int Channel { get; private set; }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// パラメータを指定して新しい MidiEvent クラスのインスタンスを初期化します。
         /// </summary>
@@ -69,7 +69,7 @@ namespace uxMidi.IO
         }
         #endregion
 
-        #region Private Method
+        #region -- Private Methods --
         private void Load(BinaryReader br)
         {
             this.Data1 = br.ReadByte();
