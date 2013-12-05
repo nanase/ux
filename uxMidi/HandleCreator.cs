@@ -12,7 +12,7 @@ namespace uxMidi
     /// </summary>
     static class HandleCreator
     {
-        #region Public Method
+        #region -- Public Methods --
         /// <summary>
         /// ハンドル名、タイプ、値から新しいハンドルを生成します。
         /// </summary>
@@ -40,7 +40,7 @@ namespace uxMidi
         }
         #endregion
 
-        #region Private Method
+        #region -- Private Methods --
         private static int ParseOperators(HandleType type, string operators)
         {
             int result = 0;
