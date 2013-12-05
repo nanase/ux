@@ -15,7 +15,7 @@ namespace uxMidi.IO
     /// </summary>
     public abstract class Event
     {
-        #region Property
+        #region -- Public Properties --
         /// <summary>
         /// 以前のイベントとの差分時間 (デルタタイム) を取得します。
         /// </summary>
@@ -32,7 +32,7 @@ namespace uxMidi.IO
         public EventType Type { get; protected set; }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// デルタタイムとティック位置を指定して新しい Event クラスのインスタンスを初期化します。
         /// </summary>
@@ -45,7 +45,7 @@ namespace uxMidi.IO
         }
         #endregion
 
-        #region Public Method
+        #region -- Public Methods --
         /// <summary>
         /// デルタタイムを解析します。
         /// </summary>
