@@ -17,23 +17,23 @@ namespace uxMidi
     /// </summary>
     public abstract class MidiConnector : IDisposable
     {
-        #region Private Field
         private readonly List<ProgramPreset> presets;
         private readonly List<DrumPreset> drumset;
         private readonly List<string> presetFiles;
         private readonly int[] partLsb, partMsb, partProgram;
         private readonly ProgramPreset[] nowPresets;
         private readonly int[] drumTargets = new[] { 10, 17, 18, 19, 20, 21, 22, 23 };
+        #region -- Private Fields --
         #endregion
 
-        #region Protected Field
+        #region -- Protected Fields --
         /// <summary>
         /// ux のマスターオブジェクトです。
         /// </summary>
         protected readonly Master uxMaster;
         #endregion
 
-        #region Public Property
+        #region -- Public Properties --
         /// <summary>
         /// ux のマスターオブジェクトを取得します。
         /// </summary>
@@ -45,7 +45,7 @@ namespace uxMidi
         public long EventCount { get; protected set; }
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         /// <summary>
         /// サンプリング周波数を指定して新しい MidiConnector クラスのインスタンスを初期化します。
         /// </summary>
@@ -66,7 +66,7 @@ namespace uxMidi
         }
         #endregion
 
-        #region Public Method
+        #region -- Public Methods --
         /// <summary>
         /// ファイル名を指定してプリセットを追加します。
         /// </summary>
@@ -134,7 +134,7 @@ namespace uxMidi
         }
         #endregion
 
-        #region Protected Method
+        #region -- Protected Methods --
         /// <summary>
         /// 指定された MIDI イベントを処理します。
         /// </summary>
