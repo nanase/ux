@@ -63,6 +63,7 @@
     <Compile Include="IO\MetaEvent.cs" />
     <Compile Include="MidiConnector.cs" />
     <Compile Include="Selector\Selector.cs" />
+    <Compile Include="Selector\MonophonicSelector.cs" />
     <Compile Include="PresetReader.cs" />
     <Compile Include="ProgramPreset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
