@@ -34,6 +34,7 @@
             this.menu_open = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_exit = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_playing = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_playFirst = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_play = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_stop = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -47,6 +48,7 @@
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStrip_open = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStrip_playFirst = new System.Windows.Forms.ToolStripButton();
             this.toolStrip_play = new System.Windows.Forms.ToolStripButton();
             this.toolStrip_stop = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -89,10 +91,9 @@
             this.fastTimer = new System.Windows.Forms.Timer(this.components);
             this.smfFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.slowTimer = new System.Windows.Forms.Timer(this.components);
-            this.toolStrip_playFirst = new System.Windows.Forms.ToolStripButton();
-            this.menu_playFirst = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
@@ -152,6 +153,14 @@
             this.menu_playing.Name = "menu_playing";
             this.menu_playing.Size = new System.Drawing.Size(61, 22);
             this.menu_playing.Text = "演奏(&P)";
+            // 
+            // menu_playFirst
+            // 
+            this.menu_playFirst.Image = global::uxPlayer.Properties.Resources.control_stop_180;
+            this.menu_playFirst.Name = "menu_playFirst";
+            this.menu_playFirst.Size = new System.Drawing.Size(191, 22);
+            this.menu_playFirst.Text = "最初から再生(&F)";
+            this.menu_playFirst.Click += new System.EventHandler(this.menu_playFirst_Click);
             // 
             // menu_play
             // 
@@ -265,6 +274,16 @@
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStrip_playFirst
+            // 
+            this.toolStrip_playFirst.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStrip_playFirst.Image = global::uxPlayer.Properties.Resources.control_stop_180;
+            this.toolStrip_playFirst.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip_playFirst.Name = "toolStrip_playFirst";
+            this.toolStrip_playFirst.Size = new System.Drawing.Size(23, 22);
+            this.toolStrip_playFirst.Text = "最初から再生";
+            this.toolStrip_playFirst.Click += new System.EventHandler(this.toolStrip_playFirst_Click);
             // 
             // toolStrip_play
             // 
@@ -703,24 +722,6 @@
             this.slowTimer.Interval = 250;
             this.slowTimer.Tick += new System.EventHandler(this.slowTimer_Tick);
             // 
-            // toolStrip_playFirst
-            // 
-            this.toolStrip_playFirst.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStrip_playFirst.Image = global::uxPlayer.Properties.Resources.control_stop_180;
-            this.toolStrip_playFirst.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStrip_playFirst.Name = "toolStrip_playFirst";
-            this.toolStrip_playFirst.Size = new System.Drawing.Size(23, 22);
-            this.toolStrip_playFirst.Text = "最初から再生";
-            this.toolStrip_playFirst.Click += new System.EventHandler(this.toolStrip_playFirst_Click);
-            // 
-            // menu_playFirst
-            // 
-            this.menu_playFirst.Image = global::uxPlayer.Properties.Resources.control_stop_180;
-            this.menu_playFirst.Name = "menu_playFirst";
-            this.menu_playFirst.Size = new System.Drawing.Size(191, 22);
-            this.menu_playFirst.Text = "最初から再生(&F)";
-            this.menu_playFirst.Click += new System.EventHandler(this.menu_playFirst_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -742,6 +743,7 @@
             this.toolStrip.PerformLayout();
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.monitorBox)).EndInit();
             this.monitorMenu.ResumeLayout(false);
