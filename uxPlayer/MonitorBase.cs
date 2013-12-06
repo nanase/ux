@@ -47,6 +47,7 @@ namespace uxPlayer
         public WaveformMonitor(Color backgroundColor, Size size)
             : base(backgroundColor, size)
         {
+            this.graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
         }
 
         public override void Draw(float[] data)
@@ -54,20 +55,20 @@ namespace uxPlayer
             this.graphics.Clear(this.backgroundColor);
 
             float dx = (float)this.size.Width / (float)data.Length * 2f;
-            float dy = (float)this.size.Height / 4f;
+            float dy = (float)this.size.Height / 4f - 1;
 
             int length = data.Length / 2;
 
             if (this.buffer.Length != data.Length / 2)
                 this.buffer = new PointF[data.Length / 2];
 
-            for (int i = 0, k = 0; k < length; i += 2, k++)
+            for (int i = 0, k = 0; k < length; i++, k++)
                 this.buffer[k] = new PointF(i * dx, dy - data[i] * dy);
 
             this.graphics.DrawLines(this.p, this.buffer);
 
-            for (int i = 1, k = 0; k < length; i += 2, k++)
-                this.buffer[k] = new PointF(i * dx, dy * 3 - data[i] * dy);
+            for (int i = 1, k = 0; k < length; i++, k++)
+                this.buffer[k] = new PointF(i * dx, dy * 3 - data[i] * dy - 1);
 
             this.graphics.DrawLines(this.p, this.buffer);
 
