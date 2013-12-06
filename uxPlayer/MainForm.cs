@@ -157,8 +157,17 @@ namespace uxPlayer
 
             if (this.player.AudioSource != null)
                 this.player.AudioSource.Clear();
+
+            if (this.player.BasePlayer != null && this.player.BasePlayer.Playing)
+            {
+                this.PlayFromFirst();
+                return;
+            }
+            else
+            {
             this.player.Play();
             this.connector.Play();
+            }
 
             if (this.mode_smf && ((SmfConnector)this.connector).Sequencer != null)
                 ((SmfConnector)this.connector).Sequencer.Tick = this.resumeTick;
