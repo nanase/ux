@@ -76,7 +76,7 @@ namespace uxPlayer
             this.connector.Dispose();
             this.player.Dispose();
         }
-  
+
         private void hScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
             if (this.mode_smf && this.playing)
@@ -165,8 +165,8 @@ namespace uxPlayer
             }
             else
             {
-            this.player.Play();
-            this.connector.Play();
+                this.player.Play();
+                this.connector.Play();
             }
 
             if (this.mode_smf && ((SmfConnector)this.connector).Sequencer != null)
@@ -301,7 +301,11 @@ namespace uxPlayer
 
                 SmfConnector smf = (SmfConnector)this.connector;
                 smf.Load(this.smfFileDialog.FileName);
-                smf.Sequencer.SequenceEnd += (sender, e) => this.Stop(false);
+                smf.Sequencer.SequenceEnd += (sender, e) =>
+                {
+                    this.Stop(false);
+                    this.Invoke(new Action(() => this.hScrollBar.Value = 0));
+                };
                 smf.Sequencer.OnTrackEvent += (sender, e) =>
                 {
                     foreach (MetaEvent meta in e.Events.Where(m => m is MetaEvent && ((MetaEvent)m).MetaType == MetaType.Lyrics))
