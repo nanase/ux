@@ -23,6 +23,7 @@ namespace uxPlayer
         private bool mode_smf;
         private bool playing;
         private long eventCountOld;
+        private long resumeTick = 0L;
 
         private float[] monitorBuffer = null;
         private MonitorBase monitor;
@@ -159,6 +160,9 @@ namespace uxPlayer
             this.player.Play();
             this.connector.Play();
 
+            if (this.mode_smf && ((SmfConnector)this.connector).Sequencer != null)
+                ((SmfConnector)this.connector).Sequencer.Tick = this.resumeTick;
+
             Action invoke = () =>
             {
                 this.toolStrip_play.Enabled = false;
@@ -184,11 +188,25 @@ namespace uxPlayer
 
             if (stopConnector)
             {
+                if (this.mode_smf)
+                {
+                    if (((SmfConnector)this.connector).Sequencer != null)
+                        this.resumeTick = ((SmfConnector)this.connector).Sequencer.Tick;
+
+                    if (this.resumeTick < 0L)
+                        this.resumeTick = 0L;
+                }
+
                 this.player.Stop();
                 this.connector.Stop();
 
                 if (this.player.AudioSource != null)
                     this.player.AudioSource.Clear();
+            }
+            else
+            {
+                if (this.mode_smf)
+                    this.resumeTick = 0L;
             }
 
             Action invoke = () =>
@@ -330,7 +348,12 @@ namespace uxPlayer
                 return;
 
             this.Stop();
-            ((SmfConnector)this.connector).Sequencer.Tick = 0;
+
+            if (((SmfConnector)this.connector).Sequencer != null)
+                ((SmfConnector)this.connector).Sequencer.Tick = 0L;
+
+            this.resumeTick = 0L;
+
             this.RefreshPresets();
             this.AllReset();
             this.Play();
