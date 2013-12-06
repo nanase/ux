@@ -154,6 +154,8 @@ namespace uxPlayer
 
             this.playing = true;
 
+            if (this.player.AudioSource != null)
+                this.player.AudioSource.Clear();
             this.player.Play();
             this.connector.Play();
 
@@ -184,6 +186,9 @@ namespace uxPlayer
             {
                 this.player.Stop();
                 this.connector.Stop();
+
+                if (this.player.AudioSource != null)
+                    this.player.AudioSource.Clear();
             }
 
             Action invoke = () =>
