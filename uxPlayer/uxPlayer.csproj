@@ -99,9 +99,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\uxMidi\uxMidi.csproj">
+    <ProjectReference Include="..\ux.Utils\ux.Utils.csproj">
       <Project>{4c2f5341-9812-4e6b-822c-d30159a85cc8}</Project>
-      <Name>uxMidi</Name>
+      <Name>ux.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\ux\ux.csproj">
       <Project>{17901e1a-4b15-41ca-8bf3-19f7279f31cc}</Project>
