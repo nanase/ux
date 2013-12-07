@@ -218,7 +218,7 @@ namespace ux
                 this.parts[k].Generate(count / 2);
 
                 // 波形合成
-                for (int i = offset, j = 0; i < count; i++, j++)
+                for (int i = offset, j = 0; j < count; i++, j++)
                     buffer[i] += this.parts[k].Buffer[j];
             }
 
