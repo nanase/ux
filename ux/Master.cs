@@ -20,13 +20,17 @@ namespace ux
         private const float DefaultSamplingFreq = 44100.0f;
         private const int DefaultPartCount = 16;
 
-        private float compressorThreshold = 0.8f;
-        private float compressorRatio = 1.0f / 2.0f;
         private readonly float samplingFreq;
         private readonly Part[] parts;
         private readonly Queue<Handle> handleQueue;
         private readonly int partCount;
         private float masterVolume;
+
+        #region Compressor
+        private float gain, upover, downover;
+        private float compressorThreshold = 0.8f;
+        private float compressorRatio = 1.0f / 2.0f;
+        #endregion
         #endregion
 
         #region -- Public Properties --
@@ -64,6 +68,8 @@ namespace ux
                     throw new ArgumentException();
 
                 this.compressorThreshold = value;
+
+                this.PrepareCompressor();
             }
         }
 
@@ -81,6 +87,8 @@ namespace ux
                     throw new ArgumentException();
 
                 this.compressorRatio = value;
+
+                this.PrepareCompressor();
             }
         }
         #endregion
@@ -222,24 +230,17 @@ namespace ux
                     buffer[i] += this.parts[k].Buffer[j];
             }
 
-            // コンプレッサ増幅度
-            float threshold = this.compressorThreshold;
-            float ratio = this.compressorRatio;
-            float gain = 1.0f / (threshold + (1.0f - threshold) * ratio);
-            float upover = threshold * (1.0f - ratio);
-            float downover = -threshold * (1.0f - ratio);
-
             for (int i = offset, length = offset + count; i < length; i++)
             {
-                float output = buffer[i] * this.masterVolume * gain;
+                float output = buffer[i] * this.masterVolume * this.gain;
 
                 if (output == 0.0f)
                     continue;
 
                 // 圧縮
                 output =
-                    ((output > threshold) ? upover + ratio * output :
-                    (output < -threshold) ? downover + ratio * output : output);
+                    ((output > this.compressorThreshold) ? this.upover + this.compressorRatio * output :
+                    (output < -this.compressorThreshold) ? this.downover + this.compressorRatio * output : output);
 
                 // クリッピングと代入
                 buffer[i] = (output > 1.0f) ? 1.0f : (output < -1.0f) ? -1.0f : output;
@@ -293,6 +294,15 @@ namespace ux
                 else if (handle.TargetPart >= 1 && handle.TargetPart <= this.partCount)
                     this.parts[handle.TargetPart - 1].ApplyHandle(handle);
             }
+        }
+
+        private void PrepareCompressor()
+        {
+            float threshold = this.compressorThreshold;
+            float ratio = this.compressorRatio;
+            this.gain = 1.0f / (threshold + (1.0f - threshold) * ratio);
+            this.upover = threshold * (1.0f - ratio);
+            this.downover = -threshold * (1.0f - ratio);
         }
         #endregion
     }
