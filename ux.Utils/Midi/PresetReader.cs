@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace uxMidi
+namespace ux.Utils.Midi
 {
     /// <summary>
     /// XML ファイルからプリセットを読み込むためのメソッドを提供します。

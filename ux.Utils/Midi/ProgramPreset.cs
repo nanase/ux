@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using ux.Component;
 
-namespace uxMidi
+namespace ux.Utils.Midi
 {
     /// <summary>
     /// 音源プログラムのプリセットを表します。

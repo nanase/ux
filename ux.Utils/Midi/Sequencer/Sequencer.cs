@@ -8,9 +8,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using uxMidi.IO;
+using ux.Utils.Midi.IO;
 
-namespace uxMidi.Sequencer
+namespace ux.Utils.Midi.Sequencer
 {
     /// <summary>
     /// イベントをスケジューリングし、決められた時間に送出するシーケンサを提供します。

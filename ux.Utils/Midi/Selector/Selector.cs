@@ -5,9 +5,9 @@
 using System.Collections.Generic;
 using System.IO;
 using ux;
-using uxMidi.IO;
+using ux.Utils.Midi.IO;
 
-namespace uxMidi
+namespace ux.Utils.Midi
 {
     /// <summary>
     /// 転送された MIDI イベントを選択し適切なパートに送信するための抽象クラスです。

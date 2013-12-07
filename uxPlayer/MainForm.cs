@@ -9,8 +9,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using uxMidi;
-using uxMidi.IO;
+using ux.Utils.Midi;
+using ux.Utils.Midi.IO;
 
 namespace uxPlayer
 {

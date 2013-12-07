@@ -8,7 +8,7 @@
 
 using System.IO;
 
-namespace uxMidi.IO
+namespace ux.Utils.Midi.IO
 {
     /// <summary>
     /// 可変用のデータを持ったイベントを提供します。

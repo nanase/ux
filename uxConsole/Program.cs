@@ -5,7 +5,7 @@
 using System;
 using System.Linq;
 using ALSharp;
-using uxMidi;
+using ux.Utils.Midi;
 
 namespace uxConsole
 {

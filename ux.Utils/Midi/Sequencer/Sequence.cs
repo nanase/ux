@@ -10,9 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using uxMidi.IO;
+using ux.Utils.Midi.IO;
 
-namespace uxMidi.Sequencer
+namespace ux.Utils.Midi.Sequencer
 {
     /// <summary>
     /// MIDI に関する一連のイベントを格納したシーケンスを提供します。

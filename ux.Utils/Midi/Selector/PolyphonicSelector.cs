@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using ux;
 using ux.Component;
-using uxMidi.IO;
+using ux.Utils.Midi.IO;
 
-namespace uxMidi
+namespace ux.Utils.Midi
 {
     /// <summary>
     /// ポリフォニックとして MIDI イベントを選択するセレクタを提供します。

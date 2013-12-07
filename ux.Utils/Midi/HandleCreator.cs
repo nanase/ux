@@ -5,7 +5,7 @@
 using System;
 using ux.Component;
 
-namespace uxMidi
+namespace ux.Utils.Midi
 {
     /// <summary>
     /// 文字列から新しいハンドルを生成するメソッドを提供します。

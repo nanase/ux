@@ -5,7 +5,7 @@
 using System;
 using System.Xml.Linq;
 
-namespace uxMidi
+namespace ux.Utils.Midi
 {
     /// <summary>
     /// 拡張メソッドを含んだ静的クラスです。

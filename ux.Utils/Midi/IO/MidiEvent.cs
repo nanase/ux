@@ -8,7 +8,7 @@
 
 using System.IO;
 
-namespace uxMidi.IO
+namespace ux.Utils.Midi.IO
 {
     /// <summary>
     /// MIDI の演奏に関わるイベントを提供します。

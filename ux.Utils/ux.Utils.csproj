@@ -54,25 +54,25 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extension.cs" />
-    <Compile Include="HandleCreator.cs" />
-    <Compile Include="IO\Event.cs" />
-    <Compile Include="IO\MidiEvent.cs" />
-    <Compile Include="IO\Track.cs" />
-    <Compile Include="IO\SystemExclusiveEvent.cs" />
-    <Compile Include="IO\MetaEvent.cs" />
-    <Compile Include="MidiConnector.cs" />
-    <Compile Include="Selector\PolyphonicSelector.cs" />
-    <Compile Include="Selector\Selector.cs" />
-    <Compile Include="Selector\MonophonicSelector.cs" />
-    <Compile Include="PresetReader.cs" />
-    <Compile Include="ProgramPreset.cs" />
+    <Compile Include="Midi\Extension.cs" />
+    <Compile Include="Midi\HandleCreator.cs" />
+    <Compile Include="Midi\IO\Event.cs" />
+    <Compile Include="Midi\IO\MidiEvent.cs" />
+    <Compile Include="Midi\IO\Track.cs" />
+    <Compile Include="Midi\IO\SystemExclusiveEvent.cs" />
+    <Compile Include="Midi\IO\MetaEvent.cs" />
+    <Compile Include="Midi\MidiConnector.cs" />
+    <Compile Include="Midi\Selector\PolyphonicSelector.cs" />
+    <Compile Include="Midi\Selector\Selector.cs" />
+    <Compile Include="Midi\Selector\MonophonicSelector.cs" />
+    <Compile Include="Midi\PresetReader.cs" />
+    <Compile Include="Midi\ProgramPreset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sequencer\Sequence.cs" />
-    <Compile Include="Sequencer\Sequencer.cs" />
-    <Compile Include="SmfConnector.cs" />
-    <Compile Include="MidiInConnector.cs" />
-    <Compile Include="DrumPreset.cs" />
+    <Compile Include="Midi\Sequencer\Sequence.cs" />
+    <Compile Include="Midi\Sequencer\Sequencer.cs" />
+    <Compile Include="Midi\SmfConnector.cs" />
+    <Compile Include="Midi\MidiInConnector.cs" />
+    <Compile Include="Midi\DrumPreset.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ux\ux.csproj">

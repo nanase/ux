@@ -5,9 +5,9 @@
 using System;
 using System.Collections.Generic;
 using ux;
-using uxMidi.IO;
+using ux.Utils.Midi.IO;
 
-namespace uxMidi
+namespace ux.Utils.Midi
 {
     /// <summary>
     /// ux と MIDI を接続するための抽象クラスです。

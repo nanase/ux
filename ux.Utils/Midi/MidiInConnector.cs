@@ -4,12 +4,12 @@
 
 using System;
 using System.Runtime.InteropServices;
-using uxMidi.IO;
+using ux.Utils.Midi.IO;
 
 /* 参考 : http://stackoverflow.com/questions/1991159/getting-signals-from-a-midi-port-in-c-sharp
  */
 
-namespace uxMidi
+namespace ux.Utils.Midi
 {
     /// <summary>
     /// MIDI-IN デバイスと ux を接続します。

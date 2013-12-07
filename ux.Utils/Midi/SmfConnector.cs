@@ -7,10 +7,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using uxMidi.IO;
-using uxMidi.Sequencer;
+using ux.Utils.Midi.IO;
+using ux.Utils.Midi.Sequencer;
 
-namespace uxMidi
+namespace ux.Utils.Midi
 {
     /// <summary>
     /// SMF ファイルを読み込み、ux と接続します。

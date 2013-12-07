@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace uxMidi.IO
+namespace ux.Utils.Midi.IO
 {
     /// <summary>
     /// イベントをグループ化したトラックを提供します。
