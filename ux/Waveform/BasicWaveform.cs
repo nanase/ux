@@ -84,21 +84,21 @@ namespace ux.Waveform
 
             if (nc == null)
             {
-            byte[] l = new byte[onTime + 1];
+                byte[] l = new byte[onTime + 1];
 
-            if (duty <= 0.5f)
-            {
-                // 10, 100, 1000, ...
-                l[0] = (byte)1;
-            }
-            else
-            {
-                // 10, 110, 1110, ...
-                for (int i = 0; i < onTime; i++)
-                    l[i] = (byte)1;
-            }
+                if (duty <= 0.5f)
+                {
+                    // 10, 100, 1000, ...
+                    l[0] = (byte)1;
+                }
+                else
+                {
+                    // 10, 110, 1110, ...
+                    for (int i = 0; i < onTime; i++)
+                        l[i] = (byte)1;
+                }
 
-            this.SetStep(l);
+                this.SetStep(l);
 
                 cache.AddFirst(new Tuple<int, float[]>(onTime, this.value));
 
@@ -119,6 +119,10 @@ namespace ux.Waveform
     /// </summary>
     class Triangle : StepWaveform
     {
+        #region -- Private Fields --
+        private static readonly LinkedList<Tuple<int, float[]>> cache = new LinkedList<Tuple<int, float[]>>();
+        #endregion
+
         #region -- Constructors --
         /// <summary>
         /// 新しい Triangle クラスのインスタンスを初期化します。
@@ -167,16 +171,40 @@ namespace ux.Waveform
             if (step <= 0 || step > 256)
                 return;
 
-            byte[] l = new byte[step * 2];
+            Tuple<int, float[]> nc = null;
+
+            for (var now = cache.First; now != null; now = now.Next)
+            {
+                if (now.Value.Item1 == step)
+                {
+                    nc = now.Value;
+                    break;
+                }
+            }
+
+            if (nc == null)
+            {
+                byte[] l = new byte[step * 2];
 
 
-            for (int i = 0; i < step; i++)
-                l[i] = (byte)i;
+                for (int i = 0; i < step; i++)
+                    l[i] = (byte)i;
 
-            for (int i = step; i < step * 2; i++)
-                l[i] = (byte)(step * 2 - i - 1);
+                for (int i = step; i < step * 2; i++)
+                    l[i] = (byte)(step * 2 - i - 1);
 
-            this.SetStep(l);
+                this.SetStep(l);
+
+                cache.AddFirst(new Tuple<int, float[]>(step, this.value));
+
+                if (cache.Count > 32)
+                    cache.RemoveLast();
+            }
+            else
+            {
+                this.value = nc.Item2;
+                this.length = nc.Item2.Length;
+            }
         }
         #endregion
     }
