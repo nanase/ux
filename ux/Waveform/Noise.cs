@@ -1,4 +1,4 @@
-/* ux - Micro Xylph / Software Synthesizer Core Library
+﻿/* ux - Micro Xylph / Software Synthesizer Core Library
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
 
@@ -12,7 +12,25 @@ namespace ux.Waveform
     /// </summary>
     class LongNoise : StepWaveform
     {
+        #region -- Private Fields --
+        private static readonly float[] data;
+        #endregion
+
         #region -- Constructors --
+        static LongNoise()
+        {
+            ushort reg = 0xffff;
+            ushort output = 1;
+
+            LongNoise.data = new float[32767];
+
+            for (int i = 0; i < 32767; i++)
+            {
+                reg += (ushort)(reg + (((reg >> 14) ^ (reg >> 13)) & 1));
+                LongNoise.data[i] = (output ^= (ushort)(reg & 1)) * 2.0f - 1.0f;
+            }
+        }
+
         /// <summary>
         /// 新しい LongNoise クラスのインスタンスを初期化します。
         /// </summary>
@@ -28,18 +46,9 @@ namespace ux.Waveform
         /// </summary>
         public override void Reset()
         {
-            ushort reg = 0xffff;
-            ushort output = 1;
-
             this.freqFactor = 0.001;
-            this.value = new float[32767];
+            this.value = LongNoise.data;
             this.length = 32767;
-
-            for (int i = 0; i < 32767; i++)
-            {
-                reg += (ushort)(reg + (((reg >> 14) ^ (reg >> 13)) & 1));
-                this.value[i] = (output ^= (ushort)(reg & 1)) * 2.0f - 1.0f;
-            }
         }
         #endregion
     }
