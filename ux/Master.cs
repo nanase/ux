@@ -227,8 +227,8 @@ namespace ux
                 {
                     part.Generate(count / 2);
 
-                // 波形合成
-                for (int i = offset, j = 0; j < count; i++, j++)
+                    // 波形合成
+                    for (int i = offset, j = 0; j < count; i++, j++)
                         buffer[i] += part.Buffer[j];
                 }
             }
@@ -243,15 +243,15 @@ namespace ux
                 }
                 else
                 {
-                // 圧縮
+                    // 圧縮
                     if (output > this.compressorThreshold)
                         output = this.upover + this.compressorRatio * output;
                     else if (output < -this.compressorThreshold)
                         output = this.downover + this.compressorRatio * output;
 
-                // クリッピングと代入
-                buffer[i] = (output > 1.0f) ? 1.0f : (output < -1.0f) ? -1.0f : output;
-            }
+                    // クリッピングと代入
+                    buffer[i] = (output > 1.0f) ? 1.0f : (output < -1.0f) ? -1.0f : output;
+                }
             }
 
             return count;
@@ -278,29 +278,26 @@ namespace ux
             if (this.handleQueue.Count == 0)
                 return;
 
-            var list = new List<Handle>();
-
             // リストに一時転送
             lock (this.handleQueue)
             {
-                list.AddRange(this.handleQueue);
-                this.handleQueue.Clear();
-            }
+                // optimized: foreach (var handle in this.handleQueue)
+                var enumerator = this.handleQueue.GetEnumerator();
+                for (Handle handle; enumerator.MoveNext(); )
+                {
+                    handle = enumerator.Current;
 
-            foreach (var handle in list)
-            {
-                if (handle.TargetPart == 0)
-                    switch (handle.Type)
+                    if (handle.TargetPart == 0 && handle.Type == HandleType.Volume)
                     {
-                        case HandleType.Volume:
-                            this.masterVolume = (float)Math.Pow(handle.Data2.Clamp(2.0f, 0.0f), 2.0);
-                            break;
-
-                        default:
-                            break;
+                        // optimized: switch(handle.Type)
+                        this.masterVolume = (float)Math.Pow(handle.Data2.Clamp(2.0f, 0.0f), 2.0);
+                        break;
                     }
-                else if (handle.TargetPart >= 1 && handle.TargetPart <= this.partCount)
-                    this.parts[handle.TargetPart - 1].ApplyHandle(handle);
+                    else if (handle.TargetPart >= 1 && handle.TargetPart <= this.partCount)
+                        this.parts[handle.TargetPart - 1].ApplyHandle(handle);
+                }
+
+                this.handleQueue.Clear();
             }
         }
 
