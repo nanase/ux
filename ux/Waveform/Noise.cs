@@ -58,7 +58,25 @@ namespace ux.Waveform
     /// </summary>
     class ShortNoise : StepWaveform
     {
+        #region -- Private Fields --
+        private static readonly float[] data;
+        #endregion
+
         #region -- Constructors --
+        static ShortNoise()
+        {
+            ushort reg = 0xffff;
+            ushort output = 1;
+
+            ShortNoise.data = new float[127];
+
+            for (int i = 0; i < 127; i++)
+            {
+                reg += (ushort)(reg + (((reg >> 6) ^ (reg >> 5)) & 1));
+                ShortNoise.data[i] = (output ^= (ushort)(reg & 1)) * 2.0f - 1.0f;
+            }
+        }
+
         /// <summary>
         /// 新しい ShortNoise クラスのインスタンスを初期化します。
         /// </summary>
@@ -74,18 +92,9 @@ namespace ux.Waveform
         /// </summary>
         public override void Reset()
         {
-            ushort reg = 0xffff;
-            ushort output = 1;
-
             this.freqFactor = 0.001;
-            this.value = new float[127];
+            this.value = ShortNoise.data;
             this.length = 127;
-
-            for (int i = 0; i < 127; i++)
-            {
-                reg += (ushort)(reg + (((reg >> 6) ^ (reg >> 5)) & 1));
-                this.value[i] = (output ^= (ushort)(reg & 1)) * 2.0f - 1.0f;
-            }
         }
         #endregion
     }
