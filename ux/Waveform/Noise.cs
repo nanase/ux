@@ -3,6 +3,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using ux.Component;
 
 namespace ux.Waveform
@@ -105,6 +106,8 @@ namespace ux.Waveform
     class RandomNoise : StepWaveform
     {
         #region -- Private Fields --
+        private static readonly LinkedList<NoiseCache> cache = new LinkedList<NoiseCache>();
+
         private int seed = 0;
         private int array_length = 1024;
         #endregion
@@ -126,13 +129,7 @@ namespace ux.Waveform
         public override void Reset()
         {
             this.freqFactor = 1.0;
-            this.value = new float[this.array_length];
-            this.length = this.array_length;
-
-            Random r = new Random(this.seed);
-
-            for (int i = 0; i < this.array_length; i++)
-                this.value[i] = (float)(r.NextDouble() * 2.0 - 1.0);
+            this.Generate();
         }
 
         /// <summary>
@@ -162,5 +159,55 @@ namespace ux.Waveform
             }
         }
         #endregion
+
+        #region -- Private Methods --
+        private void Generate()
+        {
+            NoiseCache nc = new NoiseCache();
+
+            for (var now = cache.First; now != null; now = now.Next)
+            {
+                if (now.Value.seed == this.seed && now.Value.array_length >= this.array_length)
+                {
+                    nc = now.Value;
+                    break;
+                }
+            }
+
+            if (nc.array_length == 0)
+            {
+                this.value = new float[this.array_length];
+                this.length = this.array_length;
+
+                Random r = new Random(this.seed);
+
+                for (int i = 0; i < this.array_length; i++)
+                    this.value[i] = (float)(r.NextDouble() * 2.0 - 1.0);
+            }
+
+            else if (nc.array_length == this.array_length)
+            {
+                this.value = nc.data;
+                return;
+            }
+            else
+            {
+                this.value = new float[this.array_length];
+                Array.Copy(nc.data, this.value, this.array_length);
+            }
+
+            cache.AddFirst(new NoiseCache() { array_length = this.array_length, data = this.value, seed = this.seed });
+
+            if (cache.Count > 32)
+                cache.RemoveLast();
+        }
+        #endregion
+
+        struct NoiseCache
+        {
+            public int seed;
+            public int array_length;
+            public float[] data;
+        }
     }
 }
