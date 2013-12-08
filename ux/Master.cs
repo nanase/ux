@@ -156,7 +156,7 @@ namespace ux
         /// <param name="handle">プッシュされるハンドル。</param>
         public void PushHandle(Handle handle)
         {
-            lock (((ICollection)this.handleQueue).SyncRoot)
+            lock (this.handleQueue)
                 this.handleQueue.Enqueue(handle);
         }
 
@@ -166,7 +166,7 @@ namespace ux
         /// <param name="handles">複数ハンドルを列挙する IEnumerable&lt;Handle&gt; インスタンス。</param>
         public void PushHandle(IEnumerable<Handle> handles)
         {
-            lock (((ICollection)this.handleQueue).SyncRoot)
+            lock (this.handleQueue)
                 foreach (var handle in handles)
                     this.handleQueue.Enqueue(handle);
         }
@@ -178,7 +178,7 @@ namespace ux
         /// <param name="targetPart">ハンドルが適用されるパート。</param>
         public void PushHandle(IEnumerable<Handle> handles, int targetPart)
         {
-            lock (((ICollection)this.handleQueue).SyncRoot)
+            lock (this.handleQueue)
                 foreach (var handle in handles)
                     this.handleQueue.Enqueue(new Handle(handle, targetPart));
         }
@@ -273,7 +273,7 @@ namespace ux
             var list = new List<Handle>();
 
             // リストに一時転送
-            lock (((ICollection)this.handleQueue).SyncRoot)
+            lock (this.handleQueue)
             {
                 list.AddRange(this.handleQueue);
                 this.handleQueue.Clear();
