@@ -126,7 +126,11 @@ namespace ux.Component
             this.envelope.Generate(this.sampleTime, this.envlBuffer, sampleCount);
             this.waveform.GetWaveforms(this.smplBuffer, this.freqBuffer, this.phasBuffer, this.sampleTime, sampleCount);
 
-            float vtmp = (float)((this.volume * this.expression * Part.Amplifier * this.velocity * this.gain) / (1.0 * 1.0 * 1.0 * 1.0 * 1.0 * 1.0));
+            // ログスケール計算。分母は各パラメータの標準値
+            // (削除厳禁。最後の1.0はエンベロープ用)
+            float vtmp = (float)((this.volume * this.expression * Part.Amplifier * this.velocity * this.gain) /
+                                 (        1.0 *             1.0 *            1.0 *           1.0 *       1.0 * 1.0));
+
             // 波形出力
             for (int i = 0, j = 0; i < sampleCount; i++)
             {
