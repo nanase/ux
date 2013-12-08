@@ -126,6 +126,7 @@ namespace ux
             this.handleQueue = new Queue<Handle>();
 
             this.Reset();
+            this.PrepareCompressor();
         }
         #endregion
 
@@ -220,14 +221,16 @@ namespace ux
             // Part.Generate にはサンプル数を与える
             for (int k = 0; k < this.partCount; k++)
             {
-                if (!this.parts[k].IsSounding)
-                    continue;
+                Part part = this.parts[k];
 
-                this.parts[k].Generate(count / 2);
+                if (part.IsSounding)
+                {
+                    part.Generate(count / 2);
 
                 // 波形合成
                 for (int i = offset, j = 0; j < count; i++, j++)
-                    buffer[i] += this.parts[k].Buffer[j];
+                        buffer[i] += part.Buffer[j];
+                }
             }
 
             for (int i = offset, length = offset + count; i < length; i++)
@@ -235,15 +238,20 @@ namespace ux
                 float output = buffer[i] * this.masterVolume * this.gain;
 
                 if (output == 0.0f)
-                    continue;
-
+                {
+                    buffer[i] = 0.0f;
+                }
+                else
+                {
                 // 圧縮
-                output =
-                    ((output > this.compressorThreshold) ? this.upover + this.compressorRatio * output :
-                    (output < -this.compressorThreshold) ? this.downover + this.compressorRatio * output : output);
+                    if (output > this.compressorThreshold)
+                        output = this.upover + this.compressorRatio * output;
+                    else if (output < -this.compressorThreshold)
+                        output = this.downover + this.compressorRatio * output;
 
                 // クリッピングと代入
                 buffer[i] = (output > 1.0f) ? 1.0f : (output < -1.0f) ? -1.0f : output;
+            }
             }
 
             return count;
