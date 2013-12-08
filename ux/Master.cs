@@ -168,8 +168,9 @@ namespace ux
         public void PushHandle(IEnumerable<Handle> handles)
         {
             lock (this.handleQueue)
-                foreach (var handle in handles)
-                    this.handleQueue.Enqueue(handle);
+                // optimized: foreach (var handle in handles)
+                for (var handleEnum = handles.GetEnumerator(); handleEnum.MoveNext(); )
+                    this.handleQueue.Enqueue(handleEnum.Current);
         }
 
         /// <summary>
@@ -180,8 +181,9 @@ namespace ux
         public void PushHandle(IEnumerable<Handle> handles, int targetPart)
         {
             lock (this.handleQueue)
-                foreach (var handle in handles)
-                    this.handleQueue.Enqueue(new Handle(handle, targetPart));
+                // optimized: foreach (var handle in handles)
+                for (var handleEnum = handles.GetEnumerator(); handleEnum.MoveNext(); )
+                    this.handleQueue.Enqueue(new Handle(handleEnum.Current, targetPart));
         }
 
         /// <summary>
@@ -295,7 +297,6 @@ namespace ux
             if (this.handleQueue.Count == 0)
                 return;
 
-            // リストに一時転送
             lock (this.handleQueue)
             {
                 // optimized: foreach (var handle in this.handleQueue)
