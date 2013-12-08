@@ -2,6 +2,8 @@
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
 
+using System;
+using System.Collections.Generic;
 using ux.Component;
 using ux.Utils;
 
@@ -12,6 +14,10 @@ namespace ux.Waveform
     /// </summary>
     class Square : StepWaveform
     {
+        #region -- Private Fields --
+        private static readonly LinkedList<Tuple<int, float[]>> cache = new LinkedList<Tuple<int, float[]>>();
+        #endregion
+
         #region -- Constructors --
         /// <summary>
         /// 新しい Square クラスのインスタンスを初期化します。
@@ -65,6 +71,19 @@ namespace ux.Waveform
             if (onTime > 32767)
                 return;
 
+            Tuple<int, float[]> nc = null;
+
+            for (var now = cache.First; now != null; now = now.Next)
+            {
+                if (now.Value.Item1 == onTime)
+                {
+                    nc = now.Value;
+                    break;
+                }
+            }
+
+            if (nc == null)
+            {
             byte[] l = new byte[onTime + 1];
 
             if (duty <= 0.5f)
@@ -80,6 +99,17 @@ namespace ux.Waveform
             }
 
             this.SetStep(l);
+
+                cache.AddFirst(new Tuple<int, float[]>(onTime, this.value));
+
+                if (cache.Count > 32)
+                    cache.RemoveLast();
+            }
+            else
+            {
+                this.value = nc.Item2;
+                this.length = nc.Item2.Length;
+            }
         }
         #endregion
     }
