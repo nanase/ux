@@ -142,21 +142,20 @@ namespace ux.Waveform
             {
                 case RandomNoiseOperate.Seed:
                     this.seed = (int)data2;
-                    this.Reset();
                     break;
 
                 case RandomNoiseOperate.Length:
                     int leng = (int)data2;
                     if (leng > 0 && leng < 65536)
                         this.array_length = leng;
-
-                    this.Reset();
                     break;
 
                 default:
                     base.SetParameter(data1, data2);
                     break;
             }
+
+            this.Generate();
         }
         #endregion
 
