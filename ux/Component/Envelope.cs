@@ -14,7 +14,7 @@ namespace ux.Component
         #region -- Private Members --
         private readonly float samplingFreq;
         private int releaseStartTime, t2, t3, t5, attackTime, peakTime, decayTime, releaseTime;
-        private float da, dd, dr, sustainLevel;
+        private float da, dd, dr, sustainLevel, releaseStartLevel;
         private EnvelopeState state;
         #endregion
 
@@ -77,8 +77,11 @@ namespace ux.Component
                 this.releaseStartTime = time;
 
                 //precalc
+                this.releaseStartLevel = (time < this.attackTime) ? time * this.da :
+                      (time < this.t2) ? 1.0f :
+                      (time < this.t3) ? 1.0f - (time - this.t2) * this.dd : this.sustainLevel;
                 this.t5 = time + this.releaseTime;
-                this.dr = this.sustainLevel / this.releaseTime;
+                this.dr = this.releaseStartLevel / this.releaseTime;
             }
         }
 
@@ -108,7 +111,7 @@ namespace ux.Component
                       (time < this.t3) ? 1.0f - (time - this.t2) * this.dd : this.sustainLevel;
                 else if (this.State == EnvelopeState.Release)
                     if (time < this.t5)
-                        res = this.sustainLevel - (time - this.releaseStartTime) * this.dr;
+                        res = this.releaseStartLevel - (time - this.releaseStartTime) * this.dr;
                     else
                     {
                         res = 0.0f;
