@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ux version="0.1.5">
+<ux version="0.2">
   <preset>
     <!-- msb, lsb, type, value は省略すると 0 になる -->
     <!-- type は列挙体の値を表す。カンマは OR 演算される -->
@@ -204,6 +204,18 @@
       <envelope type="release" value="1.0" />
     </program>
 
+    <!-- Voice Aahs / 声「あー」 -->
+    <program number="52">
+      <waveform type="fm" />
+      <edit type="op0,send0" value="0.2" />
+      <edit type="op1,send0" value="0.1" />
+      <edit type="op1,freq" value="12.005" />
+      <envelope type="attack" value="0.05" />
+      <envelope type="decay" value="0.0" />
+      <envelope type="sustain" value="1.0" />
+      <envelope type="release" value="0.1" />
+    </program>
+
     <!-- Orchestra Hit / オーケストラヒット -->
     <program number="55">
       <waveform type="fm" />
@@ -219,12 +231,29 @@
       <envelope type="release" value="1.0" />
     </program>
 
+    <!-- Piccolo / ピッコロ -->
+    <program number="72">
+      <waveform type="fm" />
+      <edit type="op0,send0" value="0.0" />
+      <edit type="op1,send0" value="0.6" />
+      <edit type="op2,send0" value="0.4" />
+      <edit type="op0,freq" value="2.0" />
+      <edit type="op1,freq" value="4.0" />
+      <edit type="op2,freq" value="4.0001" />
+      <edit type="op0,out" value="0.4" />
+      <edit type="op1,out" value="0.6" />
+      <envelope type="attack" value="0.05" />
+      <envelope type="decay" value="0.0" />
+      <envelope type="sustain" value="1.0" />
+      <envelope type="release" value="0.1" />
+    </program>
+
     <!-- Flute / フルート -->
     <program number="73">
       <waveform type="fm" />
       <edit type="op0,send0" value="0.2" />
       <edit type="op1,send0" value="0.5" />
-      <edit type="op1,freq" value="4.005" />
+      <edit type="op0,freq" value="2.0" />
       <envelope type="attack" value="0.05" />
       <envelope type="decay" value="0.0" />
       <envelope type="sustain" value="1.0" />
@@ -234,13 +263,21 @@
     <!-- Recorder / リコーダー -->
     <program number="74">
       <waveform type="fm" />
-      <edit type="op0,send0" value="0.6" />
-      <edit type="op1,send0" value="0.6" />
-      <edit type="op1,freq" value="4.008" />
+      <edit type="op0,send0" value="0.2" />
+      <edit type="op1,send0" value="0.4" />
+      <edit type="op1,freq" value="4.001" />
       <envelope type="attack" value="0.05" />
       <envelope type="decay" value="0.0" />
       <envelope type="sustain" value="1.0" />
       <envelope type="release" value="0.1" />
+    </program>
+
+    <!-- Whistle / 口笛 -->
+    <program number="78">
+      <waveform type="fm" />
+      <edit type="op0,send0" value="0.0" />
+      <edit type="op1,send0" value="0.5" />
+      <edit type="op1,freq" value="1.003" />
     </program>
 
     <!-- Lead 1 (square) / 矩形波 -->
@@ -257,11 +294,22 @@
       <edit type="op0,send0" value="1.0" />
     </program>
 
+    <!-- Seashore / 海岸 -->
+    <program number="122">
+      <waveform type="longNoise" />
+      <edit type="freqfactor" value="1" />
+      <envelope type="attack" value="2.0" />
+      <envelope type="peak" value="0.0" />
+      <envelope type="decay" value="2.0" />
+      <envelope type="sustain" value="0.0" />
+      <envelope type="release" value="2.0" />
+      <volume type="gain" value="0.6" />
+    </program>
+
     <!-- 将来は drum に number, msb, lsb も指定できるようになる？ -->
     <!-- note の子は program と同様に命令群を記述していく -->
     <drum>
       <note number="35" note="29">
-        <waveform type="randomNoise" />
         <waveform type="longNoise" />
         <envelope type="attack" value="0.0" />
         <envelope type="peak" value="0.01" />
@@ -285,8 +333,7 @@
         <envelope type="attack" value="0.0" />
         <envelope type="peak" value="0.01" />
         <envelope type="decay" value="0.25" />
-        <noteon type="50" value="1.0" />
-        <volume type="gain" value="0.8" />
+        <volume type="gain" value="1.0" />
       </note>
 
       <note number="40" note="50">
