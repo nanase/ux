@@ -174,6 +174,17 @@ namespace ux
         }
 
         /// <summary>
+        /// 複数のハンドルをキューにプッシュします。
+        /// </summary>
+        /// <param name="handles">複数ハンドルを格納する Handle の配列。</param>
+        public void PushHandle(params Handle[] handles)
+        {
+            lock (this.handleQueue)
+                for (int i = 0, l = handles.Length; i < l; i++ )
+                    this.handleQueue.Enqueue(handles[i]);
+        }
+
+        /// <summary>
         /// 複数のハンドルを指定されたパートに適用するようキューにプッシュします。
         /// </summary>
         /// <param name="handles">複数ハンドルを列挙する IEnumerable&lt;Handle&gt; インスタンス。</param>
@@ -184,6 +195,18 @@ namespace ux
                 // optimized: foreach (var handle in handles)
                 for (var handleEnum = handles.GetEnumerator(); handleEnum.MoveNext(); )
                     this.handleQueue.Enqueue(new Handle(handleEnum.Current, targetPart));
+        }
+
+        /// <summary>
+        /// 複数のハンドルを指定されたパートに適用するようキューにプッシュします。
+        /// </summary>
+        /// <param name="handles">複数ハンドルを格納する Handle の配列。</param>
+        /// <param name="targetPart">ハンドルが適用されるパート。</param>
+        public void PushHandle(Handle[] handles, int targetPart)
+        {
+            lock (this.handleQueue)
+                for (int i = 0, l = handles.Length; i < l; i++)
+                    this.handleQueue.Enqueue(new Handle(handles[i], targetPart));
         }
 
         /// <summary>
@@ -201,6 +224,19 @@ namespace ux
                     for (int i = 0, part = partEnum.Current; i < j; i++)
                         this.handleQueue.Enqueue(new Handle(handles_array[i], part));
             }
+        }
+
+        /// <summary>
+        /// 複数のハンドルを指定されたパートに適用するようキューにプッシュします。
+        /// </summary>
+        /// <param name="handles">複数ハンドルを格納する Handle の配列。</param>
+        /// <param name="targetParts">ハンドルが適用されるパートを格納する int の配列。</param>
+        public void PushHandle(Handle[] handles, int[] targetParts)
+        {
+            lock (this.handleQueue)
+                for (int i = 0, l = targetParts.Length, m = handles.Length; i < l; i++)
+                    for (int j = 0; j < m; j++)
+                        this.handleQueue.Enqueue(new Handle(handles[j], targetParts[i]));
         }
 
         /// <summary>
