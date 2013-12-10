@@ -187,11 +187,13 @@ namespace ux.Waveform
             else if (nc.array_length == this.array_length)
             {
                 this.value = nc.data;
+                this.length = this.array_length;
                 return;
             }
             else
             {
                 this.value = new float[this.array_length];
+                this.length = this.array_length;
                 Array.Copy(nc.data, this.value, this.array_length);
             }
 
