@@ -121,7 +121,7 @@
       <envelope type="attack" value="0.0" />
       <envelope type="decay" value="1.5" />
       <envelope type="sustain" value="0.0" />
-      <envelope type="release" value="1.5" />
+      <envelope type="release" value="1.0" />
     </program>
 
     <!-- Acoustic Guitar (steel) / アコースティックギター（スチール弦） -->
@@ -134,7 +134,7 @@
       <envelope type="attack" value="0.0" />
       <envelope type="decay" value="1.5" />
       <envelope type="sustain" value="0.0" />
-      <envelope type="release" value="1.5" />
+      <envelope type="release" value="1.0" />
     </program>
 
     <!-- Distortion Guitar / ディストーションギター -->
@@ -149,7 +149,7 @@
       <envelope type="attack" value="0.0" />
       <envelope type="decay" value="2.0" />
       <envelope type="sustain" value="0.8" />
-      <envelope type="release" value="1.0" />
+      <envelope type="release" value="0.5" />
     </program>
 
     <!-- Fretless Bass / フレットレスベース -->
@@ -237,11 +237,11 @@
       <edit type="op0,send0" value="0.0" />
       <edit type="op1,send0" value="0.6" />
       <edit type="op2,send0" value="0.4" />
-      <edit type="op0,freq" value="2.0" />
+      <edit type="op0,freq" value="1.0" />
       <edit type="op1,freq" value="4.0" />
       <edit type="op2,freq" value="4.0001" />
-      <edit type="op0,out" value="0.4" />
-      <edit type="op1,out" value="0.6" />
+      <edit type="op0,out" value="0.8" />
+      <edit type="op1,out" value="0.2" />
       <envelope type="attack" value="0.05" />
       <envelope type="decay" value="0.0" />
       <envelope type="sustain" value="1.0" />
