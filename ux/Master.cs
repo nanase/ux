@@ -151,6 +151,7 @@ namespace ux
             this.Playing = false;
         }
 
+        #region PushHandle
         /// <summary>
         /// 単一のハンドルをキューにプッシュします。
         /// </summary>
@@ -180,7 +181,7 @@ namespace ux
         public void PushHandle(params Handle[] handles)
         {
             lock (this.handleQueue)
-                for (int i = 0, l = handles.Length; i < l; i++ )
+                for (int i = 0, l = handles.Length; i < l; i++)
                     this.handleQueue.Enqueue(handles[i]);
         }
 
@@ -238,6 +239,7 @@ namespace ux
                     for (int j = 0; j < m; j++)
                         this.handleQueue.Enqueue(new Handle(handles[j], targetParts[i]));
         }
+        #endregion
 
         /// <summary>
         /// 全てのパートにリリースを送信します。
