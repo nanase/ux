@@ -189,7 +189,7 @@ namespace ux
         /// <summary>
         /// 複数のハンドルを指定されたパートに適用するようキューにプッシュします。
         /// </summary>
-        /// <param name="handle">複数ハンドルを列挙する IEnumerable&lt;Handle&gt; インスタンス。</param>
+        /// <param name="handles">複数ハンドルを列挙する IEnumerable&lt;Handle&gt; インスタンス。</param>
         /// <param name="targetParts">ハンドルが適用されるパートを列挙する IEnumerable&lt;int&gt; インスタンス。</param>
         public void PushHandle(IEnumerable<Handle> handles, IEnumerable<int> targetParts)
         {
