@@ -165,6 +165,30 @@ namespace ux
         /// <summary>
         /// 複数のハンドルをキューにプッシュします。
         /// </summary>
+        /// <param name="handle">プッシュされるハンドル。</param>
+        /// <param name="targetParts">ハンドルが適用されるパートを列挙する IEnumerable&lt;int&gt; インスタンス。</param>
+        public void PushHandle(Handle handle, IEnumerable<int> targetParts)
+        {
+            lock (this.handleQueue)
+                for (var partEnum = targetParts.GetEnumerator(); partEnum.MoveNext(); )
+                    this.handleQueue.Enqueue(new Handle(handle, partEnum.Current));
+        }
+
+        /// <summary>
+        /// 複数のハンドルをキューにプッシュします。
+        /// </summary>
+        /// <param name="handle">プッシュされるハンドル。</param>
+        /// <param name="targetParts">ハンドルが適用されるパートを格納する int の配列。</param>
+        public void PushHandle(Handle handle, int[] targetParts)
+        {
+            lock (this.handleQueue)
+                for (int i = 0, l = targetParts.Length; i < l; i++)
+                    this.handleQueue.Enqueue(new Handle(handle, targetParts[i]));
+        }
+
+        /// <summary>
+        /// 複数のハンドルをキューにプッシュします。
+        /// </summary>
         /// <param name="handles">複数ハンドルを列挙する IEnumerable&lt;Handle&gt; インスタンス。</param>
         public void PushHandle(IEnumerable<Handle> handles)
         {
