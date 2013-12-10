@@ -25,7 +25,7 @@ namespace ux.Utils.Midi
 
         #region -- Public Properties --
         /// <summary>
-        /// ux のマスターオブジェクトを取得します。
+        /// このセレクタがマスターオブジェクトに要求するパート数を取得します。
         /// </summary>
         public override int PartCount
         {
