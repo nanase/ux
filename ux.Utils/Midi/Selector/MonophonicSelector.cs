@@ -69,7 +69,6 @@ namespace ux.Utils.Midi
 
             this.master.PushHandle(this.drumTargets.Select(i => new Handle(i, HandleType.Waveform, (int)WaveformType.LongNoise)));
             this.master.PushHandle(this.drumTargets.Select(i => new Handle(i, HandleType.Envelope, (int)EnvelopeOperate.Sustain, 0.0f)));
-            this.master.PushHandle(this.drumTargets.Select(i => new Handle(i, HandleType.Envelope, (int)EnvelopeOperate.Release, 0.0f)));
         }
 
         /// <summary>
