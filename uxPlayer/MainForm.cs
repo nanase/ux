@@ -220,6 +220,8 @@ namespace uxPlayer
                 this.connector.Stop();
             }
 
+            this.connector.Master.Release();
+
             Action invoke = () =>
             {
                 this.toolStrip_play.Enabled = true;
