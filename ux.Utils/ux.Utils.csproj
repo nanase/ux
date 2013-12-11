@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HandleParser.cs" />
+    <Compile Include="HandleStore.cs" />
     <Compile Include="Midi\Extension.cs" />
     <Compile Include="HandleCreator.cs" />
     <Compile Include="Midi\IO\Event.cs" />
