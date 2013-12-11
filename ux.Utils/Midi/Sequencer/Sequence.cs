@@ -62,23 +62,33 @@ namespace ux.Utils.Midi.Sequencer
         /// <param name="filename">読み込まれる SMF (MIDI) ファイル名。</param>
         public Sequence(string filename)
         {
-            this.tracks = new List<Track>();
-            this.LoadFile(filename);
-        }
-        #endregion
-
-        #region -- Private Methods --
-        private void LoadFile(string filename)
-        {
             if (String.IsNullOrWhiteSpace(filename))
                 throw new ArgumentNullException();
 
             if (!File.Exists(filename))
                 throw new FileNotFoundException();
 
+            this.tracks = new List<Track>();
             Console.WriteLine("Loading: " + filename);
 
             using (Stream stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+                this.LoadFile(stream);
+        }
+
+        /// <summary>
+        /// ストリームを指定して新しい Sequence クラスのインスタンスを初期化します。
+        /// </summary>
+        /// <param name="stream">読み込み可能なストリーム。</param>
+        public Sequence(Stream stream)
+        {
+            this.tracks = new List<Track>();
+            this.LoadFile(stream);
+        }
+        #endregion
+
+        #region -- Private Methods --
+        private void LoadFile(Stream stream)
+        {
             using (BinaryReader br = new BinaryReader(stream))
             {
                 // ヘッダ読み取り
