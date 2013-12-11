@@ -92,7 +92,7 @@ namespace ux.Utils.Midi.Sequencer
         public void Play()
         {
             if (this.sequencer != null)
-            this.sequencer.Start();
+                this.sequencer.Start();
         }
 
         /// <summary>
@@ -101,14 +101,14 @@ namespace ux.Utils.Midi.Sequencer
         public void Stop()
         {
             if (this.sequencer != null)
-            this.sequencer.Stop();
+                this.sequencer.Stop();
         }
         #endregion
 
         #region -- Private Methods --
         private void OnTrackEvent(object sender, TrackEventArgs e)
         {
-            this.selector.ProcessMidiEvent(e.Events.OfType<MidiEvent>().Where(m => this.targetChannels.Contains(m.Channel)));
+            this.selector.ProcessMidiEvent(e.Events.OfType<MidiEvent>().ToArray().Where(m => this.targetChannels.Contains(m.Channel)));
         }
         #endregion
     }
