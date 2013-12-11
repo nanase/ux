@@ -15,9 +15,7 @@ namespace ux.Utils.Midi
     public abstract class Selector
     {
         #region -- Protected Fields --
-        protected readonly List<DrumPreset> drumset;
-        protected readonly List<ProgramPreset> presets;
-        protected readonly List<string> presetFiles;
+        protected readonly Preset preset;        
         protected readonly Master master;
         #endregion
 
@@ -26,6 +24,11 @@ namespace ux.Utils.Midi
         /// ux のマスターオブジェクトを取得します。
         /// </summary>
         public Master Master { get { return this.master; } }
+
+        /// <summary>
+        /// セレクタに割り当てられたプリセットオブジェクトを取得します。
+        /// </summary>
+        public Preset Preset { get { return this.preset; } }
 
         /// <summary>
         /// このセレクタがマスターオブジェクトに要求するパート数を取得します。
@@ -41,56 +44,11 @@ namespace ux.Utils.Midi
         public Selector(Master master)
         {
             this.master = master;
-
-            this.presetFiles = new List<string>();
-            this.presets = new List<ProgramPreset>();
-            this.drumset = new List<DrumPreset>();
+            this.preset = new Preset();
         }
         #endregion
 
         #region -- Public Methods --
-        /// <summary>
-        /// ファイル名を指定してプリセットを追加します。
-        /// </summary>
-        /// <param name="filename">追加されるプリセットが記述された XML ファイル名。</param>
-        public void AddPreset(string filename)
-        {
-            if (!File.Exists(filename))
-                throw new FileNotFoundException();
-
-            this.presets.AddRange(PresetReader.Load(filename));
-            this.drumset.AddRange(PresetReader.DrumLoad(filename));
-            this.presetFiles.Add(filename);
-        }
-
-        /// <summary>
-        /// 読み込まれたプリセットをすべてクリアします。
-        /// </summary>
-        public void ClearPreset()
-        {
-            this.presets.Clear();
-            this.drumset.Clear();
-            this.presetFiles.Clear();
-        }
-
-        /// <summary>
-        /// プリセットをリロードします。現在設定されている音源の更新はされません。
-        /// </summary>
-        public void ReloadPreset()
-        {
-            this.presets.Clear();
-            this.drumset.Clear();
-
-            foreach (var filename in this.presetFiles)
-            {
-                if (!File.Exists(filename))
-                    continue;
-
-                this.presets.AddRange(PresetReader.Load(filename));
-                this.drumset.AddRange(PresetReader.DrumLoad(filename));
-            }
-        }
-
         /// <summary>
         /// ux にリセット命令を送ります。ドラムの初期化が発生します。
         /// </summary>
