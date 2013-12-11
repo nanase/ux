@@ -67,7 +67,7 @@ namespace ux.Utils.Midi
         /// <param name="filename">追加されるプリセットが記述された XML ファイル名。</param>
         public void AddPreset(string filename)
         {
-            this.selector.AddPreset(filename);
+            this.selector.Preset.Load(filename);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace ux.Utils.Midi
         /// </summary>
         public void ClearPreset()
         {
-            this.selector.ClearPreset();
+            this.selector.Preset.Clear();
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace ux.Utils.Midi
         /// </summary>
         public void ReloadPreset()
         {
-            this.selector.ReloadPreset();
+            this.selector.Preset.Reload();
         }
 
         /// <summary>
