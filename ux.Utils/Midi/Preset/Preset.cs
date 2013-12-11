@@ -16,6 +16,7 @@ namespace ux.Utils.Midi
         #region -- Private Fields --
         private readonly List<ProgramPreset> programs = new List<ProgramPreset>();
         private readonly List<DrumPreset> drums = new List<DrumPreset>();
+        private readonly List<string> presetFiles = new List<string>();
         #endregion
 
         #region -- Public Methods --
@@ -36,6 +37,8 @@ namespace ux.Utils.Midi
         {
             using (FileStream fs = new FileStream(file, FileMode.Open))
                 this.Load(fs);
+
+            this.presetFiles.Add(file);
         }
 
         /// <summary>
@@ -47,6 +50,32 @@ namespace ux.Utils.Midi
             this.programs.AddRange(PresetReader.Load(stream));
             stream.Seek(0L, SeekOrigin.Begin);
             this.drums.AddRange(PresetReader.DrumLoad(stream));
+        }
+
+        /// <summary>
+        /// プリセットをリロードします。現在設定されている音源の更新はされません。
+        /// </summary>
+        public void Reload()
+        {
+            this.Clear();
+
+            foreach (var filename in this.presetFiles)
+            {
+                if (!File.Exists(filename))
+                    continue;
+
+                this.Load(filename);
+            }
+        }
+
+        public ProgramPreset FindProgram(Predicate<ProgramPreset> match)
+        {
+            return this.programs.Find(match);
+        }
+
+        public DrumPreset FindDrum(Predicate<DrumPreset> match)
+        {
+            return this.drums.Find(match);
         }
         #endregion
     }
