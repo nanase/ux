@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ux;
 using ux.Component;
 using ux.Utils.Midi.IO;
 

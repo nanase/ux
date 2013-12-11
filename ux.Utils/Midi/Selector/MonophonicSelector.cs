@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ux;
 using ux.Component;
 using ux.Utils.Midi.IO;
 
@@ -118,9 +117,9 @@ namespace ux.Utils.Midi
                         }
                         else
                         {
-                        if (message.Data2 > 0)
+                            if (message.Data2 > 0)
                                 this.master.PushHandle(new Handle(targetPart, HandleType.NoteOn, message.Data1, message.Data2 / 127f));
-                        else
+                            else
                                 this.master.PushHandle(new Handle(targetPart, HandleType.NoteOff, message.Data1));
                         }
                         break;
