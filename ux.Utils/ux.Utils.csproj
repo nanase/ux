@@ -62,6 +62,7 @@
     <Compile Include="Midi\IO\SystemExclusiveEvent.cs" />
     <Compile Include="Midi\IO\MetaEvent.cs" />
     <Compile Include="Midi\MidiConnector.cs" />
+    <Compile Include="Midi\Preset.cs" />
     <Compile Include="Midi\Selector\PolyphonicSelector.cs" />
     <Compile Include="Midi\Selector\Selector.cs" />
     <Compile Include="Midi\Selector\MonophonicSelector.cs" />
