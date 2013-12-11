@@ -220,8 +220,6 @@ namespace ux.Utils.Midi
                                      .Concat(this.drumParts.Select(p => new Handle(p, HandleType.Waveform, (int)WaveformType.LongNoise)))
                                      .Concat(this.drumParts.Select(p => new Handle(p, HandleType.Envelope, (int)EnvelopeOperate.Sustain, 0.0f)))
                                      .ToArray();
-
-            
             #endregion
         }
 

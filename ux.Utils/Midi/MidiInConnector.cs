@@ -74,7 +74,6 @@ namespace ux.Utils.Midi
         }
         #endregion
 
-
         #region -- Public Methods --
         /// <summary>
         /// MIDI-IN からの入力を開始します。
@@ -191,6 +190,5 @@ namespace ux.Utils.Midi
                 WAVERR_UNPREPARED = 34
             }
         }
-
     }
 }

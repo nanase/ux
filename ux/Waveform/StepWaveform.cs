@@ -166,6 +166,6 @@ namespace ux.Waveform
         {
             this.SetStep(new byte[] { 0 });
         }
-        #endregion        
+        #endregion
     }
 }
