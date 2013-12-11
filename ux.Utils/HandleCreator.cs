@@ -5,7 +5,7 @@
 using System;
 using ux.Component;
 
-namespace ux.Utils.Midi
+namespace ux.Utils
 {
     /// <summary>
     /// 文字列から新しいハンドルを生成するメソッドを提供します。
@@ -27,16 +27,47 @@ namespace ux.Utils.Midi
             float data2;
 
             if (!Enum.TryParse(name, true, out handleType))
-                throw new ArgumentException();
+                throw new ArgumentException("ハンドル名の変換に失敗しました。", "name");
 
             data1 = (string.IsNullOrWhiteSpace(type)) ? 0 : HandleCreator.ParseOperators(handleType, type);
 
             if (string.IsNullOrWhiteSpace(value))
                 data2 = 0.0f;
             else if (!float.TryParse(value, out data2))
-                throw new ArgumentException();
+                throw new ArgumentException("データ値の変換に失敗しました。", "value");
 
             return new Handle(0, handleType, data1, data2);
+        }
+
+        /// <summary>
+        /// ハンドル名、タイプ、値から新しいハンドルを生成し、結果を返却します。
+        /// </summary>
+        /// <param name="part">ハンドルのパート。</param>
+        /// <param name="name">ハンドル名。</param>
+        /// <param name="type">ハンドルのタイプ。</param>
+        /// <param name="value">ハンドル値。</param>
+        /// <param name="handle">生成されたハンドル。</param>
+        /// <returns>変換の結果を表す真偽値。成功したとき true、失敗したとき false。</returns>
+        public static bool TryCreate(int part, string name, string type, string value, out Handle handle)
+        {
+            HandleType handleType;
+            int data1;
+            float data2;
+
+            handle = null;
+
+            if (!Enum.TryParse(name, true, out handleType))
+                return false;
+
+            data1 = (string.IsNullOrWhiteSpace(type)) ? 0 : HandleCreator.ParseOperators(handleType, type);
+
+            if (string.IsNullOrWhiteSpace(value))
+                data2 = 0.0f;
+            else if (!float.TryParse(value, out data2))
+                return false;
+
+            handle = new Handle(part, handleType, data1, data2);
+            return true;
         }
         #endregion
 

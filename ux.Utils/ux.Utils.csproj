@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Midi\Extension.cs" />
-    <Compile Include="Midi\HandleCreator.cs" />
+    <Compile Include="HandleCreator.cs" />
     <Compile Include="Midi\IO\Event.cs" />
     <Compile Include="Midi\IO\MidiEvent.cs" />
     <Compile Include="Midi\IO\Track.cs" />
