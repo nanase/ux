@@ -88,7 +88,7 @@ namespace ux.Utils.Midi
         /// <param name="events">イベントの列挙子。</param>
         public override void ProcessMidiEvent(IEnumerable<Event> events)
         {
-            foreach (MidiEvent message in events.Where(e => e is MidiEvent))
+            foreach (MidiEvent message in events.OfType<MidiEvent>())
             {
                 int channel = message.Channel;
                 int targetPart = channel + 1;
