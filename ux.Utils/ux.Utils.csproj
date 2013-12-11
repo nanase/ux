@@ -68,6 +68,7 @@
     <Compile Include="Midi\Selector\MonophonicSelector.cs" />
     <Compile Include="Midi\PresetReader.cs" />
     <Compile Include="Midi\ProgramPreset.cs" />
+    <Compile Include="Midi\Sequencer\SequenceLayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Midi\Sequencer\Sequence.cs" />
     <Compile Include="Midi\Sequencer\Sequencer.cs" />
