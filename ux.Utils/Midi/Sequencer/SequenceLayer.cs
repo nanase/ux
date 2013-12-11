@@ -91,6 +91,7 @@ namespace ux.Utils.Midi.Sequencer
         /// </summary>
         public void Play()
         {
+            if (this.sequencer != null)
             this.sequencer.Start();
         }
 
@@ -99,6 +100,7 @@ namespace ux.Utils.Midi.Sequencer
         /// </summary>
         public void Stop()
         {
+            if (this.sequencer != null)
             this.sequencer.Stop();
         }
         #endregion
