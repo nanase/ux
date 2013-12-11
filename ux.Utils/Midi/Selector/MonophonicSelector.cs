@@ -107,7 +107,7 @@ namespace ux.Utils.Midi
                             else
                                 target += 16;
 
-                            var preset = this.drumset.Find(p => p.Number == message.Data1);
+                            var preset = this.preset.FindDrum(p => p.Number == message.Data1);
 
                             if (preset != null)
                             {
@@ -220,8 +220,8 @@ namespace ux.Utils.Midi
             if (this.nowPresets[channel] != null)
                 this.master.PushHandle(this.nowPresets[channel].FinalHandles, part);
 
-            ProgramPreset preset = this.presets.Find(p => p.Number == @event.Data1 && p.MSB == this.partMsb[channel] && p.LSB == this.partLsb[channel]) ??
-                                   this.presets.Find(p => p.Number == @event.Data1);
+            ProgramPreset preset = this.preset.FindProgram(p => p.Number == @event.Data1 && p.MSB == this.partMsb[channel] && p.LSB == this.partLsb[channel]) ??
+                                   this.preset.FindProgram(p => p.Number == @event.Data1);
 
             if (preset != null)
             {
