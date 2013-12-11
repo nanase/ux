@@ -20,7 +20,22 @@ namespace ux.Utils.Midi
         private ProgramPreset[] nowPresets;
 
         private int[] partLsb, partMsb, partProgram;
-        private int[] drumTargets = new[] { 10, 17, 18, 19, 20, 21, 22, 23 };
+        private int[] drumParts = new[] { 10, 17, 18, 19, 20, 21, 22, 23 };
+        private int[] allParts;
+
+        #region Handles
+        #region Static
+        private static Handle handle_vibrateOn = new Handle(0, HandleType.Vibrate, (int)VibrateOperate.On);
+        private static Handle handle_vibrateOff = new Handle(0, HandleType.Vibrate, (int)VibrateOperate.Off);
+        private static Handle handle_waveform_no_match = new Handle(0, HandleType.Waveform, (int)WaveformType.FM);
+        #endregion
+
+        #region Dynamic
+        private Handle[] handles_reset;
+        private Handle[] handle_silence;
+        private Handle[] handle_release;
+        #endregion
+        #endregion
         #endregion
 
         #region -- Public Properties --
@@ -63,12 +78,7 @@ namespace ux.Utils.Midi
         /// </summary>
         public override void Reset()
         {
-            this.master.PushHandle(Enumerable.Range(1, 23).Select(i => new Handle(i, HandleType.Silence)));
-            this.master.PushHandle(Enumerable.Range(1, 23).Select(i => new Handle(i, HandleType.Reset)));
-            this.master.PushHandle(Enumerable.Range(1, 23).Select(i => new Handle(i, HandleType.Waveform, (int)WaveformType.FM)));
-
-            this.master.PushHandle(this.drumTargets.Select(i => new Handle(i, HandleType.Waveform, (int)WaveformType.LongNoise)));
-            this.master.PushHandle(this.drumTargets.Select(i => new Handle(i, HandleType.Envelope, (int)EnvelopeOperate.Sustain, 0.0f)));
+            this.master.PushHandle(this.handles_reset);
         }
 
         /// <summary>
@@ -79,25 +89,40 @@ namespace ux.Utils.Midi
         {
             foreach (MidiEvent message in events.Where(e => e is MidiEvent))
             {
-                int part = message.Channel + 1;
-
-                if (part == 10)
-                {
-                    this.ProcessDrumEvent(message);
-                    continue;
-                }
+                int channel = message.Channel;
+                int targetPart = channel + 1;
 
                 switch (message.Type)
                 {
                     case EventType.NoteOff:
-                        this.master.PushHandle(new Handle(part, HandleType.NoteOff, message.Data1));
+                        this.master.PushHandle(new Handle(targetPart, HandleType.NoteOff, message.Data1));
                         break;
 
                     case EventType.NoteOn:
-                        if (message.Data2 > 0)
-                            this.master.PushHandle(new Handle(part, HandleType.NoteOn, message.Data1, message.Data2 / 127f));
+                        if (targetPart == 10)
+                        {
+                            int target = message.Data1 % 8;
+
+                            if (target == 0)
+                                target = 10;
+                            else
+                                target += 16;
+
+                            var preset = this.drumset.Find(p => p.Number == message.Data1);
+
+                            if (preset != null)
+                            {
+                                this.master.PushHandle(preset.InitHandles, target);
+                                this.master.PushHandle(new Handle(target, HandleType.NoteOn, preset.Note, message.Data2));
+                            }
+                        }
                         else
-                            this.master.PushHandle(new Handle(part, HandleType.NoteOff, message.Data1));
+                        {
+                        if (message.Data2 > 0)
+                                this.master.PushHandle(new Handle(targetPart, HandleType.NoteOn, message.Data1, message.Data2 / 127f));
+                        else
+                                this.master.PushHandle(new Handle(targetPart, HandleType.NoteOff, message.Data1));
+                        }
                         break;
 
                     case EventType.ControlChange:
@@ -110,23 +135,23 @@ namespace ux.Utils.Midi
                             case 1:
                                 if (message.Data2 > 0)
                                 {
-                                    this.master.PushHandle(new Handle(part, HandleType.Vibrate, (int)VibrateOperate.On));
-                                    this.master.PushHandle(new Handle(part, HandleType.Vibrate, (int)VibrateOperate.Depth, message.Data2 * 0.125f));
+                                    this.master.PushHandle(MonophonicSelector.handle_vibrateOn);
+                                    this.master.PushHandle(new Handle(targetPart, HandleType.Vibrate, (int)VibrateOperate.Depth, message.Data2 * 0.125f));
                                 }
                                 else
-                                    this.master.PushHandle(new Handle(part, HandleType.Vibrate, (int)VibrateOperate.Off));
+                                    this.master.PushHandle(MonophonicSelector.handle_vibrateOff);
                                 break;
 
                             case 7:
-                                this.master.PushHandle(new Handle(part, HandleType.Volume, message.Data2 / 127f));
+                                this.master.PushHandle(new Handle(targetPart, HandleType.Volume, message.Data2 / 127f));
                                 break;
 
                             case 10:
-                                this.master.PushHandle(new Handle(part, HandleType.Panpot, message.Data2 / 64f - 1f));
+                                this.master.PushHandle(new Handle(targetPart, HandleType.Panpot, message.Data2 / 64f - 1f));
                                 break;
 
                             case 11:
-                                this.master.PushHandle(new Handle(part, HandleType.Volume, (int)VolumeOperate.Expression, message.Data2 / 127f));
+                                this.master.PushHandle(new Handle(targetPart, HandleType.Volume, (int)VolumeOperate.Expression, message.Data2 / 127f));
                                 break;
 
                             case 32:
@@ -134,7 +159,7 @@ namespace ux.Utils.Midi
                                 break;
 
                             case 120:
-                                this.master.PushHandle(Enumerable.Range(1, 23).Select(i => new Handle(i, HandleType.Silence)));
+                                this.master.PushHandle(this.handle_silence);
                                 break;
 
                             case 121:
@@ -142,7 +167,7 @@ namespace ux.Utils.Midi
                                 break;
 
                             case 123:
-                                this.master.PushHandle(Enumerable.Range(1, 23).Select(i => new Handle(i, HandleType.NoteOff)));
+                                this.master.PushHandle(this.handle_release);
                                 break;
 
                             default:
@@ -152,11 +177,12 @@ namespace ux.Utils.Midi
                         break;
 
                     case EventType.Pitchbend:
-                        this.master.PushHandle(new Handle(part, HandleType.FineTune, ((((message.Data2 << 7) | message.Data1) - 8192) / 8192f) * 1.12246f / 8f + 1f));
+                        this.master.PushHandle(new Handle(targetPart, HandleType.FineTune, ((((message.Data2 << 7) | message.Data1) - 8192) / 8192f) * 1.12246f / 8f + 1f));
                         break;
 
                     case EventType.ProgramChange:
-                        this.ChangeProgram(message);
+                        if (targetPart != 10)
+                            this.ChangeProgram(message, targetPart);
                         break;
 
                     default:
@@ -169,102 +195,28 @@ namespace ux.Utils.Midi
         #region -- Private Methods --
         private void Initalize()
         {
-
             this.partLsb = new int[this.PartCount];
             this.partMsb = new int[this.PartCount];
             this.partProgram = new int[this.PartCount];
             this.nowPresets = new ProgramPreset[this.PartCount];
+
+            this.allParts = Enumerable.Range(1, this.PartCount).ToArray();
+
+            #region Handles
+            this.handle_silence = this.allParts.Select(p => new Handle(p, HandleType.Silence)).ToArray();
+            this.handle_release = this.allParts.Select(p => new Handle(p, HandleType.NoteOff)).ToArray();
+            this.handles_reset = this.handle_silence
+                                     .Concat(this.allParts.Select(p => new Handle(p, HandleType.Reset)))
+                                     .Concat(this.allParts.Select(p => new Handle(p, HandleType.Waveform, (int)WaveformType.FM)))
+                                     .Concat(this.drumParts.Select(p => new Handle(p, HandleType.Waveform, (int)WaveformType.LongNoise)))
+                                     .Concat(this.drumParts.Select(p => new Handle(p, HandleType.Envelope, (int)EnvelopeOperate.Sustain, 0.0f)))
+                                     .ToArray();
+            #endregion
         }
 
-        private void ProcessDrumEvent(MidiEvent @event)
-        {
-            switch (@event.Type)
-            {
-                case EventType.NoteOn:
-
-                    int target = @event.Data1 % 8;
-
-                    if (target == 0)
-                        target = 10;
-                    else
-                        target += 16;
-
-                    var preset = this.drumset.Find(p => p.Number == @event.Data1);
-
-                    if (preset != null)
-                    {
-                        this.master.PushHandle(preset.InitHandles, target);
-                        this.master.PushHandle(new Handle(target, HandleType.NoteOn, preset.Note, @event.Data2));
-                    }
-                    break;
-
-                case EventType.ControlChange:
-                    switch (@event.Data1)
-                    {
-                        case 0:
-                            this.partMsb[@event.Channel] = @event.Data2;
-                            break;
-
-                        case 1:
-                            if (@event.Data2 > 0)
-                            {
-                                this.master.PushHandle(this.drumTargets.Select(i => new Handle(i, HandleType.Vibrate, (int)VibrateOperate.On)));
-                                this.master.PushHandle(this.drumTargets.Select(i => new Handle(i, HandleType.Vibrate, (int)VibrateOperate.Depth, @event.Data2 * 0.125f)));
-                            }
-                            else
-                                this.master.PushHandle(this.drumTargets.Select(i => new Handle(i, HandleType.Vibrate, (int)VibrateOperate.Off)));
-                            break;
-
-                        case 7:
-                            this.master.PushHandle(this.drumTargets.Select(i => new Handle(i, HandleType.Volume, @event.Data2 / 127f)));
-                            break;
-
-                        case 10:
-                            this.master.PushHandle(this.drumTargets.Select(i => new Handle(i, HandleType.Panpot, @event.Data2 / 64f - 1f)));
-                            break;
-
-                        case 11:
-                            this.master.PushHandle(this.drumTargets.Select(i => new Handle(i, HandleType.Volume, (int)VolumeOperate.Expression, @event.Data2 / 127f)));
-                            break;
-
-                        case 32:
-                            this.partLsb[@event.Channel] = @event.Data2;
-                            break;
-
-                        case 120:
-                            this.master.PushHandle(Enumerable.Range(1, 23).Select(i => new Handle(i, HandleType.Silence)));
-                            break;
-
-                        case 121:
-                            this.Reset();
-                            break;
-
-                        case 123:
-                            this.master.PushHandle(Enumerable.Range(1, 23).Select(i => new Handle(i, HandleType.NoteOff)));
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    break;
-
-                case EventType.Pitchbend:
-                    this.master.PushHandle(this.drumTargets.Select(i => new Handle(i, HandleType.FineTune, ((((@event.Data2 << 7) | @event.Data1) - 8192) / 8192f) * 1.12246f / 8f + 1f)));
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        private void ChangeProgram(MidiEvent @event)
+        private void ChangeProgram(MidiEvent @event, int part)
         {
             int channel = @event.Channel;
-            int part = channel + 1;
-
-            if (part == 10)
-                return;
 
             if (this.nowPresets[channel] != null)
                 this.master.PushHandle(this.nowPresets[channel].FinalHandles, part);
@@ -279,7 +231,7 @@ namespace ux.Utils.Midi
             }
             else
             {
-                this.master.PushHandle(new Handle(part, HandleType.Waveform, (int)WaveformType.FM));
+                this.master.PushHandle(new Handle(MonophonicSelector.handle_waveform_no_match, part));
                 Console.WriteLine("Matching no Program: {0}", @event.Data1);
             }
 
