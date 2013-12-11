@@ -216,6 +216,8 @@ namespace uxPlayer
             {
                 if (this.mode_smf)
                     this.resumeTick = 0L;
+
+                this.connector.Stop();
             }
 
             Action invoke = () =>
