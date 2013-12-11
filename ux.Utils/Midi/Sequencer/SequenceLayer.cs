@@ -46,7 +46,7 @@ namespace ux.Utils.Midi.Sequencer
             this.preset = preset;
             this.master = master;
             this.selector = selector;
-            this.targetChannels = (targetChannels == null) ? Enumerable.Range(0, selector.PartCount).ToArray() : targetChannels.ToArray();
+            this.targetChannels = (targetChannels == null) ? Enumerable.Range(0, 16).ToArray() : targetChannels.ToArray();
         }
         #endregion
 
