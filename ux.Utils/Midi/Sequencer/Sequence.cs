@@ -48,6 +48,11 @@ namespace ux.Utils.Midi.Sequencer
         /// シーケンスが持つトラックの列挙子を取得します。
         /// </summary>
         public IEnumerable<Track> Tracks { get { return this.tracks; } }
+
+        /// <summary>
+        /// ループが開始されると判定されたティックを取得します。
+        /// </summary>
+        public long LoopBeginTick { get; private set; }
         #endregion
 
         #region -- Constructors --
@@ -132,8 +137,14 @@ namespace ux.Utils.Midi.Sequencer
 
                 this.EventCount = this.Tracks.SelectMany(t => t.Events).Count();
                 this.MaxTick = this.Tracks.SelectMany(t => t.Events).Max(e => e.Tick);
+                this.LoopBeginTick = this.DetectLoopBegin();
             }
+        }
 
+        private long DetectLoopBegin()
+        {
+            var k = this.Tracks.SelectMany(t => t.Events).OfType<MidiEvent>().Where(e => e.Type == EventType.ControlChange && e.Data1 == 111).LastOrDefault();
+            return (k == null) ? 0 : k.Tick;
         }
         #endregion
     }
