@@ -24,6 +24,7 @@ namespace ux.Utils.Midi.Sequencer
         private long endOfTick;
         private double tempoFactor = 1.0;
         private double tickTime;
+        private long loopBeginTick = 0L;
 
         private int eventIndex = 0;
 
@@ -104,6 +105,26 @@ namespace ux.Utils.Midi.Sequencer
                 this.RecalcTickTime();
             }
         }
+
+        /// <summary>
+        /// シーケンサのループが開始されるティック位置を取得または設定します。
+        /// </summary>
+        public long LoopBeginTick
+        {
+            get { return this.loopBeginTick; }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("value");
+
+                this.loopBeginTick = value;
+            }
+        }
+
+        /// <summary>
+        /// シーケンサが指定位置でループされるかの真偽値を取得または設定します。
+        /// </summary>
+        public bool Looping { get; set; }
         #endregion
 
         #region -- Public Events --
@@ -148,6 +169,7 @@ namespace ux.Utils.Midi.Sequencer
             this.endOfTick = sequence.MaxTick;
 
             this.tick = -(long)(sequence.Resolution * 1.0);
+            this.loopBeginTick = sequence.LoopBeginTick;
 
             this.RecalcTickTime();
         }
@@ -238,10 +260,10 @@ namespace ux.Utils.Midi.Sequencer
 
                     if (this.tick >= this.endOfTick)
                     {
-                        if (this.SequenceEnd != null)
+                        if (this.Looping)
+                            this.Tick = this.loopBeginTick;
+                        else if (this.SequenceEnd != null)
                             this.SequenceEnd(this, new EventArgs());
-
-                        break;
                     }
                 }
             }
