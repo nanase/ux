@@ -68,11 +68,21 @@ namespace ux.Utils.Midi
             }
         }
 
+        /// <summary>
+        /// 指定した述語に一致するプログラムプリセットを検索します。
+        /// </summary>
+        /// <param name="match">条件を記述する述語。</param>
+        /// <returns>述語に一致したプリセット。一致しない場合は null。</returns>
         public ProgramPreset FindProgram(Predicate<ProgramPreset> match)
         {
             return this.programs.Find(match);
         }
 
+        /// <summary>
+        /// 指定した述語に一致するドラムプリセットを検索します。
+        /// </summary>
+        /// <param name="match">条件を記述する述語。</param>
+        /// <returns>述語に一致したプリセット。一致しない場合は null。</returns>
         public DrumPreset FindDrum(Predicate<DrumPreset> match)
         {
             return this.drums.Find(match);
