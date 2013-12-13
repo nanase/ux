@@ -2,6 +2,8 @@
  * Copyright (C) 2013 Tomona Nanase. All rights reserved.
  */
 
+#define OPERATOR_STRUCT
+
 using System;
 using ux.Component;
 using ux.Utils;
@@ -41,17 +43,21 @@ namespace ux.Waveform
         public void GetWaveforms(float[] data, double[] frequency, double[] phase, int sampleTime, int count)
         {
             double omega, old0, old1, old2, old3, tmp;
+#if OPERATOR_STRUCT
             Operator op0, op1, op2, op3;
+#endif
 
             this.op0.GenerateEnvelope(sampleTime, count);
             this.op1.GenerateEnvelope(sampleTime, count);
             this.op2.GenerateEnvelope(sampleTime, count);
             this.op3.GenerateEnvelope(sampleTime, count);
 
+#if OPERATOR_STRUCT
             op0 = this.op0;
             op1 = this.op1;
             op2 = this.op2;
             op3 = this.op3;
+#endif
 
             old0 = op0.Old;
             old1 = op1.Old;
@@ -213,6 +219,7 @@ namespace ux.Waveform
                 }
             }
 
+#if OPERATOR_STRUCT
             switch ((FMOperate)(data1 & 0xf000))
             {
                 case FMOperate.Operator0: this.op0 = op; break;
@@ -222,6 +229,7 @@ namespace ux.Waveform
                 default:
                     return;
             }
+#endif
 
             this.SelectProcessingOperator();
         }
@@ -323,7 +331,11 @@ namespace ux.Waveform
         /// <summary>
         /// FM 音源の 1 モジュールとなるオペレータクラスです。
         /// </summary>
+#if OPERATOR_STRUCT
         internal struct Operator
+#else
+        internal class Operator
+#endif
         {
             #region -- Public Fields --
             /// <summary>
