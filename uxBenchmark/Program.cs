@@ -33,6 +33,7 @@ namespace uxBenchmark
             Console.ReadLine();
         }
 
+        #region MuteTest
         static void MuteTest()
         {
             TimeSpan result;
@@ -73,7 +74,9 @@ namespace uxBenchmark
 
             return sw.Elapsed;
         }
+        #endregion
 
+        #region DefaultFMTest
         static void DefaultFMTest()
         {
             TimeSpan result;
@@ -117,7 +120,9 @@ namespace uxBenchmark
 
             return sw.Elapsed;
         }
+        #endregion
 
+        #region DefaultSquareTest
         static void DefaultSquareTest()
         {
             TimeSpan result;
@@ -161,6 +166,7 @@ namespace uxBenchmark
 
             return sw.Elapsed;
         }
+        #endregion
 
     }
 
