@@ -23,8 +23,8 @@ namespace uxBenchmark
 
             var sw = Stopwatch.StartNew();
             MuteTest();
-            DefaultFMTest();
             DefaultSquareTest();
+            DefaultFMTest();
             FullFMTest();
 
             sw.Stop();
