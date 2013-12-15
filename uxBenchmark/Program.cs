@@ -14,14 +14,12 @@ namespace uxBenchmark
 
         static void Main(string[] args)
         {
-            Console.WriteLine("ux Benchmark");
-            Console.WriteLine("Copyright (c) 2013 Tomona Nanase");
-
-            Console.WriteLine();
+            Console.WriteLine("ux Benchmark :: Copyright (c) 2013 Tomona Nanase");
             Console.Write("Press any key to start benchmark...");
             Console.ReadLine();
 
             var sw = Stopwatch.StartNew();
+
             MuteTest();
             DefaultSquareTest();
             DefaultFMTest();
@@ -30,7 +28,8 @@ namespace uxBenchmark
             sw.Stop();
 
             Console.WriteLine();
-            Console.WriteLine("Complete in {0:mm\\:ss}", sw.Elapsed);
+            Console.WriteLine("Elapsed Time: {0:mm\\:ss}", sw.Elapsed);
+            Console.WriteLine("Complete!");
             Console.ReadLine();
         }
 
