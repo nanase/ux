@@ -40,7 +40,7 @@ namespace uxBenchmark
             TimeSpan result;
 
             Console.WriteLine();
-            Console.WriteLine("[MuteTest] for {0}", iterate);
+            Console.WriteLine("[MuteTest] for {0}", iterate * 10);
 
             Console.WriteLine("Part  Total  PerCall      PerSecond");
 
@@ -66,7 +66,7 @@ namespace uxBenchmark
             sw.Restart();
             sw.Restart();
 
-            for (int i = 0; i < iterate; i++)
+            for (int i = 0; i < iterate * 10; i++)
             {
                 master.Read(buffer, 0, bufferSize);
             }
