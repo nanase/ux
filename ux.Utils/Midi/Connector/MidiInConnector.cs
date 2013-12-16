@@ -56,10 +56,10 @@ namespace ux.Utils.Midi
         /// <summary>
         /// サンプリング周波数とデバイス ID を指定して新しい MidiInConnector クラスのインスタンスを初期化します。
         /// </summary>
-        /// <param name="samplingFreq">サンプリング周波数。</param>
+        /// <param name="samplingRate">サンプリング周波数。</param>
         /// <param name="id">オープンされる MIDI-IN デバイスの ID。</param>
-        public MidiInConnector(float samplingFreq, int id)
-            : base(samplingFreq)
+        public MidiInConnector(float samplingRate, int id)
+            : base(samplingRate)
         {
             if (Environment.OSVersion.Platform != PlatformID.Win32NT)
                 throw new PlatformNotSupportedException();

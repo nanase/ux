@@ -52,9 +52,9 @@ namespace ux.Utils.Midi
         /// サンプリング周波数を指定してマスターオブジェクトを生成し、
         /// 新しい MonophonicSelector クラスのインスタンスを初期化します。
         /// </summary>
-        /// <param name="samplingFreq">サンプリング周波数。</param>
-        public MonophonicSelector(float samplingFreq)
-            : base(new Master(samplingFreq, 15 + 8))
+        /// <param name="samplingRate">サンプリング周波数。</param>
+        public MonophonicSelector(float samplingRate)
+            : base(new Master(samplingRate, 15 + 8))
         {
             this.Initalize();
         }

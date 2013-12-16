@@ -54,9 +54,9 @@ namespace ux.Utils.Midi
         /// サンプリング周波数を指定してマスターオブジェクトを生成し、
         /// 新しい PolyphonicSelector クラスのインスタンスを初期化します。
         /// </summary>
-        /// <param name="samplingFreq">サンプリング周波数。</param>
-        public PolyphonicSelector(float samplingFreq)
-            : base(new Master(samplingFreq, PolyphonicSelector.PartParChannel * 16))
+        /// <param name="samplingRate">サンプリング周波数。</param>
+        public PolyphonicSelector(float samplingRate)
+            : base(new Master(samplingRate, PolyphonicSelector.PartParChannel * 16))
         {
             this.Initalize();
         }

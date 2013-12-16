@@ -41,21 +41,21 @@ namespace ux.Utils.Midi
         /// <summary>
         /// サンプリング周波数を指定して新しい MidiConnector クラスのインスタンスを初期化します。
         /// </summary>
-        /// <param name="samplingFreq">サンプリング周波数。</param>
-        public MidiConnector(float samplingFreq)
+        /// <param name="samplingRate">サンプリング周波数。</param>
+        public MidiConnector(float samplingRate)
         {
-            this.selector = new PolyphonicSelector(samplingFreq);
+            this.selector = new PolyphonicSelector(samplingRate);
             this.uxMaster = this.selector.Master;
         }
 
         /// <summary>
         /// セレクタとサンプリング周波数を指定して新しい MidiConnector クラスのインスタンスを初期化します。
         /// </summary>
-        /// <param name="samplingFreq">サンプリング周波数。</param>
+        /// <param name="samplingRate">サンプリング周波数。</param>
         /// <param name="selector">セレクタ。</param>
-        public MidiConnector(float samplingFreq, Selector selector)
+        public MidiConnector(float samplingRate, Selector selector)
         {
-            this.uxMaster = new Master(samplingFreq, selector.PartCount);
+            this.uxMaster = new Master(samplingRate, selector.PartCount);
             this.selector = selector;
         }
         #endregion

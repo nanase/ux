@@ -38,9 +38,9 @@ namespace ux.Utils.Midi
         /// <summary>
         /// サンプリング周波数を指定して新しい SmfConnector クラスのインスタンスを初期化します。
         /// </summary>
-        /// <param name="samplingFreq">サンプリング周波数。</param>
-        public SmfConnector(float samplingFreq)
-            : base(samplingFreq)
+        /// <param name="samplingRate">サンプリング周波数。</param>
+        public SmfConnector(float samplingRate)
+            : base(samplingRate)
         {
             this.Reset();
         }
