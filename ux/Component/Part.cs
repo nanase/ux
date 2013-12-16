@@ -176,11 +176,11 @@ namespace ux.Component
         /// 長さ 0 で指定されたノートで内部状態を変更します。エンベロープはアタック状態に遷移せず、発音されません。
         /// </summary>
         /// <param name="note">ノート値。</param>
-        public void ZeroGate(float note)
+        public void ZeroGate(int note)
         {
             this.vibratePhase = 0.0;
 
-            int key = (int)note + this.keyShift;
+            int key = note + this.keyShift;
 
             if (this.portament)
                 this.noteFreqOld = (key < 128 && key >= 0) ? Part.NoteFactor[key] : 0.0;
@@ -192,14 +192,14 @@ namespace ux.Component
         /// 指定されたノートでエンベロープをアタック状態に遷移させます。
         /// </summary>
         /// <param name="note">ノート値。</param>
-        public void Attack(float note)
+        public void Attack(int note)
         {
             this.sampleTime = 0;
             this.notePhase = 0.0;
 
             this.vibratePhase = 0.0;
 
-            int key = (int)note + this.keyShift;
+            int key = note + this.keyShift;
             this.noteFreq = (key < 128 && key >= 0) ? Part.NoteFactor[key] : 0.0;
 
             this.envelope.Attack();
