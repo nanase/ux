@@ -17,10 +17,10 @@ namespace ux
     public class Master
     {
         #region -- Private Fields --
-        private const float DefaultSamplingFreq = 44100.0f;
+        private const float DefaultSamplingRate = 44100.0f;
         private const int DefaultPartCount = 16;
 
-        private readonly float samplingFreq;
+        private readonly float samplingRate;
         private readonly Part[] parts;
         private readonly Queue<Handle> handleQueue;
         private readonly int partCount;
@@ -37,7 +37,7 @@ namespace ux
         /// <summary>
         /// 再生に用いられるサンプリング周波数を取得します。
         /// </summary>
-        public float SamplingFreq { get { return this.samplingFreq; } }
+        public float SamplingRate { get { return this.samplingRate; } }
 
         /// <summary>
         /// 現在演奏を受け付けているかを表す真偽値を取得します。
@@ -98,20 +98,20 @@ namespace ux
         /// 引数を指定せずに新しい Master クラスのインスタンスを初期化します。
         /// </summary>
         public Master()
-            : this(Master.DefaultSamplingFreq, Master.DefaultPartCount)
+            : this(Master.DefaultSamplingRate, Master.DefaultPartCount)
         {
         }
 
         /// <summary>
         /// サンプリング周波数を指定して新しい Master クラスのインスタンスを初期化します。
         /// </summary>
-        /// <param name="samplingFreq">演奏に使用されるサンプリング周波数。</param>
-        public Master(float samplingFreq, int partCount)
+        /// <param name="samplingRate">演奏に使用されるサンプリング周波数。</param>
+        public Master(float samplingRate, int partCount)
         {
-            if (samplingFreq > 0.0f && samplingFreq <= float.MaxValue)
-                this.samplingFreq = samplingFreq;
+            if (samplingRate > 0.0f && samplingRate <= float.MaxValue)
+                this.samplingRate = samplingRate;
             else
-                throw new ArgumentOutOfRangeException("samplingFreq", samplingFreq, "指定されたサンプリング周波数は無効です。");
+                throw new ArgumentOutOfRangeException("samplingRate", samplingRate, "指定されたサンプリング周波数は無効です。");
 
             if (partCount < 0)
                 throw new ArgumentOutOfRangeException("partCount", partCount, "無効なパート数が渡されました。");

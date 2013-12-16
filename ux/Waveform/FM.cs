@@ -16,7 +16,7 @@ namespace ux.Waveform
     class FM : IWaveform
     {
         #region -- Private Fields --
-        private readonly float samplingFreq;
+        private readonly float samplingRate;
         private Operator op0, op1, op2, op3;
         #endregion
 
@@ -24,10 +24,10 @@ namespace ux.Waveform
         /// <summary>
         /// 新しい FM クラスのインスタンスを初期化します。
         /// </summary>
-        public FM(float samplingFreq)
+        public FM(float samplingRate)
         {
             this.Reset();
-            this.samplingFreq = samplingFreq;
+            this.samplingRate = samplingRate;
         }
         #endregion
 
@@ -177,7 +177,7 @@ namespace ux.Waveform
                 {
                     case FMOperate.Output:
                         if (op.OutAmplifierEnvelope == null)
-                            op.OutAmplifierEnvelope = Envelope.CreateConstant(this.samplingFreq);
+                            op.OutAmplifierEnvelope = Envelope.CreateConstant(this.samplingRate);
 
                         op.OutAmplifierEnvelope.SetParameter(data1 & 0x00ff, data2);
                         break;
@@ -188,28 +188,28 @@ namespace ux.Waveform
 
                     case FMOperate.Send0:
                         if (op.Send0Envelope == null)
-                            op.Send0Envelope = Envelope.CreateConstant(this.samplingFreq);
+                            op.Send0Envelope = Envelope.CreateConstant(this.samplingRate);
 
                         op.Send0Envelope.SetParameter(data1 & 0x00ff, data2);
                         break;
 
                     case FMOperate.Send1:
                         if (op.Send1Envelope == null)
-                            op.Send1Envelope = Envelope.CreateConstant(this.samplingFreq);
+                            op.Send1Envelope = Envelope.CreateConstant(this.samplingRate);
 
                         op.Send1Envelope.SetParameter(data1 & 0x00ff, data2);
                         break;
 
                     case FMOperate.Send2:
                         if (op.Send2Envelope == null)
-                            op.Send2Envelope = Envelope.CreateConstant(this.samplingFreq);
+                            op.Send2Envelope = Envelope.CreateConstant(this.samplingRate);
 
                         op.Send2Envelope.SetParameter(data1 & 0x00ff, data2);
                         break;
 
                     case FMOperate.Send3:
                         if (op.Send3Envelope == null)
-                            op.Send3Envelope = Envelope.CreateConstant(this.samplingFreq);
+                            op.Send3Envelope = Envelope.CreateConstant(this.samplingRate);
 
                         op.Send3Envelope.SetParameter(data1 & 0x00ff, data2);
                         break;
@@ -262,10 +262,10 @@ namespace ux.Waveform
         /// </summary>
         public void Reset()
         {
-            this.op0 = new Operator(samplingFreq);
-            this.op1 = new Operator(samplingFreq);
-            this.op2 = new Operator(samplingFreq);
-            this.op3 = new Operator(samplingFreq);
+            this.op0 = new Operator(samplingRate);
+            this.op1 = new Operator(samplingRate);
+            this.op2 = new Operator(samplingRate);
+            this.op3 = new Operator(samplingRate);
 
             this.op0.OutAmplifier = 1.0;
             this.op0.Send0 = 0.75;
@@ -394,13 +394,13 @@ namespace ux.Waveform
             #endregion
 
             #region -- Private Fields --
-            private float samplingFreq;
+            private float samplingRate;
             #endregion
 
             #region -- Constructors --
-            public Operator(float samplingFreq)
+            public Operator(float samplingRate)
             {
-                this.samplingFreq = samplingFreq;
+                this.samplingRate = samplingRate;
 
                 OutAmplifier = 0.0f;
                 FreqFactor = 1.0f;

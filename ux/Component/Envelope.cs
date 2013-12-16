@@ -12,7 +12,7 @@ namespace ux.Component
     class Envelope
     {
         #region -- Private Members --
-        private readonly float samplingFreq;
+        private readonly float samplingRate;
         private int releaseStartTime, t2, t3, t5, attackTime, peakTime, decayTime, releaseTime;
         private float da, dd, dr, sustainLevel, releaseStartLevel;
         private EnvelopeState state;
@@ -29,10 +29,10 @@ namespace ux.Component
         /// <summary>
         /// サンプリング周波数を指定して新しい Envelope クラスのインスタンスを初期化します。
         /// </summary>
-        /// <param name="samplingFreq">サンプリング周波数。</param>
-        public Envelope(float samplingFreq)
+        /// <param name="samplingRate">サンプリング周波数。</param>
+        public Envelope(float samplingRate)
         {
-            this.samplingFreq = samplingFreq;
+            this.samplingRate = samplingRate;
             this.Reset();
         }
         #endregion
@@ -43,11 +43,11 @@ namespace ux.Component
         /// </summary>
         public void Reset()
         {
-            this.attackTime = (int)(0.05f * this.samplingFreq);
-            this.peakTime = (int)(0.0f * this.samplingFreq);
-            this.decayTime = (int)(0.0f * this.samplingFreq);
+            this.attackTime = (int)(0.05f * this.samplingRate);
+            this.peakTime = (int)(0.0f * this.samplingRate);
+            this.decayTime = (int)(0.0f * this.samplingRate);
             this.sustainLevel = 1.0f;
-            this.releaseTime = (int)(0.2f * this.samplingFreq);
+            this.releaseTime = (int)(0.2f * this.samplingRate);
             this.state = EnvelopeState.Silence;
         }
 
@@ -134,15 +134,15 @@ namespace ux.Component
             switch ((EnvelopeOperate)data1)
             {
                 case EnvelopeOperate.Attack:
-                    this.attackTime = (int)(data2.Clamp(float.MaxValue, 0.0f) * this.samplingFreq);
+                    this.attackTime = (int)(data2.Clamp(float.MaxValue, 0.0f) * this.samplingRate);
                     break;
 
                 case EnvelopeOperate.Peak:
-                    this.peakTime = (int)(data2.Clamp(float.MaxValue, 0.0f) * this.samplingFreq);
+                    this.peakTime = (int)(data2.Clamp(float.MaxValue, 0.0f) * this.samplingRate);
                     break;
 
                 case EnvelopeOperate.Decay:
-                    this.decayTime = (int)(data2.Clamp(float.MaxValue, 0.0f) * this.samplingFreq);
+                    this.decayTime = (int)(data2.Clamp(float.MaxValue, 0.0f) * this.samplingRate);
                     break;
 
                 case EnvelopeOperate.Sustain:
@@ -150,7 +150,7 @@ namespace ux.Component
                     break;
 
                 case EnvelopeOperate.Release:
-                    this.releaseTime = (int)(data2.Clamp(float.MaxValue, 0.0f) * this.samplingFreq);
+                    this.releaseTime = (int)(data2.Clamp(float.MaxValue, 0.0f) * this.samplingRate);
                     break;
 
                 default:
@@ -163,11 +163,11 @@ namespace ux.Component
         /// <summary>
         /// 値の変化しない、常に一定値を出力するエンベロープを作成します。
         /// </summary>
-        /// <param name="samplingFreq">サンプリング周波数。</param>
+        /// <param name="samplingRate">サンプリング周波数。</param>
         /// <returns>一定出力値を持つエンベロープ。</returns>
-        public static Envelope CreateConstant(float samplingFreq)
+        public static Envelope CreateConstant(float samplingRate)
         {
-            Envelope envelope = new Envelope(samplingFreq);
+            Envelope envelope = new Envelope(samplingRate);
             envelope.attackTime = 0;
             envelope.peakTime = 0;
             envelope.decayTime = 0;

@@ -62,12 +62,12 @@ namespace ux.Component
         /// <param name="master">このパートが属するマスタークラス。</param>
         public Part(Master master)
         {
-            this.envelope = new Envelope(master.SamplingFreq);
+            this.envelope = new Envelope(master.SamplingRate);
             this.buffer = new float[0];
             this.Reset();
 
             this.ExtendBuffers(0);
-            this.SampleDeltaTime = 1.0 / master.SamplingFreq;
+            this.SampleDeltaTime = 1.0 / master.SamplingRate;
             this.master = master;
         }
         #endregion
@@ -438,7 +438,7 @@ namespace ux.Component
                     if (this.waveform is FM)
                         this.waveform.Reset();
                     else
-                        this.waveform = new FM(this.master.SamplingFreq);
+                        this.waveform = new FM(this.master.SamplingRate);
                     break;
 
                 default:
