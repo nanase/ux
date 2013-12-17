@@ -20,7 +20,7 @@ namespace ux.Component
 
         private readonly double SampleDeltaTime;
         private readonly Envelope envelope;
-        private readonly Master master;
+        private readonly float samplingRate;
         private IWaveform waveform;
 
         private float volume, expression, velocity, gain;
@@ -57,18 +57,18 @@ namespace ux.Component
         }
 
         /// <summary>
-        /// パートの属するマスタークラスを指定して新しい Part クラスのインスタンスを初期化します。
+        /// 新しい Part クラスのインスタンスを初期化します。
         /// </summary>
-        /// <param name="master">このパートが属するマスタークラス。</param>
-        public Part(Master master)
+        /// <param name="samplingRate">マスタークラスでのサンプリング周波数。</param>
+        public Part(float samplingRate)
         {
-            this.envelope = new Envelope(master.SamplingRate);
+            this.envelope = new Envelope(samplingRate);
             this.buffer = new float[0];
             this.Reset();
 
             this.ExtendBuffers(0);
-            this.SampleDeltaTime = 1.0 / master.SamplingRate;
-            this.master = master;
+            this.SampleDeltaTime = 1.0 / samplingRate;
+            this.samplingRate = samplingRate;
         }
         #endregion
 
@@ -438,7 +438,7 @@ namespace ux.Component
                     if (this.waveform is FM)
                         this.waveform.Reset();
                     else
-                        this.waveform = new FM(this.master.SamplingRate);
+                        this.waveform = new FM(this.samplingRate);
                     break;
 
                 default:

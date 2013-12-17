@@ -121,7 +121,7 @@ namespace ux
             this.parts = new Part[partCount];
 
             for (int i = 0; i < this.partCount; i++)
-                this.parts[i] = new Part(this);
+                this.parts[i] = new Part(this.samplingRate);
 
             this.handleQueue = new Queue<Handle>();
 
