@@ -7,7 +7,7 @@ namespace ux.Component
 	/// <summary>
 	/// エンベロープの状態を表す列挙体です。
 	/// </summary>
-	enum EnvelopeState
+	public enum EnvelopeState
 	{
 		/// <summary>
 		/// 無音状態。
