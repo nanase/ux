@@ -48,6 +48,11 @@ namespace ux.Component
         /// リリースされてからエンベロープが消滅するまでの時間を取得します。
         /// </summary>
         public float ReleaseTime { get { return this.releaseTime / this.samplingRate; } }
+
+        /// <summary>
+        /// このエンベロープで使われるサンプリング周波数を取得します。
+        /// </summary>
+        public float SamplingRate { get { return this.samplingRate; } }
         #endregion
 
         #region -- Constructors --
