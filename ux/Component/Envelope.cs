@@ -9,7 +9,7 @@ namespace ux.Component
     /// <summary>
     /// 時間によって変化するパラメータを実装するためのエンベロープ (包絡線) クラスです。
     /// </summary>
-    class Envelope
+    public class Envelope
     {
         #region -- Private Members --
         private readonly float samplingRate;
