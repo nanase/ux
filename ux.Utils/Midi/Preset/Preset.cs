@@ -60,6 +60,7 @@ namespace ux.Utils.Midi
             this.Clear();
 
             var presetFiles = this.presetFiles.ToArray();
+            this.presetFiles.Clear();
 
             foreach (var filename in presetFiles)
             {
