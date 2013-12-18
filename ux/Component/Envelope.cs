@@ -23,6 +23,31 @@ namespace ux.Component
         /// 現在のエンベロープの状態を表す列挙値を取得します。
         /// </summary>
         public EnvelopeState State { get { return this.state; } }
+
+        /// <summary>
+        /// ノートが開始されてピークに達するまでの遷移時間を取得します。
+        /// </summary>
+        public float AttackTime { get { return this.attackTime / this.samplingRate; } }
+
+        /// <summary>
+        /// ピークを維持する時間を取得します。
+        /// </summary>
+        public float PeakTime { get { return this.peakTime / this.samplingRate; } }
+
+        /// <summary>
+        /// ピークからサスティンレベルに達するまでの遷移時間を取得します。
+        /// </summary>
+        public float DecayTime { get { return this.decayTime / this.samplingRate; } }
+
+        /// <summary>
+        /// エンベロープがリリースされるまで持続するサスティンレベルを取得します。
+        /// </summary>
+        public float SustainLevel { get { return this.sustainLevel; } }
+
+        /// <summary>
+        /// リリースされてからエンベロープが消滅するまでの時間を取得します。
+        /// </summary>
+        public float ReleaseTime { get { return this.releaseTime / this.samplingRate; } }
         #endregion
 
         #region -- Constructors --
