@@ -59,7 +59,9 @@ namespace ux.Utils.Midi
         {
             this.Clear();
 
-            foreach (var filename in this.presetFiles)
+            var presetFiles = this.presetFiles.ToArray();
+
+            foreach (var filename in presetFiles)
             {
                 if (!File.Exists(filename))
                     continue;
