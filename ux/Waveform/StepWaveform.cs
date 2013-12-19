@@ -106,8 +106,9 @@ namespace ux.Waveform
                         this.queue.Enqueue((byte)data2.Clamp(255.0f, 0.0f));
                         if (this.queue.Count <= 32767)
                             this.SetStep(this.queue.ToArray());
-                    }
-                    this.queue = null;
+
+                        this.queue = null;
+                    }                    
                     break;
 
                 case StepWaveformOperate.Queue:
