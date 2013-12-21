@@ -713,7 +713,7 @@
             // 
             // smfFileDialog
             // 
-            this.smfFileDialog.Filter = "MIDI ファイル(*.mid, *.midi)|*.mid;*.midi";
+            this.smfFileDialog.Filter = "MIDI ファイル(*.mid, *.midi)|*.mid;*.midi|RMI ファイル(*.rmi)|*.rmi";
             this.smfFileDialog.Title = "MIDIファイルの読み込み";
             // 
             // slowTimer
