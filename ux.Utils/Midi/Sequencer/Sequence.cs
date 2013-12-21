@@ -134,7 +134,7 @@ namespace ux.Utils.Midi.Sequencer
                     else
                     {
                         // トラックチャンクでないなら、長さ分だけスキップ
-                        long length = br.ReadInt32().ToLittleEndian();
+                        uint length = br.ReadUInt32().ToLittleEndian();
                         stream.Seek(length, SeekOrigin.Current);
                     }
 
