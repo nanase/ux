@@ -95,8 +95,13 @@ namespace ux.Utils.Midi.Sequencer
                 // マシンはリトルエンディアンなのでバイト列を適宜反転
                 // (SMFは ビッグエンディアン で記述されている)
 
+                uint magic = br.ReadUInt32().ToLittleEndian();
+                long endOfStream = stream.Length - 1;
+
                 // マジックナンバー: 4D 54 68 64 (MThd)
-                if (br.ReadUInt32().ToLittleEndian() != 0x4d546864)
+                if (magic == 0x52494646)
+                    endOfStream = this.SeekForRiff(br);
+                else if (magic != 0x4d546864)
                     throw new InvalidDataException();
 
                 // ヘッダ長 (6バイトで固定)
@@ -118,7 +123,7 @@ namespace ux.Utils.Midi.Sequencer
 
                 // トラックの追加
                 int trackNumber = 0;
-                while (stream.Position < stream.Length - 1)
+                while (stream.Position < endOfStream)
                 {
                     // マジックナンバー: 4d 54 72 6b (MTrk)
                     if (br.ReadUInt32().ToLittleEndian() == 0x4d54726b)
@@ -149,6 +154,40 @@ namespace ux.Utils.Midi.Sequencer
                 this.MaxTick = this.Tracks.SelectMany(t => t.Events).Max(e => e.Tick);
                 this.LoopBeginTick = this.DetectLoopBegin();
             }
+        }
+
+        private long SeekForRiff(BinaryReader br)
+        {
+            // RMI フォーマットに対応するためのメソッド
+            // RIFF がリトルエンディアンで、SMF がビッグエンディアン
+            // エンディアンネスが混在している
+            // 混在している。
+
+            uint riffLength = br.ReadUInt32();
+            uint length;
+
+            if (riffLength > br.BaseStream.Length)
+                throw new InvalidDataException();
+
+            // マジックナンバー: 52 4d 49 44 (RMID)
+            if (br.ReadUInt32() == 0x524d4944)
+                throw new InvalidDataException();
+
+            // マジックナンバー: 64 61 74 61 (data)
+            while (br.ReadUInt32().ToLittleEndian() != 0x64617461)
+            {
+                // データチャンクでないなら、長さ分だけスキップ
+                length = br.ReadUInt32();
+                br.BaseStream.Seek(length, SeekOrigin.Current);
+            }
+
+            length = br.ReadUInt32();
+
+            // マジックナンバー: 4D 54 68 64 (MThd)
+            if (br.ReadUInt32() == 0x4d546864)
+                throw new InvalidDataException();
+
+            return br.BaseStream.Position + length;
         }
 
         private long DetectLoopBegin()
