@@ -27,27 +27,47 @@ namespace ux.Component
         /// <summary>
         /// ノートが開始されてピークに達するまでの遷移時間を取得します。
         /// </summary>
-        public float AttackTime { get { return this.attackTime / this.samplingRate; } }
+        public float AttackTime
+        {
+            get { return this.attackTime / this.samplingRate; }
+            set { this.attackTime = (int)(value.Clamp(float.MaxValue, 0.0f) * this.samplingRate); }
+        }
 
         /// <summary>
         /// ピークを維持する時間を取得します。
         /// </summary>
-        public float PeakTime { get { return this.peakTime / this.samplingRate; } }
+        public float PeakTime
+        {
+            get { return this.peakTime / this.samplingRate; }
+            set { this.peakTime = (int)(value.Clamp(float.MaxValue, 0.0f) * this.samplingRate); }
+        }
 
         /// <summary>
         /// ピークからサスティンレベルに達するまでの遷移時間を取得します。
         /// </summary>
-        public float DecayTime { get { return this.decayTime / this.samplingRate; } }
+        public float DecayTime
+        {
+            get { return this.decayTime / this.samplingRate; }
+            set { this.decayTime = (int)(value.Clamp(float.MaxValue, 0.0f) * this.samplingRate); }
+        }
 
         /// <summary>
         /// エンベロープがリリースされるまで持続するサスティンレベルを取得します。
         /// </summary>
-        public float SustainLevel { get { return this.sustainLevel; } }
+        public float SustainLevel
+        {
+            get { return this.sustainLevel; }
+            set { this.sustainLevel = value.Clamp(1.0f, 0.0f); }
+        }
 
         /// <summary>
         /// リリースされてからエンベロープが消滅するまでの時間を取得します。
         /// </summary>
-        public float ReleaseTime { get { return this.releaseTime / this.samplingRate; } }
+        public float ReleaseTime
+        {
+            get { return this.releaseTime / this.samplingRate; }
+            set { this.releaseTime = (int)(value.Clamp(float.MaxValue, 0.0f) * this.samplingRate); }
+        }
 
         /// <summary>
         /// このエンベロープで使われるサンプリング周波数を取得します。
