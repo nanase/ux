@@ -107,8 +107,8 @@ namespace ux.Utils.Midi
         /// </summary>
         public override void Dispose()
         {
-            this.Close();
             this.Stop();
+            this.Close();
         }
         #endregion
 
