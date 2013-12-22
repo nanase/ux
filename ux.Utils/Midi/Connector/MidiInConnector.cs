@@ -19,9 +19,17 @@ namespace ux.Utils.Midi
     public class MidiInConnector : MidiConnector
     {
         #region -- Private Fields --
+        private static readonly byte[] GmReset = { 0xf0, 0x7e, 0x7f, 0x09, 0x01, 0xf7 };
+
+        private const int BufferSize = 256;
+
         private NativeMethods.MidiInProc midiInProc;
-        private IntPtr handle;
+        private NativeMethods.MIDIHDR midiHeader;
+        private IntPtr ptrHeader, handle;
+        private byte[] buffer = new byte[BufferSize];
+        private readonly uint headerSize;
         private bool playing, closing;
+        private Queue<byte> exclusiveQueue;
         #endregion
 
         #region -- Public Properties --
@@ -69,9 +77,22 @@ namespace ux.Utils.Midi
 
             this.midiInProc = new NativeMethods.MidiInProc(MidiProc);
             this.handle = IntPtr.Zero;
+            this.exclusiveQueue = new Queue<byte>();
 
             if (!this.Open(id))
                 throw new InvalidOperationException();
+
+            this.headerSize = (uint)Marshal.SizeOf(typeof(NativeMethods.MIDIHDR));
+            this.midiHeader = new NativeMethods.MIDIHDR();
+            this.midiHeader.data = Marshal.AllocHGlobal(BufferSize);
+            this.midiHeader.bufferLength = (uint)BufferSize;
+            Marshal.Copy(this.buffer, 0, this.midiHeader.data, BufferSize);
+
+            this.ptrHeader = Marshal.AllocHGlobal((int)this.headerSize);
+            Marshal.StructureToPtr(this.midiHeader, this.ptrHeader, true);
+
+            NativeMethods.midiInPrepareHeader(this.handle, this.ptrHeader, this.headerSize);
+            NativeMethods.midiInAddBuffer(this.handle, this.ptrHeader, this.headerSize);
 
             this.Reset();
         }
@@ -85,7 +106,7 @@ namespace ux.Utils.Midi
         {
             if (!this.playing)
             {
-            NativeMethods.midiInStart(handle);
+                NativeMethods.midiInStart(handle);
                 this.playing = true;
             }
         }
@@ -97,7 +118,7 @@ namespace ux.Utils.Midi
         {
             if (this.playing)
             {
-            NativeMethods.midiInStop(handle);
+                NativeMethods.midiInStop(handle);
                 this.playing = false;
             }
         }
@@ -115,7 +136,18 @@ namespace ux.Utils.Midi
         #region -- Private Methods --
         private bool Close()
         {
+            this.closing = true;
+            NativeMethods.midiInReset(this.handle);
+            NativeMethods.midiInUnprepareHeader(this.handle, this.ptrHeader, this.headerSize);
             bool result = (NativeMethods.midiInClose(this.handle) == NativeMethods.MMSYSERR_NOERROR);
+
+            Marshal.FreeHGlobal(this.midiHeader.data);
+            this.midiHeader.data = IntPtr.Zero;
+
+            Marshal.DestroyStructure(this.ptrHeader, typeof(NativeMethods.MIDIHDR));
+            Marshal.FreeHGlobal(this.ptrHeader);
+            this.ptrHeader = IntPtr.Zero;
+
             this.handle = IntPtr.Zero;
             return result;
         }
@@ -125,14 +157,48 @@ namespace ux.Utils.Midi
             return NativeMethods.midiInOpen(out this.handle, id, this.midiInProc, IntPtr.Zero, NativeMethods.CALLBACK_FUNCTION) == NativeMethods.MMSYSERR_NOERROR;
         }
 
-        
-
         private void MidiProc(IntPtr hMidiIn, int wMsg, IntPtr dwInstance, int dwParam1, int dwParam2)
         {
-            if (wMsg == 0x000003c3)
+            switch (wMsg)
             {
-                this.ProcessMidiEvent(new[] { new MidiEvent((EventType)(dwParam1 & 0xf0), dwParam1 & 0x0f, dwParam1 >> 8 & 0xff, dwParam1 >> 16 & 0xff) });
-                this.EventCount++;
+                case NativeMethods.MIM_DATA:
+                    this.ProcessMidiEvent(new[] { new MidiEvent((EventType)(dwParam1 & 0xf0), dwParam1 & 0x0f, dwParam1 >> 8 & 0xff, dwParam1 >> 16 & 0xff) });
+                    this.EventCount++;
+                    break;
+
+                case NativeMethods.MIM_LONGDATA:
+                    this.midiHeader = (NativeMethods.MIDIHDR)Marshal.PtrToStructure(this.ptrHeader, typeof(NativeMethods.MIDIHDR));
+                    Marshal.Copy(this.midiHeader.data, this.buffer, 0, BufferSize);
+
+                    for (int i = 0; i < BufferSize; i++)
+                    {
+                        byte value = this.buffer[i];
+                        this.exclusiveQueue.Enqueue(this.buffer[i]);
+
+                        if (value == 0xf7)
+                        {
+                            this.ProcessExclusiveMessage();
+                            break;
+                        }
+                    }
+
+                    if (!this.closing)
+                        NativeMethods.midiInAddBuffer(this.handle, this.ptrHeader, this.headerSize);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private void ProcessExclusiveMessage()
+        {
+            byte[] message = this.exclusiveQueue.ToArray();
+            this.exclusiveQueue.Clear();
+
+            if (GmReset.SequenceEqual(message))
+            {
+                this.ProcessMidiEvent(Enumerable.Range(0, 16).Select(i => new MidiEvent(EventType.ControlChange, i, 121, 0)));
             }
         }
         #endregion
@@ -141,6 +207,11 @@ namespace ux.Utils.Midi
         {
             internal const int MMSYSERR_NOERROR = 0;
             internal const int CALLBACK_FUNCTION = 0x00030000;
+
+            internal const int MIM_OPEN = 961;
+            internal const int MIM_CLOSE = 962;
+            internal const int MIM_DATA = 963;
+            internal const int MIM_LONGDATA = 964;
 
             internal delegate void MidiInProc(IntPtr hMidiIn, int wMsg, IntPtr dwInstance, int dwParam1, int dwParam2);
 
@@ -161,6 +232,18 @@ namespace ux.Utils.Midi
 
             [DllImport("winmm.dll", SetLastError = true)]
             internal static extern MMRESULT midiInGetDevCaps(UIntPtr uDeviceID, ref MIDIINCAPS caps, uint cbMidiInCaps);
+
+            [DllImport("winmm.dll", SetLastError = true)]
+            internal static extern MMRESULT midiInPrepareHeader(IntPtr hMidiIn, IntPtr lpMidiInHdr, uint cbMidiInHdr);
+
+            [DllImport("winmm.dll", SetLastError = true)]
+            internal static extern MMRESULT midiInAddBuffer(IntPtr hMidiIn, IntPtr lpMidiInHdr, uint cbMidiInHdr);
+
+            [DllImport("winmm.dll", SetLastError = true)]
+            internal static extern MMRESULT midiInUnprepareHeader(IntPtr hMidiIn, IntPtr lpMidiInHdr, uint cbMidiInHdr);
+
+            [DllImport("winmm.dll", SetLastError = true)]
+            internal static extern MMRESULT midiInReset(IntPtr hMidiIn);
 
             [StructLayout(LayoutKind.Sequential)]
             public struct MIDIINCAPS
@@ -199,6 +282,21 @@ namespace ux.Utils.Midi
                 WAVERR_BADFORMAT = 32,
                 WAVERR_STILLPLAYING = 33,
                 WAVERR_UNPREPARED = 34
+            }
+
+            [StructLayout(LayoutKind.Sequential)]
+            public struct MIDIHDR
+            {
+                public IntPtr data;
+                public uint bufferLength;
+                public uint bytesRecorded;
+                public IntPtr user;
+                public uint flags;
+                public IntPtr next;
+                public IntPtr reserved;
+                public uint offset;
+                [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+                public IntPtr[] reservedArray;
             }
         }
     }
