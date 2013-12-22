@@ -3,7 +3,9 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Linq;
 using ux.Utils.Midi.IO;
 
 /* 参考 : http://stackoverflow.com/questions/1991159/getting-signals-from-a-midi-port-in-c-sharp
@@ -19,6 +21,7 @@ namespace ux.Utils.Midi
         #region -- Private Fields --
         private NativeMethods.MidiInProc midiInProc;
         private IntPtr handle;
+        private bool playing, closing;
         #endregion
 
         #region -- Public Properties --
@@ -80,7 +83,11 @@ namespace ux.Utils.Midi
         /// </summary>
         public override void Play()
         {
+            if (!this.playing)
+            {
             NativeMethods.midiInStart(handle);
+                this.playing = true;
+            }
         }
 
         /// <summary>
@@ -88,7 +95,11 @@ namespace ux.Utils.Midi
         /// </summary>
         public override void Stop()
         {
+            if (this.playing)
+            {
             NativeMethods.midiInStop(handle);
+                this.playing = false;
+            }
         }
 
         /// <summary>
