@@ -172,6 +172,13 @@
       <envelope type="attack" value="0.0" />
     </program>
 
+    <!-- Violin / ヴァイオリン -->
+    <program number="40">
+      <waveform type="fm" />
+      <edit type="op1,freq" value="1.005" />
+      <edit type="op1,send0" value="2.0" />
+    </program>
+
     <!-- String Ensemble 1 / ストリングアンサンブル 1 -->
     <program number="48">
       <waveform type="fm" />
