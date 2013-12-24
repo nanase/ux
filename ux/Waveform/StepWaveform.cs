@@ -72,13 +72,15 @@ namespace ux.Waveform
         /// <param name="count">配列に代入されるデータの数。</param>
         public virtual void GetWaveforms(float[] data, double[] frequency, double[] phase, int sampleTime, int count)
         {
+            int length = this.value.Length;
+
             for (int i = 0; i < count; i++)
             {
                 float tmp = (float)(phase[i] * frequency[i] * this.freqFactor);
                 if (tmp < 0.0f)
                     data[i] = 0.0f;
                 else
-                    data[i] = this.value[(int)(tmp * this.length) % this.value.Length];
+                    data[i] = this.value[(int)(tmp * this.length) % length];
             }
         }
 
