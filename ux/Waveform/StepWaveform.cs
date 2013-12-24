@@ -134,9 +134,9 @@ namespace ux.Waveform
             if (data.Length > 32767)
                 throw new ArgumentException("ステップデータは 32767 バイト以下でなければなりません。");
 
-            float max = data.Max(),
-            min = data.Min(),
-            a = 2.0f / (max - min);
+            float max = data.Max();
+            float min = data.Min();
+            float a = 2.0f / (max - min);
             this.length = data.Length;
             this.value = new float[data.Length];
 
