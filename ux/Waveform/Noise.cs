@@ -15,6 +15,7 @@ namespace ux.Waveform
     {
         #region -- Private Fields --
         private static readonly float[] data;
+        private const int DataSize = 32767;
         #endregion
 
         #region -- Constructors --
@@ -23,9 +24,9 @@ namespace ux.Waveform
             ushort reg = 0xffff;
             ushort output = 1;
 
-            LongNoise.data = new float[32767];
+            LongNoise.data = new float[LongNoise.DataSize];
 
-            for (int i = 0; i < 32767; i++)
+            for (int i = 0; i < LongNoise.DataSize; i++)
             {
                 reg += (ushort)(reg + (((reg >> 14) ^ (reg >> 13)) & 1));
                 LongNoise.data[i] = (output ^= (ushort)(reg & 1)) * 2.0f - 1.0f;
@@ -49,7 +50,7 @@ namespace ux.Waveform
         {
             this.freqFactor = 0.001;
             this.value = LongNoise.data;
-            this.length = 32767;
+            this.length = LongNoise.DataSize;
         }
         #endregion
     }
