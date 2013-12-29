@@ -121,6 +121,7 @@ namespace ux.Waveform
     {
         #region -- Private Fields --
         private static readonly LinkedList<Tuple<int, float[]>> cache = new LinkedList<Tuple<int, float[]>>();
+        private const int MaxCacheSize = 32;
         #endregion
 
         #region -- Constructors --
@@ -197,7 +198,7 @@ namespace ux.Waveform
 
                 cache.AddFirst(new Tuple<int, float[]>(step, this.value));
 
-                if (cache.Count > 32)
+                if (cache.Count > Triangle.MaxCacheSize)
                     cache.RemoveLast();
             }
             else
