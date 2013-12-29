@@ -109,6 +109,7 @@ namespace ux.Waveform
     {
         #region -- Private Fields --
         private static readonly LinkedList<NoiseCache> cache = new LinkedList<NoiseCache>();
+        private const int MaxCacheSize = 32;
 
         private int seed = 0;
         private int array_length = 1024;
@@ -201,7 +202,7 @@ namespace ux.Waveform
 
             cache.AddFirst(new NoiseCache() { array_length = this.array_length, data = this.value, seed = this.seed });
 
-            if (cache.Count > 32)
+            if (cache.Count > RandomNoise.MaxCacheSize)
                 cache.RemoveLast();
         }
         #endregion
