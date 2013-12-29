@@ -68,7 +68,7 @@ namespace ux.Waveform
 
             int onTime = (int)(1.0f / (duty <= 0.5f ? duty : (1.0f - duty))) - 1;
 
-            if (onTime > 32767)
+            if (onTime > StepWaveform.MaxDataSize)
                 return;
 
             Tuple<int, float[]> nc = null;
