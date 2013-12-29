@@ -32,6 +32,11 @@ namespace ux.Waveform
         protected const float PI_2 = (float)(Math.PI * 0.5);
 
         /// <summary>
+        /// データとして保持できるステップ数を表した定数値です。
+        /// </summary>
+        protected const int MaxDataSize = 65536;
+
+        /// <summary>
         /// 波形生成に用いられる生データの配列です。
         /// </summary>
         protected float[] value;
