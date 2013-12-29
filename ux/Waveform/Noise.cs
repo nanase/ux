@@ -148,7 +148,7 @@ namespace ux.Waveform
 
                 case RandomNoiseOperate.Length:
                     int leng = (int)data2;
-                    if (leng > 0 && leng < 65536)
+                    if (leng > 0 && leng <= StepWaveform.MaxDataSize)
                         this.array_length = leng;
                     break;
 
