@@ -53,6 +53,7 @@ namespace ux.Waveform
         #endregion
 
         #region -- Private Fields --
+        private static readonly byte[] EmptyData = new byte[] { 0 };
         private Queue<byte> queue = null;
         #endregion
 
@@ -115,7 +116,7 @@ namespace ux.Waveform
                             this.SetStep(this.queue.ToArray());
 
                         this.queue = null;
-                    }                    
+                    }
                     break;
 
                 case StepWaveformOperate.Queue:
@@ -174,7 +175,7 @@ namespace ux.Waveform
         /// </summary>
         public virtual void Reset()
         {
-            this.SetStep(new byte[] { 0 });
+            this.SetStep(StepWaveform.EmptyData);
         }
         #endregion
     }
