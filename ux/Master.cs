@@ -130,10 +130,14 @@ namespace ux
             if (samplingRate > 0.0f && samplingRate <= float.MaxValue)
                 this.samplingRate = samplingRate;
             else
-                throw new ArgumentOutOfRangeException("samplingRate", samplingRate, "指定されたサンプリング周波数は無効です。");
+                throw new ArgumentOutOfRangeException("samplingRate",
+                                                      samplingRate,
+                                                      "指定されたサンプリング周波数は無効です。");
 
             if (partCount < 0)
-                throw new ArgumentOutOfRangeException("partCount", partCount, "無効なパート数が渡されました。");
+                throw new ArgumentOutOfRangeException("partCount",
+                                                      partCount,
+                                                      "無効なパート数が渡されました。");
 
             this.partCount = partCount;
 

@@ -159,7 +159,8 @@ namespace ux.Waveform
                 throw new ArgumentNullException();
 
             if (data.Length > StepWaveform.MaxDataSize)
-                throw new ArgumentException(String.Format("ステップデータは {0} 個以下でなければなりません。", StepWaveform.MaxDataSize));
+                throw new ArgumentException(String.Format("ステップデータは {0} 個以下でなければなりません。",
+                                            StepWaveform.MaxDataSize));
 
             float max = data.Max();
             float min = data.Min();

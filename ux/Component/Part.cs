@@ -487,7 +487,9 @@ namespace ux.Component
 
                 // ポルタメントスピード
                 case PortamentOperate.Speed:
-                    this.portamentSpeed = data2.Clamp(1000.0f, float.Epsilon * 1000.0f) * (0.001 * 44100.0) * this.SampleDeltaTime;
+                    this.portamentSpeed = data2.Clamp(1000.0f, float.Epsilon * 1000.0f) *
+                                          (0.001 * 44100.0) *
+                                          this.SampleDeltaTime;
                     break;
 
                 default:
