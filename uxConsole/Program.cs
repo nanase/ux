@@ -32,6 +32,7 @@ namespace uxConsole
     class Program
     {
         static void Main(string[] args)
+        #region -- Public Static Methods --
         {
             const int frequencty = 44100;
 
@@ -87,5 +88,6 @@ namespace uxConsole
 
             connector.Stop();
         }
+        #endregion
     }
 }
