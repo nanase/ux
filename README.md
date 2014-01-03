@@ -15,7 +15,7 @@ ux は モノフォニック、複数パート、ポルタメント、ビブラ�
 ## TODO in v0.2-dev
 
 * プロジェクト共通
-  - [ ] #region の命名を変更
+  - [x] #region の命名を変更
 
 * ux (uxCore)
   - [x] 処理の最適化（特に複数ハンドルのキューイング）
@@ -26,7 +26,14 @@ ux は モノフォニック、複数パート、ポルタメント、ビブラ�
 * uxPlayer
   - [ ] MIDI 接続の Linux 対応 (デバイスファイルからの読み取り)
   - [ ] WAVE 出力機能の実装
-  - [ ] 任意の音源定義XMLファイルの指定
+  - [ ] 任意の音源定義 XML ファイルの指定
+
+
+## 姉妹リポジトリ
+
+* [uxPresetEditor](//github.com/nanase/uxPresetEditor) - 音源定義 XML ファイルエディタ
+* [ux++](//github.com/nanase/uxpp) - C++ 実装
+* [rbux](//github.com/nanase/rbux) - Ruby 実装
 
 
 ## 備考
