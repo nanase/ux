@@ -30,16 +30,16 @@ using ux.Component;
 
 namespace uxBenchmark
 {
-    public class Program
+    class Program
     {
-        const int samplingRate = 44100;
-        const int bufferSize = 1024;
-        const int iterate = 3000;
         #region -- Private Fields --
+        private const int samplingRate = 44100;
+        private const int bufferSize = 1024;
+        private const int iterate = 3000;        
         #endregion
 
-        static void Main(string[] args)
         #region -- Public Static Methods --
+        public static void Main(string[] args)
         {
             Console.WriteLine("ux Benchmark :: Copyright (c) 2013-2014 Tomona Nanase");
             Console.Write("Press any key to start benchmark...");
