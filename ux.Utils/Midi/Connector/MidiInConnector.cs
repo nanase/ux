@@ -28,7 +28,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using ux.Utils.Midi.IO;
 
-/* 参考 : http://stackoverflow.com/questions/1991159/getting-signals-from-a-midi-port-in-c-sharp
+/* 参考:
+ * http://stackoverflow.com/questions/1991159/getting-signals-from-a-midi-port-in-c-sharp
  */
 
 namespace ux.Utils.Midi
