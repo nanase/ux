@@ -31,8 +31,8 @@ namespace uxConsole
 {
     class Program
     {
-        static void Main(string[] args)
         #region -- Public Static Methods --
+        public static void Main(string[] args)
         {
             const int frequencty = 44100;
 
