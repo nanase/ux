@@ -246,14 +246,18 @@ namespace uxPlayer
                     re[i] = 0.0;
             }
 
-            var bdata = this.bitmap.LockBits(new Rectangle(0, 0, this.bitmap.Width, this.bitmap.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            var bdata = this.bitmap.LockBits(new Rectangle(0, 0, this.bitmap.Width, this.bitmap.Height),
+                                             ImageLockMode.ReadWrite,
+                                             PixelFormat.Format32bppArgb);
             {
                 for (byte* i = (byte*)bdata.Scan0, j = i + 4, l = i + bdata.Width * bdata.Height * 4; j < l; i++, j++)
                     *i = *j;
             }
             this.bitmap.UnlockBits(bdata);
 
-            bdata = this.spectrum.LockBits(new Rectangle(0, 0, 1, fftSize / 4), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            bdata = this.spectrum.LockBits(new Rectangle(0, 0, 1, fftSize / 4),
+                                           ImageLockMode.ReadWrite,
+                                           PixelFormat.Format32bppArgb);
             {
                 int j = 0;
                 for (byte* i = (byte*)bdata.Scan0, l = i + bdata.Height * 4; i < l; j++)

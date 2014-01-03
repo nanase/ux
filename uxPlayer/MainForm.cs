@@ -82,7 +82,15 @@ namespace uxPlayer
 
                 return k;
             };
-            var setting = new PlayerSettings() { BufferSize = 1024, BufferCount = 32, BitPerSample = 16, SamplingFrequency = frequencty };
+
+            var setting = new PlayerSettings()
+            {
+                BufferSize = 1024,
+                BufferCount = 32,
+                BitPerSample = 16,
+                SamplingFrequency = frequencty
+            };
+
             this.player = new SinglePlayer(process, setting);
 
             this.playing = true;
@@ -266,7 +274,10 @@ namespace uxPlayer
 
             if (!this.mode_smf && Environment.OSVersion.Platform != PlatformID.Win32NT)
             {
-                MessageBox.Show("MIDI-IN への接続は Windows のみ対応しています。", null, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("MIDI-IN への接続は Windows のみ対応しています。",
+                                null,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
                 this.mode_smf = true;
                 return;
             }
@@ -291,7 +302,10 @@ namespace uxPlayer
                     = (this.mode_smf) ? Color.FromArgb(64, 64, 64) : Color.FromArgb(139, 229, 139);
 
             this.toolStrip_connect.Checked = this.menu_connect.Checked = !this.mode_smf;
-            this.hScrollBar.Enabled = this.toolStrip_open.Enabled = this.menu_open.Enabled = this.menu_playFirst.Enabled = this.toolStrip_playFirst.Enabled = this.mode_smf;
+            this.hScrollBar.Enabled = this.toolStrip_open.Enabled =
+                                      this.menu_open.Enabled =
+                                      this.menu_playFirst.Enabled =
+                                      this.toolStrip_playFirst.Enabled = this.mode_smf;
 
             if (this.mode_smf)
             {
@@ -332,7 +346,7 @@ namespace uxPlayer
                 };
                 smf.Sequencer.OnTrackEvent += (sender, e) =>
                 {
-                    foreach (MetaEvent meta in e.Events.Where(m => m is MetaEvent && ((MetaEvent)m).MetaType == MetaType.Lyrics))
+                    foreach (MetaEvent meta in e.Events.OfType<MetaEvent>().Where(m => m.MetaType == MetaType.Lyrics))
                     {
                         this.Invoke(new Action(() => this.label_title.Text = this.sjis.GetString(meta.Data).Trim()));
                     }
@@ -343,7 +357,10 @@ namespace uxPlayer
                 this.hScrollBar.SmallChange = smf.Sequence.Resolution;
                 this.hScrollBar.LargeChange = smf.Sequence.Resolution * 4;
 
-                MetaEvent title = (MetaEvent)smf.Sequence.Tracks.SelectMany(t => t.Events).Where(e => e is MetaEvent && ((MetaEvent)e).MetaType == MetaType.TrackName).FirstOrDefault();
+                MetaEvent title = smf.Sequence.Tracks.SelectMany(t => t.Events)
+                                                     .OfType<MetaEvent>()
+                                                     .Where(e => e.MetaType == MetaType.TrackName)
+                                                     .FirstOrDefault();
 
                 if (title != null)
                     this.label_title.Text = this.sjis.GetString(title.Data).Trim();
