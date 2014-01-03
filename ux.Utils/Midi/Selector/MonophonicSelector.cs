@@ -132,15 +132,23 @@ namespace ux.Utils.Midi
                             if (preset != null)
                             {
                                 this.master.PushHandle(preset.InitHandles, target);
-                                this.master.PushHandle(new Handle(target, HandleType.NoteOn, preset.Note, message.Data2));
+                                this.master.PushHandle(new Handle(target,
+                                                                  HandleType.NoteOn,
+                                                                  preset.Note,
+                                                                  message.Data2));
                             }
                         }
                         else
                         {
                             if (message.Data2 > 0)
-                                this.master.PushHandle(new Handle(targetPart, HandleType.NoteOn, message.Data1, message.Data2 / 127f));
+                                this.master.PushHandle(new Handle(targetPart,
+                                                                  HandleType.NoteOn,
+                                                                  message.Data1,
+                                                                  message.Data2 / 127f));
                             else
-                                this.master.PushHandle(new Handle(targetPart, HandleType.NoteOff, message.Data1));
+                                this.master.PushHandle(new Handle(targetPart,
+                                                                  HandleType.NoteOff,
+                                                                  message.Data1));
                         }
                         break;
 
@@ -155,7 +163,10 @@ namespace ux.Utils.Midi
                                 if (message.Data2 > 0)
                                 {
                                     this.master.PushHandle(MonophonicSelector.handle_vibrateOn);
-                                    this.master.PushHandle(new Handle(targetPart, HandleType.Vibrate, (int)VibrateOperate.Depth, message.Data2 * 0.125f));
+                                    this.master.PushHandle(new Handle(targetPart,
+                                                                      HandleType.Vibrate,
+                                                                      (int)VibrateOperate.Depth,
+                                                                      message.Data2 * 0.125f));
                                 }
                                 else
                                     this.master.PushHandle(MonophonicSelector.handle_vibrateOff);
@@ -166,11 +177,16 @@ namespace ux.Utils.Midi
                                 break;
 
                             case 10:
-                                this.master.PushHandle(new Handle(targetPart, HandleType.Panpot, message.Data2 / 64f - 1f));
+                                this.master.PushHandle(new Handle(targetPart,
+                                                                  HandleType.Panpot,
+                                                                  message.Data2 / 64f - 1f));
                                 break;
 
                             case 11:
-                                this.master.PushHandle(new Handle(targetPart, HandleType.Volume, (int)VolumeOperate.Expression, message.Data2 / 127f));
+                                this.master.PushHandle(new Handle(targetPart,
+                                                                  HandleType.Volume,
+                                                                  (int)VolumeOperate.Expression,
+                                                                  message.Data2 / 127f));
                                 break;
 
                             case 32:
@@ -196,7 +212,10 @@ namespace ux.Utils.Midi
                         break;
 
                     case EventType.Pitchbend:
-                        this.master.PushHandle(new Handle(targetPart, HandleType.FineTune, ((((message.Data2 << 7) | message.Data1) - 8192) / 8192f) * 1.12246f / 8f + 1f));
+                        this.master.PushHandle(new Handle(targetPart,
+                                                          HandleType.FineTune,
+                                                          ((((message.Data2 << 7) | message.Data1) - 8192) / 8192f) *
+                                                            1.12246f / 8f + 1f));
                         break;
 
                     case EventType.ProgramChange:
@@ -226,9 +245,16 @@ namespace ux.Utils.Midi
             this.handle_release = this.allParts.Select(p => new Handle(p, HandleType.NoteOff)).ToArray();
             this.handles_reset = this.handle_silence
                                      .Concat(this.allParts.Select(p => new Handle(p, HandleType.Reset)))
-                                     .Concat(this.allParts.Select(p => new Handle(p, HandleType.Waveform, (int)WaveformType.FM)))
-                                     .Concat(this.drumParts.Select(p => new Handle(p, HandleType.Waveform, (int)WaveformType.LongNoise)))
-                                     .Concat(this.drumParts.Select(p => new Handle(p, HandleType.Envelope, (int)EnvelopeOperate.Sustain, 0.0f)))
+                                     .Concat(this.allParts.Select(p => new Handle(p,
+                                                                                  HandleType.Waveform,
+                                                                                  (int)WaveformType.FM)))
+                                     .Concat(this.drumParts.Select(p => new Handle(p,
+                                                                                   HandleType.Waveform,
+                                                                                   (int)WaveformType.LongNoise)))
+                                     .Concat(this.drumParts.Select(p => new Handle(p,
+                                                                                   HandleType.Envelope,
+                                                                                   (int)EnvelopeOperate.Sustain,
+                                                                                   0.0f)))
                                      .ToArray();
             #endregion
         }
@@ -240,8 +266,10 @@ namespace ux.Utils.Midi
             if (this.nowPresets[channel] != null)
                 this.master.PushHandle(this.nowPresets[channel].FinalHandles, part);
 
-            ProgramPreset preset = this.preset.FindProgram(p => p.Number == @event.Data1 && p.MSB == this.partMsb[channel] && p.LSB == this.partLsb[channel]) ??
-                                   this.preset.FindProgram(p => p.Number == @event.Data1);
+            ProgramPreset preset = this.preset.FindProgram(p => p.Number == @event.Data1 &&
+                                                                p.MSB == this.partMsb[channel] &&
+                                                                p.LSB == this.partLsb[channel]) ??
+                                     this.preset.FindProgram(p => p.Number == @event.Data1);
 
             if (preset != null)
             {

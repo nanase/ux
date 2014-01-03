@@ -303,7 +303,9 @@ namespace ux.Utils.Midi.Sequencer
 
             this.eventIndex = this.events.FindIndex(this.eventIndex, e => e.Tick >= start);
 
-            while (this.eventIndex >= 0 && this.eventIndex < this.events.Count && this.events[this.eventIndex].Tick < end)
+            while (this.eventIndex >= 0 &&
+                   this.eventIndex < this.events.Count &&
+                   this.events[this.eventIndex].Tick < end)
             {
                 @event = this.events[this.eventIndex++];
 
@@ -340,7 +342,8 @@ namespace ux.Utils.Midi.Sequencer
 
         private void RecalcTickTime()
         {
-            this.tickTime = 1.0 / ((double)Stopwatch.Frequency * ((60.0 / (this.tempo * this.tempoFactor)) / (double)this.Sequence.Resolution));
+            this.tickTime = 1.0 / ((double)Stopwatch.Frequency *
+                                   ((60.0 / (this.tempo * this.tempoFactor)) / (double)this.Sequence.Resolution));
         }
         #endregion
     }

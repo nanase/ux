@@ -75,7 +75,9 @@ namespace ux.Utils.Midi
 
                 for (int i = 0; i < count; i++)
                 {
-                    NativeMethods.midiInGetDevCaps((UIntPtr)i, ref result, (uint)Marshal.SizeOf(typeof(NativeMethods.MIDIINCAPS)));
+                    NativeMethods.midiInGetDevCaps((UIntPtr)i,
+                                                   ref result,
+                                                   (uint)Marshal.SizeOf(typeof(NativeMethods.MIDIINCAPS)));
                     names[i] = result.szPname;
                 }
 
@@ -175,7 +177,11 @@ namespace ux.Utils.Midi
 
         private bool Open(int id)
         {
-            return NativeMethods.midiInOpen(out this.handle, id, this.midiInProc, IntPtr.Zero, NativeMethods.CALLBACK_FUNCTION) == NativeMethods.MMSYSERR_NOERROR;
+            return NativeMethods.midiInOpen(out this.handle,
+                                            id,
+                                            this.midiInProc,
+                                            IntPtr.Zero,
+                                            NativeMethods.CALLBACK_FUNCTION) == NativeMethods.MMSYSERR_NOERROR;
         }
 
         private void MidiProc(IntPtr hMidiIn, int wMsg, IntPtr dwInstance, int dwParam1, int dwParam2)
@@ -183,12 +189,16 @@ namespace ux.Utils.Midi
             switch (wMsg)
             {
                 case NativeMethods.MIM_DATA:
-                    this.ProcessMidiEvent(new[] { new MidiEvent((EventType)(dwParam1 & 0xf0), dwParam1 & 0x0f, dwParam1 >> 8 & 0xff, dwParam1 >> 16 & 0xff) });
+                    this.ProcessMidiEvent(new[] { new MidiEvent((EventType)(dwParam1 & 0xf0),
+                                                                dwParam1 & 0x0f,
+                                                                dwParam1 >> 8 & 0xff,
+                                                                dwParam1 >> 16 & 0xff) });
                     this.EventCount++;
                     break;
 
                 case NativeMethods.MIM_LONGDATA:
-                    this.midiHeader = (NativeMethods.MIDIHDR)Marshal.PtrToStructure(this.ptrHeader, typeof(NativeMethods.MIDIHDR));
+                    this.midiHeader = (NativeMethods.MIDIHDR)Marshal.PtrToStructure(this.ptrHeader,
+                                                                                    typeof(NativeMethods.MIDIHDR));
                     Marshal.Copy(this.midiHeader.data, this.buffer, 0, BufferSize);
 
                     for (int i = 0; i < BufferSize; i++)
@@ -219,7 +229,10 @@ namespace ux.Utils.Midi
 
             if (GmReset.SequenceEqual(message))
             {
-                this.ProcessMidiEvent(Enumerable.Range(0, 16).Select(i => new MidiEvent(EventType.ControlChange, i, 121, 0)));
+                this.ProcessMidiEvent(Enumerable.Range(0, 16).Select(i => new MidiEvent(EventType.ControlChange,
+                                                                                        i,
+                                                                                        121,
+                                                                                        0)));
             }
         }
         #endregion
@@ -243,7 +256,11 @@ namespace ux.Utils.Midi
             internal static extern int midiInClose(IntPtr hMidiIn);
 
             [DllImport("winmm.dll", SetLastError = true)]
-            internal static extern int midiInOpen(out IntPtr lphMidiIn, int uDeviceID, MidiInProc dwCallback, IntPtr dwCallbackInstance, int dwFlags);
+            internal static extern int midiInOpen(out IntPtr lphMidiIn,
+                                                  int uDeviceID,
+                                                  MidiInProc dwCallback,
+                                                  IntPtr dwCallbackInstance,
+                                                  int dwFlags);
 
             [DllImport("winmm.dll", SetLastError = true)]
             internal static extern int midiInStart(IntPtr hMidiIn);

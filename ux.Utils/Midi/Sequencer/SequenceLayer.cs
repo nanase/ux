@@ -66,7 +66,9 @@ namespace ux.Utils.Midi.Sequencer
             this.preset = preset;
             this.master = master;
             this.selector = selector;
-            this.targetChannels = (targetChannels == null) ? Enumerable.Range(0, 16).ToArray() : targetChannels.ToArray();
+            this.targetChannels = (targetChannels == null) ?
+                                    Enumerable.Range(0, 16).ToArray() :
+                                    targetChannels.ToArray();
         }
         #endregion
 
@@ -128,7 +130,9 @@ namespace ux.Utils.Midi.Sequencer
         #region -- Private Methods --
         private void OnTrackEvent(object sender, TrackEventArgs e)
         {
-            this.selector.ProcessMidiEvent(e.Events.OfType<MidiEvent>().ToArray().Where(m => this.targetChannels.Contains(m.Channel)));
+            this.selector.ProcessMidiEvent(e.Events.OfType<MidiEvent>()
+                                                   .ToArray()
+                                                   .Where(m => this.targetChannels.Contains(m.Channel)));
         }
         #endregion
     }

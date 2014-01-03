@@ -118,18 +118,27 @@ namespace ux.Utils.Midi
                     throw new ArgumentException();
 
                 yield return new ProgramPreset(num, msb, lsb,
-                    program.Elements()
-                    .Where(h => h.Name.LocalName.ToLower() != "final")
-                    .Select(h => HandleCreator.Create(h.Name.LocalName.ToLower(), h.GetAttribute(PresetReader.xtype), h.GetAttribute(PresetReader.xvalue))),
-                    program.Elements(PresetReader.xfinal)
-                    .SelectMany(f => f.Elements())
-                    .Select(h => HandleCreator.Create(h.Name.LocalName.ToLower(), h.GetAttribute(PresetReader.xtype), h.GetAttribute(PresetReader.xvalue))));
+                                               program.Elements()
+                                                      .Where(h => h.Name.LocalName.ToLower() != "final")
+                                                      .Select(h =>
+                                                          HandleCreator.Create(h.Name.LocalName.ToLower(),
+                                                                               h.GetAttribute(PresetReader.xtype),
+                                                                               h.GetAttribute(PresetReader.xvalue))),
+                                               program.Elements(PresetReader.xfinal)
+                                                      .SelectMany(f => f.Elements())
+                                                      .Select(h =>
+                                                          HandleCreator.Create(h.Name.LocalName.ToLower(),
+                                                                               h.GetAttribute(PresetReader.xtype),
+                                                                               h.GetAttribute(PresetReader.xvalue))));
             }
         }
 
         private static IEnumerable<DrumPreset> DrumLoad(XDocument document)
         {
-            var preset = document.Elements("ux").Select(e => e.Elements("preset")).Select(e => e.Elements("drum")).FirstOrDefault();
+            var preset = document.Elements("ux")
+                                 .Select(e => e.Elements("preset"))
+                                 .Select(e => e.Elements("drum"))
+                                 .FirstOrDefault();
 
             if (preset == null)
                 throw new ArgumentException();
@@ -151,7 +160,9 @@ namespace ux.Utils.Midi
                 yield return new DrumPreset(num, note_num,
                     note.Elements()
                     .Where(h => h.Name.LocalName.ToLower() != "final")
-                    .Select(h => HandleCreator.Create(h.Name.LocalName.ToLower(), h.GetAttribute(PresetReader.xtype), h.GetAttribute(PresetReader.xvalue))));
+                    .Select(h => HandleCreator.Create(h.Name.LocalName.ToLower(),
+                                                      h.GetAttribute(PresetReader.xtype),
+                                                      h.GetAttribute(PresetReader.xvalue))));
             }
         }
         #endregion

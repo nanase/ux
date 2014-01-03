@@ -212,7 +212,10 @@ namespace ux.Utils.Midi.Sequencer
 
         private long DetectLoopBegin()
         {
-            var k = this.Tracks.SelectMany(t => t.Events).OfType<MidiEvent>().Where(e => e.Type == EventType.ControlChange && e.Data1 == 111).LastOrDefault();
+            var k = this.Tracks.SelectMany(t => t.Events)
+                               .OfType<MidiEvent>()
+                               .Where(e => e.Type == EventType.ControlChange && e.Data1 == 111)
+                               .LastOrDefault();
             return (k == null) ? 0 : k.Tick;
         }
         #endregion

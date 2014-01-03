@@ -73,7 +73,11 @@ namespace ux.Utils.Midi
         /// <param name="lsb">プログラムナンバーの LSB 値。</param>
         /// <param name="initHandles">初期化時に実行されるハンドルの列挙子。</param>
         /// <param name="finalHandles">破棄時に実行されるハンドルの列挙子。</param>
-        public ProgramPreset(int number, int msb, int lsb, IEnumerable<Handle> initHandles, IEnumerable<Handle> finalHandles)
+        public ProgramPreset(int number,
+                             int msb,
+                             int lsb,
+                             IEnumerable<Handle> initHandles,
+                             IEnumerable<Handle> finalHandles)
         {
             this.Number = number;
             this.MSB = msb;

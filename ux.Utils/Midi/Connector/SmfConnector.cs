@@ -82,7 +82,9 @@ namespace ux.Utils.Midi
             Console.WriteLine("Loaded: {0}", Path.GetFileName(filename));
             Encoding sjis = Encoding.GetEncoding(932);
 
-            foreach (MetaEvent item in sequence.Tracks.Where(t => t.Number == 0).SelectMany(t => t.Events).Where(e => e is MetaEvent))
+            foreach (MetaEvent item in sequence.Tracks.Where(t => t.Number == 0)
+                                                      .SelectMany(t => t.Events)
+                                                      .OfType<MetaEvent>())
             {
                 switch (item.MetaType)
                 {
@@ -113,7 +115,10 @@ namespace ux.Utils.Midi
             }
 
             Console.WriteLine("\tFormat: {0}, Resolution: {1}", sequence.Format, sequence.Resolution);
-            Console.WriteLine("\tTracks: {0}, Events: {1}, MaxTick: {2}", sequence.Tracks.Count(), sequence.EventCount, sequence.MaxTick);
+            Console.WriteLine("\tTracks: {0}, Events: {1}, MaxTick: {2}",
+                              sequence.Tracks.Count(),
+                              sequence.EventCount,
+                              sequence.MaxTick);
             Console.WriteLine("Frequency: {0:n0} Hz", Stopwatch.Frequency);
 
             sequencer.OnTrackEvent += (sender, e) =>
@@ -125,7 +130,9 @@ namespace ux.Utils.Midi
             sequencer.SequenceStarted += (sender, e) => Console.WriteLine("Sequencer Start");
             sequencer.SequenceEnd += (sender, e) => Console.WriteLine("Sequencer End");
             sequencer.SequenceStopped += (sender, e) => Console.WriteLine("Sequencer Stop");
-            sequencer.TempoChanged += (sender, e) => Console.WriteLine("Tempo {0:f2} => {1:f2}", e.OldTempo, e.NewTempo);
+            sequencer.TempoChanged += (sender, e) => Console.WriteLine("Tempo {0:f2} => {1:f2}",
+                                                                       e.OldTempo,
+                                                                       e.NewTempo);
 
         }
 
