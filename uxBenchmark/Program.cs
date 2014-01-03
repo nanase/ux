@@ -76,7 +76,10 @@ namespace uxBenchmark
             {
                 Console.Write("{0,-4}  ", partCount);
                 result = MuteTest(partCount);
-                Console.WriteLine("{0:mm\\:ss}  {1:ss\\.fffffff}s  {2:f3}", result, result.Divide(iterate), 1.0 / result.Divide(iterate).TotalSeconds);
+                Console.WriteLine("{0:mm\\:ss}  {1:ss\\.fffffff}s  {2:f3}",
+                                  result,
+                                  result.Divide(iterate),
+                                  1.0 / result.Divide(iterate).TotalSeconds);
             }
         }
 
@@ -119,7 +122,10 @@ namespace uxBenchmark
             {
                 Console.Write("{0,-4}  ", partCount);
                 result = DefaultFMTest(partCount);
-                Console.WriteLine("{0:mm\\:ss}  {1:ss\\.fffffff}s  {2:f3}", result, result.Divide(iterate), 1.0 / result.Divide(iterate).TotalSeconds);
+                Console.WriteLine("{0:mm\\:ss}  {1:ss\\.fffffff}s  {2:f3}",
+                                  result,
+                                  result.Divide(iterate),
+                                  1.0 / result.Divide(iterate).TotalSeconds);
             }
         }
 
@@ -165,7 +171,10 @@ namespace uxBenchmark
             {
                 Console.Write("{0,-4}  ", partCount);
                 result = DefaultSquareTest(partCount);
-                Console.WriteLine("{0:mm\\:ss}  {1:ss\\.fffffff}s  {2:f3}", result, result.Divide(iterate), 1.0 / result.Divide(iterate).TotalSeconds);
+                Console.WriteLine("{0:mm\\:ss}  {1:ss\\.fffffff}s  {2:f3}",
+                                  result,
+                                  result.Divide(iterate),
+                                  1.0 / result.Divide(iterate).TotalSeconds);
             }
         }
 
@@ -174,7 +183,8 @@ namespace uxBenchmark
             Master master = new Master(samplingRate, partCount);
             float[] buffer = new float[bufferSize];
 
-            master.PushHandle(new Handle(0, HandleType.Waveform, (int)WaveformType.Square), Enumerable.Range(1, partCount));
+            master.PushHandle(new Handle(0, HandleType.Waveform, (int)WaveformType.Square),
+                              Enumerable.Range(1, partCount));
             master.PushHandle(new Handle(0, HandleType.NoteOn, 60, 1.0f), Enumerable.Range(1, partCount));
 
             master.Play();
@@ -211,7 +221,10 @@ namespace uxBenchmark
             {
                 Console.Write("{0,-4}  ", partCount);
                 result = FullFMTest(partCount);
-                Console.WriteLine("{0:mm\\:ss}  {1:ss\\.fffffff}s  {2:f3}", result, result.Divide(iterate), 1.0 / result.Divide(iterate).TotalSeconds);
+                Console.WriteLine("{0:mm\\:ss}  {1:ss\\.fffffff}s  {2:f3}",
+                                  result,
+                                  result.Divide(iterate),
+                                  1.0 / result.Divide(iterate).TotalSeconds);
             }
         }
 
