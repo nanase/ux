@@ -35,8 +35,11 @@ namespace uxBenchmark
         const int samplingRate = 44100;
         const int bufferSize = 1024;
         const int iterate = 3000;
+        #region -- Private Fields --
+        #endregion
 
         static void Main(string[] args)
+        #region -- Public Static Methods --
         {
             Console.WriteLine("ux Benchmark :: Copyright (c) 2013-2014 Tomona Nanase");
             Console.Write("Press any key to start benchmark...");
@@ -56,7 +59,9 @@ namespace uxBenchmark
             Console.WriteLine("Complete!");
             Console.ReadLine();
         }
+        #endregion
 
+        #region -- Private Static Methods --
         #region MuteTest
         static void MuteTest()
         {
@@ -275,13 +280,16 @@ namespace uxBenchmark
             return sw.Elapsed;
         }
         #endregion
+        #endregion
     }
 
     public static class Extension
     {
+        #region -- Public Static Methods --
         public static TimeSpan Divide(this TimeSpan a, double b)
         {
             return new TimeSpan((long)Math.Round(a.Ticks / b));
         }
+        #endregion
     }
 }
