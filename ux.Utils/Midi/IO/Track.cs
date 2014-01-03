@@ -22,7 +22,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/* 規格出展: about Standard MIDI format
+/* 規格出典: about Standard MIDI format
  *          http://www2s.biglobe.ne.jp/~yyagi/material/smfspec.html
  */
 
