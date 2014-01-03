@@ -30,13 +30,18 @@ namespace uxPlayer
 {
     abstract class MonitorBase : IDisposable
     {
+        #region -- Protected Fields --
         protected readonly Color backgroundColor;
         protected readonly Graphics graphics;
         protected readonly Bitmap bitmap;
         protected readonly Size size;
+        #endregion
 
+        #region -- Public Properties --
         public Bitmap Bitmap { get { return this.bitmap; } }
+        #endregion
 
+        #region -- Constructors --
         public MonitorBase(Color backgroundColor, Size size)
         {
             this.backgroundColor = backgroundColor;
@@ -45,31 +50,37 @@ namespace uxPlayer
             this.bitmap = new Bitmap(size.Width, size.Height);
             this.graphics = Graphics.FromImage(this.bitmap);
         }
+        #endregion
 
+        #region -- Public Methods --
         public abstract void Draw(float[] data);
 
         #region IDisposable メンバー
-
         public void Dispose()
         {
             this.graphics.Dispose();
             this.bitmap.Dispose();
         }
-
+        #endregion
         #endregion
     }
 
     class WaveformMonitor : MonitorBase
     {
+        #region -- Private Fields --
         private PointF[] buffer = new PointF[0];
         private Pen p = Pens.Black;
+        #endregion
 
+        #region -- Constructors --
         public WaveformMonitor(Color backgroundColor, Size size)
             : base(backgroundColor, size)
         {
             this.graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
         }
+        #endregion
 
+        #region -- Public Methods --
         public override void Draw(float[] data)
         {
             this.graphics.Clear(this.backgroundColor);
@@ -94,21 +105,27 @@ namespace uxPlayer
 
             this.graphics.Flush();
         }
+        #endregion
     }
 
     class FrequencyMonitor : MonitorBase
     {
+        #region -- Private Fields --
         private PointF[] buffer = new PointF[0];
         private Pen p = Pens.Black;
 
         private double[] re = new double[0];
         private double[] im = new double[0];
+        #endregion
 
+        #region -- Constructors --
         public FrequencyMonitor(Color backgroundColor, Size size)
             : base(backgroundColor, size)
         {
         }
+        #endregion
 
+        #region -- Public Methods --
         public override void Draw(float[] data)
         {
             float dx = (float)this.size.Width / (float)(data.Length / 4);
@@ -178,20 +195,26 @@ namespace uxPlayer
 
             this.graphics.Flush();
         }
+        #endregion
     }
 
     class FrequencySpectrumMonitor : MonitorBase
     {
+        #region -- Private Fields --
         private double[] re = new double[0];
         private double[] im = new double[0];
         private Bitmap spectrum = null;
+        #endregion
 
+        #region -- Constructors --
         public FrequencySpectrumMonitor(Color backgroundColor, Size size)
             : base(backgroundColor, size)
         {
             this.graphics.Clear(Color.Black);
         }
+        #endregion
 
+        #region -- Public Methods --
         unsafe public override void Draw(float[] data)
         {
             float dx = (float)this.size.Width / (float)(data.Length / 4);
@@ -247,22 +270,28 @@ namespace uxPlayer
             this.graphics.DrawImage(this.spectrum, this.size.Width - 1, this.size.Height - 1, 1, -this.size.Height);
             this.graphics.Flush();
         }
+        #endregion
     }
 
     class VolumeMonitor : MonitorBase
     {
+        #region -- Private Fields --
         private float[] l = new float[0];
         private float[] r = new float[0];
         private float max_l, max_r, ave_l, ave_r;
 
         private Brush max = new SolidBrush(Color.FromArgb(64, 64, 64));
         private Brush ave = new SolidBrush(Color.FromArgb(128, 128, 128));
+        #endregion
 
+        #region -- Constructors --
         public VolumeMonitor(Color backgroundColor, Size size)
             : base(backgroundColor, size)
         {
         }
+        #endregion
 
+        #region -- Public Methods --
         public override void Draw(float[] data)
         {
             int length = data.Length / 2;
@@ -297,7 +326,9 @@ namespace uxPlayer
 
             this.graphics.Flush();
         }
+        #endregion
 
+        #region -- Private Static Methods --
         private static float GetMax(float[] data)
         {
             float max = 0.0f;
@@ -327,10 +358,12 @@ namespace uxPlayer
 
             return total / data.Length;
         }
+        #endregion
     }
 
     static class Utils
     {
+        #region -- Public Static Methods --
         public static void WindowingAsHanning(double[] array)
         {
             double k = 2.0 * Math.PI / (double)array.Length;
@@ -382,5 +415,6 @@ namespace uxPlayer
                 }
             }
         }
+        #endregion
     }
 }

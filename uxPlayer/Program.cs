@@ -29,6 +29,7 @@ namespace uxPlayer
 {
     static class Program
     {
+        #region -- Public Static Methods --        
         /// <summary>
         /// アプリケーションのメイン エントリ ポイントです。
         /// </summary>
@@ -39,5 +40,6 @@ namespace uxPlayer
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
         }
+        #endregion
     }
 }

@@ -36,7 +36,7 @@ namespace uxPlayer
 {
     public partial class MainForm : Form
     {
-        #region Private Field
+        #region -- Private Fields --
         private SinglePlayer player;
         private MidiConnector connector;
         private const int frequencty = 44100;
@@ -52,14 +52,14 @@ namespace uxPlayer
         private readonly Encoding sjis = Encoding.GetEncoding(932);
         #endregion
 
-        #region Constructor
+        #region -- Constructors --
         public MainForm()
         {
             InitializeComponent();
         }
         #endregion
 
-        #region Private Method
+        #region -- Private Methods --
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.monitorBuffer = new float[2048];
