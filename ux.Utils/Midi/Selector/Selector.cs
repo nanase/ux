@@ -23,8 +23,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 using System.Collections.Generic;
-using System.IO;
-using ux;
 using ux.Utils.Midi.IO;
 
 namespace ux.Utils.Midi
