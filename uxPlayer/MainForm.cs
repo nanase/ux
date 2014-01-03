@@ -22,13 +22,13 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using ALSharp;
 using System;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using ALSharp;
 using ux.Utils.Midi;
 using ux.Utils.Midi.IO;
 
