@@ -57,9 +57,17 @@ namespace uxConsole
 
             Console.WriteLine("[q] Quit, [r] Reload Presets");
 
-            Func<float[], int, int, int> process = (buffer, offset, count) => connector.Master.Read(buffer, offset, count);
+            Func<float[], int, int, int> process =
+                (buffer, offset, count) => connector.Master.Read(buffer, offset, count);
 
-            var setting = new PlayerSettings() { BufferSize = 512, BufferCount = 64, BitPerSample = 16, SamplingFrequency = frequencty };
+            var setting = new PlayerSettings()
+            {
+                BufferSize = 512,
+                BufferCount = 64,
+                BitPerSample = 16,
+                SamplingFrequency = frequencty
+            };
+
             using (var l = new SinglePlayer(process, setting))
             {
                 Console.WriteLine("Playing!");
