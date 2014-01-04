@@ -86,8 +86,8 @@ namespace uxPlayer
 
             var setting = new PlayerSettings()
             {
-                BufferSize = 1024,
-                BufferCount = 32,
+                BufferSize = 1024 * 2,
+                BufferCount = 16,
                 BitPerSample = 16,
                 SamplingFrequency = frequencty
             };
