@@ -40,6 +40,8 @@ namespace ux.Utils.Midi
         #region -- Private Fields --
         private Sequence sequence;
         private Sequencer.Sequencer sequencer;
+
+        private bool disposed;
         #endregion
 
         #region -- Public Properties --
@@ -159,7 +161,31 @@ namespace ux.Utils.Midi
         /// </summary>
         public override void Dispose()
         {
-            this.Stop();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
+
+        #region -- Protected Methods --
+        /// <summary>
+        /// このオブジェクトによって使用されているアンマネージリソースを解放し、オプションでマネージリソースも解放します。
+        /// </summary>
+        /// <param name="disposing">マネージリソースとアンマネージリソースの両方を解放する場合は true。
+        /// アンマネージリソースだけを解放する場合は false。</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                }
+
+                this.Stop();
+
+                this.disposed = true;
+            }
+
+            //base.Dispose(disposing);
         }
         #endregion
     }
