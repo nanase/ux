@@ -31,34 +31,17 @@
             this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menu_file = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu_open = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_exit = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_playing = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu_playFirst = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu_play = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu_stop = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.menu_allNoteOff = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu_allReset = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_tool = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu_connect = new System.Windows.Forms.ToolStripMenuItem();
-            this.menu_refresh = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_help = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_versionInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.toolStrip_open = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStrip_playFirst = new System.Windows.Forms.ToolStripButton();
-            this.toolStrip_play = new System.Windows.Forms.ToolStripButton();
-            this.toolStrip_stop = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStrip_connect = new System.Windows.Forms.ToolStripButton();
-            this.toolStrip_refresh = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStrip_allNoteOff = new System.Windows.Forms.ToolStripButton();
-            this.toolStrip_allReset = new System.Windows.Forms.ToolStripButton();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.monitorBox = new System.Windows.Forms.PictureBox();
             this.monitorMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menu_noMonitor = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_waveform = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,7 +50,6 @@
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.hScrollBar = new System.Windows.Forms.HScrollBar();
             this.panel = new System.Windows.Forms.Panel();
-            this.volumeMonitorBox = new System.Windows.Forms.PictureBox();
             this.label_static_title = new System.Windows.Forms.Label();
             this.label_static_tone = new System.Windows.Forms.Label();
             this.label_static_tick = new System.Windows.Forms.Label();
@@ -91,16 +73,37 @@
             this.fastTimer = new System.Windows.Forms.Timer(this.components);
             this.smfFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.slowTimer = new System.Windows.Forms.Timer(this.components);
+            this.monitorBox = new System.Windows.Forms.PictureBox();
+            this.volumeMonitorBox = new System.Windows.Forms.PictureBox();
+            this.toolStrip_open = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip_playFirst = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip_play = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip_stop = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip_connect = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip_refresh = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip_allNoteOff = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip_allReset = new System.Windows.Forms.ToolStripButton();
+            this.menu_open = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_playFirst = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_play = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_stop = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_allNoteOff = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_allReset = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_connect = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_refresh = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.menu_export = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.monitorBox)).BeginInit();
             this.monitorMenu.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.monitorBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeMonitorBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -121,18 +124,13 @@
             // 
             this.menu_file.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menu_open,
+            this.toolStripSeparator5,
+            this.menu_export,
+            this.toolStripSeparator6,
             this.menu_exit});
             this.menu_file.Name = "menu_file";
             this.menu_file.Size = new System.Drawing.Size(85, 22);
             this.menu_file.Text = "ファイル(&F)";
-            // 
-            // menu_open
-            // 
-            this.menu_open.Image = global::uxPlayer.Properties.Resources.folder_horizontal_open;
-            this.menu_open.Name = "menu_open";
-            this.menu_open.Size = new System.Drawing.Size(244, 22);
-            this.menu_open.Text = "MIDIファイルの読み込み(&O)...";
-            this.menu_open.Click += new System.EventHandler(this.menu_open_Click);
             // 
             // menu_exit
             // 
@@ -154,50 +152,10 @@
             this.menu_playing.Size = new System.Drawing.Size(61, 22);
             this.menu_playing.Text = "演奏(&P)";
             // 
-            // menu_playFirst
-            // 
-            this.menu_playFirst.Image = global::uxPlayer.Properties.Resources.control_stop_180;
-            this.menu_playFirst.Name = "menu_playFirst";
-            this.menu_playFirst.Size = new System.Drawing.Size(191, 22);
-            this.menu_playFirst.Text = "最初から再生(&F)";
-            this.menu_playFirst.Click += new System.EventHandler(this.menu_playFirst_Click);
-            // 
-            // menu_play
-            // 
-            this.menu_play.Image = global::uxPlayer.Properties.Resources.control;
-            this.menu_play.Name = "menu_play";
-            this.menu_play.Size = new System.Drawing.Size(191, 22);
-            this.menu_play.Text = "再生(&P)";
-            this.menu_play.Click += new System.EventHandler(this.menu_play_Click);
-            // 
-            // menu_stop
-            // 
-            this.menu_stop.Image = global::uxPlayer.Properties.Resources.control_stop_square;
-            this.menu_stop.Name = "menu_stop";
-            this.menu_stop.Size = new System.Drawing.Size(191, 22);
-            this.menu_stop.Text = "停止(&S)";
-            this.menu_stop.Click += new System.EventHandler(this.menu_stop_Click);
-            // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
             this.toolStripSeparator4.Size = new System.Drawing.Size(188, 6);
-            // 
-            // menu_allNoteOff
-            // 
-            this.menu_allNoteOff.Image = global::uxPlayer.Properties.Resources.cross_white;
-            this.menu_allNoteOff.Name = "menu_allNoteOff";
-            this.menu_allNoteOff.Size = new System.Drawing.Size(191, 22);
-            this.menu_allNoteOff.Text = "オールノートオフ(&O)";
-            this.menu_allNoteOff.Click += new System.EventHandler(this.menu_allNoteOff_Click);
-            // 
-            // menu_allReset
-            // 
-            this.menu_allReset.Image = global::uxPlayer.Properties.Resources.exclamation_white;
-            this.menu_allReset.Name = "menu_allReset";
-            this.menu_allReset.Size = new System.Drawing.Size(191, 22);
-            this.menu_allReset.Text = "オールリセット(&R)";
-            this.menu_allReset.Click += new System.EventHandler(this.menu_allReset_Click);
             // 
             // menu_tool
             // 
@@ -207,22 +165,6 @@
             this.menu_tool.Name = "menu_tool";
             this.menu_tool.Size = new System.Drawing.Size(74, 22);
             this.menu_tool.Text = "ツール(&T)";
-            // 
-            // menu_connect
-            // 
-            this.menu_connect.Image = global::uxPlayer.Properties.Resources.plug_disconnect;
-            this.menu_connect.Name = "menu_connect";
-            this.menu_connect.Size = new System.Drawing.Size(226, 22);
-            this.menu_connect.Text = "MIDI-INへの接続(&M)";
-            this.menu_connect.Click += new System.EventHandler(this.menu_connect_Click);
-            // 
-            // menu_refresh
-            // 
-            this.menu_refresh.Image = global::uxPlayer.Properties.Resources.arrow_circle;
-            this.menu_refresh.Name = "menu_refresh";
-            this.menu_refresh.Size = new System.Drawing.Size(226, 22);
-            this.menu_refresh.Text = "プリセットリフレッシュ(&R)";
-            this.menu_refresh.Click += new System.EventHandler(this.menu_refresh_Click);
             // 
             // menu_help
             // 
@@ -260,100 +202,20 @@
             this.toolStrip.TabIndex = 1;
             this.toolStrip.Text = "toolStrip1";
             // 
-            // toolStrip_open
-            // 
-            this.toolStrip_open.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStrip_open.Image = global::uxPlayer.Properties.Resources.folder_horizontal_open;
-            this.toolStrip_open.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStrip_open.Name = "toolStrip_open";
-            this.toolStrip_open.Size = new System.Drawing.Size(23, 22);
-            this.toolStrip_open.Text = "MIDIファイルの読み込み";
-            this.toolStrip_open.Click += new System.EventHandler(this.toolStrip_open_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStrip_playFirst
-            // 
-            this.toolStrip_playFirst.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStrip_playFirst.Image = global::uxPlayer.Properties.Resources.control_stop_180;
-            this.toolStrip_playFirst.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStrip_playFirst.Name = "toolStrip_playFirst";
-            this.toolStrip_playFirst.Size = new System.Drawing.Size(23, 22);
-            this.toolStrip_playFirst.Text = "最初から再生";
-            this.toolStrip_playFirst.Click += new System.EventHandler(this.toolStrip_playFirst_Click);
-            // 
-            // toolStrip_play
-            // 
-            this.toolStrip_play.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStrip_play.Image = global::uxPlayer.Properties.Resources.control;
-            this.toolStrip_play.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStrip_play.Name = "toolStrip_play";
-            this.toolStrip_play.Size = new System.Drawing.Size(23, 22);
-            this.toolStrip_play.Text = "再生";
-            this.toolStrip_play.Click += new System.EventHandler(this.toolStrip_play_Click);
-            // 
-            // toolStrip_stop
-            // 
-            this.toolStrip_stop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStrip_stop.Image = global::uxPlayer.Properties.Resources.control_stop_square;
-            this.toolStrip_stop.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStrip_stop.Name = "toolStrip_stop";
-            this.toolStrip_stop.Size = new System.Drawing.Size(23, 22);
-            this.toolStrip_stop.Text = "停止";
-            this.toolStrip_stop.Click += new System.EventHandler(this.toolStrip_stop_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStrip_connect
-            // 
-            this.toolStrip_connect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStrip_connect.Image = global::uxPlayer.Properties.Resources.plug_disconnect;
-            this.toolStrip_connect.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStrip_connect.Name = "toolStrip_connect";
-            this.toolStrip_connect.Size = new System.Drawing.Size(23, 22);
-            this.toolStrip_connect.Text = "MIDI-INへの接続";
-            this.toolStrip_connect.Click += new System.EventHandler(this.toolStrip_connect_Click);
-            // 
-            // toolStrip_refresh
-            // 
-            this.toolStrip_refresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStrip_refresh.Image = global::uxPlayer.Properties.Resources.arrow_circle;
-            this.toolStrip_refresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStrip_refresh.Name = "toolStrip_refresh";
-            this.toolStrip_refresh.Size = new System.Drawing.Size(23, 22);
-            this.toolStrip_refresh.Text = "プリセットリフレッシュ";
-            this.toolStrip_refresh.Click += new System.EventHandler(this.toolStrip_refresh_Click);
-            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStrip_allNoteOff
-            // 
-            this.toolStrip_allNoteOff.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStrip_allNoteOff.Image = global::uxPlayer.Properties.Resources.cross_white;
-            this.toolStrip_allNoteOff.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStrip_allNoteOff.Name = "toolStrip_allNoteOff";
-            this.toolStrip_allNoteOff.Size = new System.Drawing.Size(23, 22);
-            this.toolStrip_allNoteOff.Text = "オールノートオフ";
-            this.toolStrip_allNoteOff.Click += new System.EventHandler(this.toolStrip_allNoteOff_Click);
-            // 
-            // toolStrip_allReset
-            // 
-            this.toolStrip_allReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStrip_allReset.Image = global::uxPlayer.Properties.Resources.exclamation_white;
-            this.toolStrip_allReset.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStrip_allReset.Name = "toolStrip_allReset";
-            this.toolStrip_allReset.Size = new System.Drawing.Size(23, 22);
-            this.toolStrip_allReset.Text = "オールリセット";
-            this.toolStrip_allReset.Click += new System.EventHandler(this.toolStrip_allReset_Click);
             // 
             // splitContainer
             // 
@@ -374,18 +236,6 @@
             this.splitContainer.SplitterDistance = 192;
             this.splitContainer.SplitterWidth = 1;
             this.splitContainer.TabIndex = 2;
-            // 
-            // monitorBox
-            // 
-            this.monitorBox.BackColor = System.Drawing.Color.PaleGreen;
-            this.monitorBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.monitorBox.ContextMenuStrip = this.monitorMenu;
-            this.monitorBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.monitorBox.Location = new System.Drawing.Point(0, 0);
-            this.monitorBox.Name = "monitorBox";
-            this.monitorBox.Size = new System.Drawing.Size(192, 101);
-            this.monitorBox.TabIndex = 0;
-            this.monitorBox.TabStop = false;
             // 
             // monitorMenu
             // 
@@ -478,16 +328,6 @@
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(273, 77);
             this.panel.TabIndex = 1;
-            // 
-            // volumeMonitorBox
-            // 
-            this.volumeMonitorBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.volumeMonitorBox.Location = new System.Drawing.Point(63, 60);
-            this.volumeMonitorBox.Name = "volumeMonitorBox";
-            this.volumeMonitorBox.Size = new System.Drawing.Size(147, 17);
-            this.volumeMonitorBox.TabIndex = 19;
-            this.volumeMonitorBox.TabStop = false;
             // 
             // label_static_title
             // 
@@ -722,6 +562,189 @@
             this.slowTimer.Interval = 250;
             this.slowTimer.Tick += new System.EventHandler(this.slowTimer_Tick);
             // 
+            // monitorBox
+            // 
+            this.monitorBox.BackColor = System.Drawing.Color.PaleGreen;
+            this.monitorBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.monitorBox.ContextMenuStrip = this.monitorMenu;
+            this.monitorBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.monitorBox.Location = new System.Drawing.Point(0, 0);
+            this.monitorBox.Name = "monitorBox";
+            this.monitorBox.Size = new System.Drawing.Size(192, 101);
+            this.monitorBox.TabIndex = 0;
+            this.monitorBox.TabStop = false;
+            // 
+            // volumeMonitorBox
+            // 
+            this.volumeMonitorBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.volumeMonitorBox.Location = new System.Drawing.Point(63, 60);
+            this.volumeMonitorBox.Name = "volumeMonitorBox";
+            this.volumeMonitorBox.Size = new System.Drawing.Size(147, 17);
+            this.volumeMonitorBox.TabIndex = 19;
+            this.volumeMonitorBox.TabStop = false;
+            // 
+            // toolStrip_open
+            // 
+            this.toolStrip_open.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStrip_open.Image = global::uxPlayer.Properties.Resources.folder_horizontal_open;
+            this.toolStrip_open.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip_open.Name = "toolStrip_open";
+            this.toolStrip_open.Size = new System.Drawing.Size(23, 22);
+            this.toolStrip_open.Text = "MIDIファイルの読み込み";
+            this.toolStrip_open.Click += new System.EventHandler(this.toolStrip_open_Click);
+            // 
+            // toolStrip_playFirst
+            // 
+            this.toolStrip_playFirst.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStrip_playFirst.Image = global::uxPlayer.Properties.Resources.control_stop_180;
+            this.toolStrip_playFirst.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip_playFirst.Name = "toolStrip_playFirst";
+            this.toolStrip_playFirst.Size = new System.Drawing.Size(23, 22);
+            this.toolStrip_playFirst.Text = "最初から再生";
+            this.toolStrip_playFirst.Click += new System.EventHandler(this.toolStrip_playFirst_Click);
+            // 
+            // toolStrip_play
+            // 
+            this.toolStrip_play.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStrip_play.Image = global::uxPlayer.Properties.Resources.control;
+            this.toolStrip_play.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip_play.Name = "toolStrip_play";
+            this.toolStrip_play.Size = new System.Drawing.Size(23, 22);
+            this.toolStrip_play.Text = "再生";
+            this.toolStrip_play.Click += new System.EventHandler(this.toolStrip_play_Click);
+            // 
+            // toolStrip_stop
+            // 
+            this.toolStrip_stop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStrip_stop.Image = global::uxPlayer.Properties.Resources.control_stop_square;
+            this.toolStrip_stop.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip_stop.Name = "toolStrip_stop";
+            this.toolStrip_stop.Size = new System.Drawing.Size(23, 22);
+            this.toolStrip_stop.Text = "停止";
+            this.toolStrip_stop.Click += new System.EventHandler(this.toolStrip_stop_Click);
+            // 
+            // toolStrip_connect
+            // 
+            this.toolStrip_connect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStrip_connect.Image = global::uxPlayer.Properties.Resources.plug_disconnect;
+            this.toolStrip_connect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip_connect.Name = "toolStrip_connect";
+            this.toolStrip_connect.Size = new System.Drawing.Size(23, 22);
+            this.toolStrip_connect.Text = "MIDI-INへの接続";
+            this.toolStrip_connect.Click += new System.EventHandler(this.toolStrip_connect_Click);
+            // 
+            // toolStrip_refresh
+            // 
+            this.toolStrip_refresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStrip_refresh.Image = global::uxPlayer.Properties.Resources.arrow_circle;
+            this.toolStrip_refresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip_refresh.Name = "toolStrip_refresh";
+            this.toolStrip_refresh.Size = new System.Drawing.Size(23, 22);
+            this.toolStrip_refresh.Text = "プリセットリフレッシュ";
+            this.toolStrip_refresh.Click += new System.EventHandler(this.toolStrip_refresh_Click);
+            // 
+            // toolStrip_allNoteOff
+            // 
+            this.toolStrip_allNoteOff.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStrip_allNoteOff.Image = global::uxPlayer.Properties.Resources.cross_white;
+            this.toolStrip_allNoteOff.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip_allNoteOff.Name = "toolStrip_allNoteOff";
+            this.toolStrip_allNoteOff.Size = new System.Drawing.Size(23, 22);
+            this.toolStrip_allNoteOff.Text = "オールノートオフ";
+            this.toolStrip_allNoteOff.Click += new System.EventHandler(this.toolStrip_allNoteOff_Click);
+            // 
+            // toolStrip_allReset
+            // 
+            this.toolStrip_allReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStrip_allReset.Image = global::uxPlayer.Properties.Resources.exclamation_white;
+            this.toolStrip_allReset.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStrip_allReset.Name = "toolStrip_allReset";
+            this.toolStrip_allReset.Size = new System.Drawing.Size(23, 22);
+            this.toolStrip_allReset.Text = "オールリセット";
+            this.toolStrip_allReset.Click += new System.EventHandler(this.toolStrip_allReset_Click);
+            // 
+            // menu_open
+            // 
+            this.menu_open.Image = global::uxPlayer.Properties.Resources.folder_horizontal_open;
+            this.menu_open.Name = "menu_open";
+            this.menu_open.Size = new System.Drawing.Size(244, 22);
+            this.menu_open.Text = "MIDIファイルの読み込み(&O)...";
+            this.menu_open.Click += new System.EventHandler(this.menu_open_Click);
+            // 
+            // menu_playFirst
+            // 
+            this.menu_playFirst.Image = global::uxPlayer.Properties.Resources.control_stop_180;
+            this.menu_playFirst.Name = "menu_playFirst";
+            this.menu_playFirst.Size = new System.Drawing.Size(191, 22);
+            this.menu_playFirst.Text = "最初から再生(&F)";
+            this.menu_playFirst.Click += new System.EventHandler(this.menu_playFirst_Click);
+            // 
+            // menu_play
+            // 
+            this.menu_play.Image = global::uxPlayer.Properties.Resources.control;
+            this.menu_play.Name = "menu_play";
+            this.menu_play.Size = new System.Drawing.Size(191, 22);
+            this.menu_play.Text = "再生(&P)";
+            this.menu_play.Click += new System.EventHandler(this.menu_play_Click);
+            // 
+            // menu_stop
+            // 
+            this.menu_stop.Image = global::uxPlayer.Properties.Resources.control_stop_square;
+            this.menu_stop.Name = "menu_stop";
+            this.menu_stop.Size = new System.Drawing.Size(191, 22);
+            this.menu_stop.Text = "停止(&S)";
+            this.menu_stop.Click += new System.EventHandler(this.menu_stop_Click);
+            // 
+            // menu_allNoteOff
+            // 
+            this.menu_allNoteOff.Image = global::uxPlayer.Properties.Resources.cross_white;
+            this.menu_allNoteOff.Name = "menu_allNoteOff";
+            this.menu_allNoteOff.Size = new System.Drawing.Size(191, 22);
+            this.menu_allNoteOff.Text = "オールノートオフ(&O)";
+            this.menu_allNoteOff.Click += new System.EventHandler(this.menu_allNoteOff_Click);
+            // 
+            // menu_allReset
+            // 
+            this.menu_allReset.Image = global::uxPlayer.Properties.Resources.exclamation_white;
+            this.menu_allReset.Name = "menu_allReset";
+            this.menu_allReset.Size = new System.Drawing.Size(191, 22);
+            this.menu_allReset.Text = "オールリセット(&R)";
+            this.menu_allReset.Click += new System.EventHandler(this.menu_allReset_Click);
+            // 
+            // menu_connect
+            // 
+            this.menu_connect.Image = global::uxPlayer.Properties.Resources.plug_disconnect;
+            this.menu_connect.Name = "menu_connect";
+            this.menu_connect.Size = new System.Drawing.Size(226, 22);
+            this.menu_connect.Text = "MIDI-INへの接続(&M)";
+            this.menu_connect.Click += new System.EventHandler(this.menu_connect_Click);
+            // 
+            // menu_refresh
+            // 
+            this.menu_refresh.Image = global::uxPlayer.Properties.Resources.arrow_circle;
+            this.menu_refresh.Name = "menu_refresh";
+            this.menu_refresh.Size = new System.Drawing.Size(226, 22);
+            this.menu_refresh.Text = "プリセットリフレッシュ(&R)";
+            this.menu_refresh.Click += new System.EventHandler(this.menu_refresh_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(241, 6);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(241, 6);
+            // 
+            // menu_export
+            // 
+            this.menu_export.Name = "menu_export";
+            this.menu_export.Size = new System.Drawing.Size(244, 22);
+            this.menu_export.Text = "WAVEファイルへの出力(&E)...";
+            this.menu_export.Click += new System.EventHandler(this.menu_export_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -745,10 +768,10 @@
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.monitorBox)).EndInit();
             this.monitorMenu.ResumeLayout(false);
             this.tableLayoutPanel.ResumeLayout(false);
             this.panel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.monitorBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeMonitorBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -819,6 +842,9 @@
         private System.Windows.Forms.ToolStripMenuItem menu_open;
         private System.Windows.Forms.ToolStripMenuItem menu_playFirst;
         private System.Windows.Forms.ToolStripButton toolStrip_playFirst;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem menu_export;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
     }
 }
 

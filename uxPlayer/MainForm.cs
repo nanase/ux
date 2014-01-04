@@ -24,6 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -559,6 +560,31 @@ namespace uxPlayer
         private void menu_playFirst_Click(object sender, EventArgs e)
         {
             this.PlayFromFirst();
+        }
+
+        private void menu_export_Click(object sender, EventArgs e)
+        {
+            if (!this.mode_smf)
+            {
+                MessageBox.Show("出力は SMF モードでのみ使用できます。",
+                                "",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+
+            if(!File.Exists(this.smfFileDialog.FileName))
+            {
+                MessageBox.Show("SMF ファイルが開かれていません。",
+                                "",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+
+            ExportDialog ed = new ExportDialog(this.smfFileDialog.FileName, new[] { "ux_preset.xml" });
+
+            ed.ShowDialog();
         }
         #endregion
         #endregion
