@@ -45,6 +45,7 @@ namespace ux.Utils.Midi.Sequencer
         private double tempoFactor = 1.0;
         private double tickTime;
         private long loopBeginTick = 0L;
+        private double progressTick = 0.0;
 
         private int eventIndex = 0;
 
@@ -208,6 +209,7 @@ namespace ux.Utils.Midi.Sequencer
                 this.SequenceStarted(this, new EventArgs());
 
             this.reqEnd = false;
+            this.progressTick = 0.0;
             this.sequenceTask = Task.Factory.StartNew(this.Update);
         }
 
@@ -231,6 +233,37 @@ namespace ux.Utils.Midi.Sequencer
             this.sequenceTask.Dispose();
             this.sequenceTask = null;
         }
+
+        public void Progress(double seconds)
+        {
+            long startTick, endTick;
+            long processTick;
+
+            double tickTime = 1.0 / ((60.0 / (this.tempo * this.tempoFactor)) / (double)this.Sequence.Resolution);
+
+            this.progressTick += (seconds * tickTime);
+
+            if (this.progressTick == 0.0)
+                return;
+
+            processTick = (long)progressTick;
+            this.progressTick -= processTick;
+
+            startTick = this.tick;
+            endTick = startTick + processTick;
+
+            this.OutputEvents(this.SelectEvents(startTick, endTick).ToList());
+
+            this.tick += processTick;
+
+            if (this.tick >= this.endOfTick)
+            {
+                if (this.Looping)
+                    this.Tick = this.loopBeginTick;
+                else if (this.SequenceEnd != null)
+                    this.SequenceEnd(this, new EventArgs());
+            }
+        }
         #endregion
 
         #region -- Private Methods --
@@ -242,7 +275,6 @@ namespace ux.Utils.Midi.Sequencer
             long oldTick = 0L;
             long nowTick, startTick, endTick;
             long processTick;
-            double progressTick = 0.0;
 
             while (!this.reqEnd)
             {
@@ -262,13 +294,13 @@ namespace ux.Utils.Midi.Sequencer
                     }
 
                     nowTick = stopwatch.ElapsedTicks;
-                    progressTick += ((double)(nowTick - oldTick) * this.tickTime);
+                    this.progressTick += ((double)(nowTick - oldTick) * this.tickTime);
 
-                    if (progressTick == 0.0)
+                    if (this.progressTick == 0.0)
                         continue;
 
-                    processTick = (long)progressTick;
-                    progressTick -= processTick;
+                    processTick = (long)this.progressTick;
+                    this.progressTick -= processTick;
 
                     startTick = this.tick;
                     endTick = startTick + processTick;
