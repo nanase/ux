@@ -37,6 +37,10 @@ namespace uxPlayer
         protected readonly Size size;
         #endregion
 
+        #region -- Private Fields --
+        private bool disposed;
+        #endregion
+
         #region -- Public Properties --
         public Bitmap Bitmap { get { return this.bitmap; } }
         #endregion
@@ -58,10 +62,33 @@ namespace uxPlayer
         #region IDisposable メンバー
         public void Dispose()
         {
-            this.graphics.Dispose();
-            this.bitmap.Dispose();
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
         #endregion
+        #endregion
+
+        #region -- Protected Methods --
+        /// <summary>
+        /// このオブジェクトによって使用されているアンマネージリソースを解放し、オプションでマネージリソースも解放します。
+        /// </summary>
+        /// <param name="disposing">マネージリソースとアンマネージリソースの両方を解放する場合は true。
+        /// アンマネージリソースだけを解放する場合は false。</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.graphics.Dispose();
+                    this.bitmap.Dispose();
+                }
+
+                this.disposed = true;
+            }
+
+            //base.Dispose(disposing);
+        }
         #endregion
     }
 
@@ -204,6 +231,8 @@ namespace uxPlayer
         private double[] re = new double[0];
         private double[] im = new double[0];
         private Bitmap spectrum = null;
+
+        private bool disposed;
         #endregion
 
         #region -- Constructors --
@@ -275,6 +304,28 @@ namespace uxPlayer
             this.graphics.Flush();
         }
         #endregion
+
+        #region -- Protected Methods --
+        /// <summary>
+        /// このオブジェクトによって使用されているアンマネージリソースを解放し、オプションでマネージリソースも解放します。
+        /// </summary>
+        /// <param name="disposing">マネージリソースとアンマネージリソースの両方を解放する場合は true。
+        /// アンマネージリソースだけを解放する場合は false。</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.spectrum.Dispose();
+                }
+
+                this.disposed = true;
+            }
+
+            base.Dispose(disposing);
+        }
+        #endregion
     }
 
     class VolumeMonitor : MonitorBase
@@ -286,6 +337,8 @@ namespace uxPlayer
 
         private Brush max = new SolidBrush(Color.FromArgb(64, 64, 64));
         private Brush ave = new SolidBrush(Color.FromArgb(128, 128, 128));
+
+        private bool disposed;
         #endregion
 
         #region -- Constructors --
@@ -361,6 +414,29 @@ namespace uxPlayer
             }
 
             return total / data.Length;
+        }
+        #endregion
+
+        #region -- Protected Methods --
+        /// <summary>
+        /// このオブジェクトによって使用されているアンマネージリソースを解放し、オプションでマネージリソースも解放します。
+        /// </summary>
+        /// <param name="disposing">マネージリソースとアンマネージリソースの両方を解放する場合は true。
+        /// アンマネージリソースだけを解放する場合は false。</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.max.Dispose();
+                    this.ave.Dispose();
+                }
+
+                this.disposed = true;
+            }
+
+            base.Dispose(disposing);
         }
         #endregion
     }
