@@ -199,10 +199,9 @@ namespace uxPlayer
     class WaveFilter
     {
         #region -- Public Fields --
-        // TODO: バッファサイズに依存していてもう一つバッファが必要
-        public const int DefaultFilterSize = 2048 / 8;
-        public const int DefaultSegmentSize = 2048 / 8;
-        public const int DefaultFFTSize = 4096 / 8;
+        public const int DefaultFilterSize = 2048 / 4;
+        public const int DefaultSegmentSize = 2048 / 4;
+        public const int DefaultFFTSize = 4096 / 4;
         #endregion
 
         #region -- Private Fields --
