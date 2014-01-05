@@ -278,5 +278,57 @@ namespace uxPlayer
         }
         #endregion
     }
+
+    class FilterBuffer<T>
+    {
+        private readonly int length;
+        private readonly T[] data;
+        private readonly Action<T[]> action;
+        private int index;
+
+        public T[] Data { get { return this.data; } }
+
+        public FilterBuffer(int length, Action<T[]> action)
+        {
+            this.length = length;
+            this.data = new T[length];
+            this.action = action;
+        }
+
+        public void Push(T[] input)
+        {
+            if (input == null)
+                throw new ArgumentNullException("input");
+
+            int input_index = 0;
+
+            while (input_index < input.Length)
+            {
+                int copy_length = Math.Min(this.length - this.index, input.Length - input_index);
+
+                Array.Copy(input, input_index, this.data, this.index, copy_length);
+
+                this.index += copy_length;
+                input_index += copy_length;
+
+                if (this.index + 1 >= this.length)
+                {
+                    this.action(this.data);
+                    this.index = 0;
+                }
+            }
+        }
+
+        public void Terminate()
+        {
+            if (this.index > 0)
+            {
+                Array.Clear(this.data, this.index, this.length - this.index);
+                this.action(this.data);
+
+                this.index = 0;
+            }
+        }
+    }
 }
 
