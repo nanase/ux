@@ -125,7 +125,7 @@ namespace uxPlayer
                     connector.AddPreset(presetFile);
 
                 connector.Load(this.inputFile);
-                connector.Sequencer.SequenceEnd += (s2, e2) => sequenceEnded = true;
+                connector.Sequencer.SequenceEnd += (s2, e2) => { sequenceEnded = true; connector.Master.Release(); };
             }
 
             if (!this.CheckFileCreate(this.textBox1.Text))
