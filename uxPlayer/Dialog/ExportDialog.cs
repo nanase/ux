@@ -141,14 +141,13 @@ namespace uxPlayer
                 using (FileStream fs = new FileStream(this.textBox1.Text, FileMode.Create))
                 using (WaveFormatWriter wfw = new WaveFormatWriter(fs, samplingRate, bit * 8, 2))
                 {
-                    // TODO: バッファをもう一つ挟んだほうが良さそう
-                    const int bufferSize = 1024 * 2;
-                    int size;                    
+                    const int bufferSize = WaveFilter.DefaultFFTSize * 2;
+                    int size;
 
-                    float[] buffer = new float[bufferSize / bit];
-                    double[] buffer_double = new double[bufferSize / bit];
-                    double[] bufferOut = new double[bufferSize / bit];
-                    WaveFilter filter = new WaveFilter(true, samplingRate * oversampling, bufferSize / bit);
+                    float[] buffer = new float[bufferSize];
+                    double[] buffer_double = new double[bufferSize];
+                    double[] bufferOut = new double[bufferSize];
+                    WaveFilter filter = new WaveFilter(true, samplingRate * oversampling, bufferSize);
                     double bufferTime = (buffer.Length / 2.0) / (samplingRate * oversampling);
 
                     filter.SetFilter(FilterType.LowPass,
@@ -160,7 +159,7 @@ namespace uxPlayer
                     {
                         size = buffer.Length;
 
-                        connector.Sequencer.Progress(bufferTime);                        
+                        connector.Sequencer.Progress(bufferTime);
                         connector.Master.Read(buffer, 0, size);
 
                         if (oversampling > 1)
