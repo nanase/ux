@@ -24,31 +24,27 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using ux;
-using System.Threading.Tasks;
 using System.IO;
-using ux.Component;
-using System.Threading;
 using System.Security.Permissions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using ux.Utils.Midi;
 
 namespace uxPlayer
 {
-    public partial class ExportDialog : Form
+    partial class ExportDialog : Form
     {
         private string inputFile;
         private IEnumerable<string> presetFiles;
         private volatile bool reqEnd;
+        private MasterControlDialog masterControlDialog;
 
-        public ExportDialog(string inputFile, IEnumerable<string> presetFiles)
+        public ExportDialog(string inputFile, IEnumerable<string> presetFiles, MasterControlDialog masterControlDialog)
         {
             this.inputFile = inputFile;
             this.presetFiles = presetFiles;
+            this.masterControlDialog = masterControlDialog;
             InitializeComponent();
         }
 
@@ -126,6 +122,9 @@ namespace uxPlayer
 
                 connector.Load(this.inputFile);
                 connector.Sequencer.SequenceEnd += (s2, e2) => { sequenceEnded = true; connector.Master.Release(); };
+
+                this.masterControlDialog.ApplyToMaster(connector.Master);
+                this.masterControlDialog.ApplyToSequencer(connector.Sequencer);
             }
 
             if (!this.CheckFileCreate(this.textBox1.Text))

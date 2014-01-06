@@ -31,6 +31,9 @@
             this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menu_file = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.menu_export = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.menu_exit = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_playing = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -91,9 +94,8 @@
             this.menu_allReset = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_connect = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_refresh = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.menu_export = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.menu_masterControl = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
@@ -132,6 +134,23 @@
             this.menu_file.Size = new System.Drawing.Size(85, 22);
             this.menu_file.Text = "ファイル(&F)";
             // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(241, 6);
+            // 
+            // menu_export
+            // 
+            this.menu_export.Name = "menu_export";
+            this.menu_export.Size = new System.Drawing.Size(244, 22);
+            this.menu_export.Text = "WAVEファイルへの出力(&E)...";
+            this.menu_export.Click += new System.EventHandler(this.menu_export_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(241, 6);
+            // 
             // menu_exit
             // 
             this.menu_exit.Name = "menu_exit";
@@ -161,7 +180,9 @@
             // 
             this.menu_tool.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menu_connect,
-            this.menu_refresh});
+            this.menu_refresh,
+            this.toolStripSeparator7,
+            this.menu_masterControl});
             this.menu_tool.Name = "menu_tool";
             this.menu_tool.Size = new System.Drawing.Size(74, 22);
             this.menu_tool.Text = "ツール(&T)";
@@ -728,22 +749,17 @@
             this.menu_refresh.Text = "プリセットリフレッシュ(&R)";
             this.menu_refresh.Click += new System.EventHandler(this.menu_refresh_Click);
             // 
-            // toolStripSeparator5
+            // toolStripSeparator7
             // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(241, 6);
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(223, 6);
             // 
-            // toolStripSeparator6
+            // menu_masterControl
             // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(241, 6);
-            // 
-            // menu_export
-            // 
-            this.menu_export.Name = "menu_export";
-            this.menu_export.Size = new System.Drawing.Size(244, 22);
-            this.menu_export.Text = "WAVEファイルへの出力(&E)...";
-            this.menu_export.Click += new System.EventHandler(this.menu_export_Click);
+            this.menu_masterControl.Name = "menu_masterControl";
+            this.menu_masterControl.Size = new System.Drawing.Size(226, 22);
+            this.menu_masterControl.Text = "マスター調整(&F)";
+            this.menu_masterControl.Click += new System.EventHandler(this.menu_masterControl_Click);
             // 
             // MainForm
             // 
@@ -845,6 +861,8 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem menu_export;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripMenuItem menu_masterControl;
     }
 }
 

@@ -49,6 +49,7 @@ namespace uxPlayer
         private float[] monitorBuffer = null;
         private MonitorBase monitor;
         private MonitorBase volumeMonitor;
+        MasterControlDialog masterc;
 
         private readonly Encoding sjis = Encoding.GetEncoding(932);
         #endregion
@@ -69,6 +70,8 @@ namespace uxPlayer
 
             this.volumeMonitor = new VolumeMonitor(Color.FromArgb(139, 229, 139), this.volumeMonitorBox.Size);
             this.volumeMonitorBox.Image = this.volumeMonitor.Bitmap;
+
+            this.masterc = new MasterControlDialog();
 
             this.SwitchConnection();
 
@@ -199,7 +202,11 @@ namespace uxPlayer
             }
 
             if (this.mode_smf && ((SmfConnector)this.connector).Sequencer != null)
-                ((SmfConnector)this.connector).Sequencer.Tick = this.resumeTick;
+            {
+                SmfConnector smfConnector = (SmfConnector)this.connector;
+                this.masterc.Sequencer = smfConnector.Sequencer;
+                smfConnector.Sequencer.Tick = this.resumeTick;
+            }
 
             Action invoke = () =>
             {
@@ -229,7 +236,11 @@ namespace uxPlayer
                 if (this.mode_smf)
                 {
                     if (((SmfConnector)this.connector).Sequencer != null)
-                        this.resumeTick = ((SmfConnector)this.connector).Sequencer.Tick;
+                    {
+                        SmfConnector smfConnector = (SmfConnector)this.connector;
+                        this.masterc.Sequencer = smfConnector.Sequencer;
+                        this.resumeTick = smfConnector.Sequencer.Tick;
+                    }
 
                     if (this.resumeTick < 0L)
                         this.resumeTick = 0L;
@@ -295,7 +306,10 @@ namespace uxPlayer
             {
                 this.connector = new MidiInConnector(frequencty, 0);
                 this.label_static_connect.Text = "MIDI-IN";
+                this.masterc.Sequencer = null;
             }
+
+            this.masterc.Master = this.connector.Master;
 
             #region Control
             this.label_static_title.BackColor = this.label_static_resolution.BackColor =
@@ -353,6 +367,7 @@ namespace uxPlayer
                     }
                 };
 
+                this.masterc.Sequencer = smf.Sequencer;
                 this.label_resolution.Text = smf.Sequence.Resolution.ToString();
                 this.label_tick_right.Text = smf.Sequence.MaxTick.ToString();
                 this.hScrollBar.SmallChange = smf.Sequence.Resolution;
@@ -573,7 +588,7 @@ namespace uxPlayer
                 return;
             }
 
-            if(!File.Exists(this.smfFileDialog.FileName))
+            if (!File.Exists(this.smfFileDialog.FileName))
             {
                 MessageBox.Show("SMF ファイルが開かれていません。",
                                 "",
@@ -582,9 +597,14 @@ namespace uxPlayer
                 return;
             }
 
-            ExportDialog ed = new ExportDialog(this.smfFileDialog.FileName, new[] { "ux_preset.xml" });
+            ExportDialog ed = new ExportDialog(this.smfFileDialog.FileName, new[] { "ux_preset.xml" }, this.masterc);
 
             ed.ShowDialog();
+        }
+
+        private void menu_masterControl_Click(object sender, EventArgs e)
+        {
+            this.masterc.Visible = true;
         }
         #endregion
         #endregion
