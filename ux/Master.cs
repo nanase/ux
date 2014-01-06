@@ -43,7 +43,7 @@ namespace ux
         private readonly Part[] parts;
         private readonly Queue<Handle> handleQueue;
         private readonly int partCount;
-        private float masterVolume;
+        private float masterVolume = 1.0f;
 
         #region Compressor
         private float gain, upover, downover;
@@ -378,8 +378,6 @@ namespace ux
         /// </summary>
         public void Reset()
         {
-            this.masterVolume = 1.0f;
-
             for (int i = 0; i < this.partCount; i++)
                 this.parts[i].Reset();
         }
@@ -402,13 +400,7 @@ namespace ux
                 {
                     handle = enumerator.Current;
 
-                    if (handle.TargetPart == 0 && handle.Type == HandleType.Volume)
-                    {
-                        // optimized: switch(handle.Type)
-                        this.masterVolume = (float)Math.Pow(handle.Data2.Clamp(2.0f, 0.0f), 2.0);
-                        break;
-                    }
-                    else if (handle.TargetPart >= 1 && handle.TargetPart <= this.partCount)
+                    if (handle.TargetPart > 0 && handle.TargetPart <= this.partCount)
                         this.parts[handle.TargetPart - 1].ApplyHandle(handle);
                 }
 
