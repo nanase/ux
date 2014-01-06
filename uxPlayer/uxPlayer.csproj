@@ -58,8 +58,10 @@
       <HintPath>..\lib\ALSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dialog\ExportDialog.cs">
@@ -67,6 +69,12 @@
     </Compile>
     <Compile Include="Dialog\ExportDialog.Designer.cs">
       <DependentUpon>ExportDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialog\MasterControlDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialog\MasterControlDialog.Designer.cs">
+      <DependentUpon>MasterControlDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Export\Filter.cs" />
     <Compile Include="Export\WaveFormatWriter.cs" />
@@ -79,9 +87,11 @@
     <Compile Include="MonitorBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Dialog\ExportDialog.resources" />
     <EmbeddedResource Include="Dialog\ExportDialog.resx">
       <DependentUpon>ExportDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialog\MasterControlDialog.resx">
+      <DependentUpon>MasterControlDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
