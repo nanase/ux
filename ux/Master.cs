@@ -110,6 +110,18 @@ namespace ux
                 this.PrepareCompressor();
             }
         }
+
+        public float MasterVolume
+        {
+            get { return this.masterVolume; }
+            set
+            {
+                if (float.IsInfinity(value) || float.IsNaN(value))
+                    throw new ArgumentException();
+
+                this.masterVolume = value.Clamp(2.0f, 0.0f);
+            }
+        }
         #endregion
 
         #region -- Constructors --
