@@ -24,6 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
 using System.Windows.Forms;
+using uxPlayer.Properties;
 
 namespace uxPlayer
 {
@@ -39,6 +40,7 @@ namespace uxPlayer
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
+            Settings.Default.Save();
         }
         #endregion
     }
