@@ -25,7 +25,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 using System;
 using System.Windows.Forms;
 using ux;
+using ux.Utils;
 using ux.Utils.Midi.Sequencer;
+using uxPlayer.Properties;
 
 namespace uxPlayer
 {
@@ -68,6 +70,11 @@ namespace uxPlayer
         public MasterControlDialog()
         {
             InitializeComponent();
+
+            this.trackBar1.Value = (int)Math.Round(Settings.Default.SynthMasterVolume.Clamp(2f, 0f) * 100.0);
+            this.trackBar2.Value = (int)Math.Round(Settings.Default.SynthCompressorRatio.Clamp(10f, 1f) * 100.0);
+            this.trackBar3.Value = (int)Math.Round(Settings.Default.SynthCompressorThreshold.Clamp(1f, 0f) * 100.0);
+            this.trackBar4.Value = (int)Math.Round(Settings.Default.SequenceTempoFactor.Clamp(2f, 0.5f) * 100.0);
         }
         #endregion
 
@@ -92,6 +99,13 @@ namespace uxPlayer
         #region -- Private Methods --
         private void MasterControlDialog_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Settings.Default.SynthMasterVolume = this.trackBar1.Value / 100.0f;
+            Settings.Default.SynthCompressorRatio = this.trackBar2.Value / 100.0f;
+            Settings.Default.SynthCompressorThreshold = this.trackBar3.Value / 100.0f;
+            Settings.Default.SequenceTempoFactor = this.trackBar4.Value / 100.0f;
+
+            Settings.Default.Save();
+
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
