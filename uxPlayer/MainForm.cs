@@ -280,9 +280,9 @@ namespace uxPlayer
 
         private void SwitchConnection()
         {
-            this.mode_smf = !this.mode_smf;
-
             this.Stop();
+
+            this.mode_smf = !this.mode_smf;
 
             if (!this.mode_smf && Environment.OSVersion.Platform != PlatformID.Win32NT)
             {
