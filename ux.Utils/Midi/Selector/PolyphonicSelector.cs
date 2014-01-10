@@ -36,7 +36,7 @@ namespace ux.Utils.Midi
     public class PolyphonicSelector : Selector
     {
         #region -- Private Fields --
-        private const int PartPerChannel = 16;
+        private readonly int partPerChannel;
         private ProgramPreset[] nowPresets;
         private ProgramPreset[] nowDrumPresets;
         private int[] partLsb, partMsb, partProgram;
@@ -65,7 +65,7 @@ namespace ux.Utils.Midi
         /// </summary>
         public override int PartCount
         {
-            get { return PolyphonicSelector.PartPerChannel * 16; }
+            get { return this.partPerChannel * 16; }
         }
         #endregion
 
@@ -75,9 +75,10 @@ namespace ux.Utils.Midi
         /// 新しい PolyphonicSelector クラスのインスタンスを初期化します。
         /// </summary>
         /// <param name="samplingRate">サンプリング周波数。</param>
-        public PolyphonicSelector(float samplingRate)
-            : base(new Master(samplingRate, PolyphonicSelector.PartPerChannel * 16))
+        public PolyphonicSelector(float samplingRate, int partPerChannel)
+            : base(new Master(samplingRate, partPerChannel * 16))
         {
+            this.partPerChannel = partPerChannel;
             this.Initalize();
         }
 
@@ -86,9 +87,10 @@ namespace ux.Utils.Midi
         /// 新しい PolyphonicSelector クラスのインスタンスを初期化します。
         /// </summary>
         /// <param name="master">マスターオブジェクト。</param>
-        public PolyphonicSelector(Master master)
+        public PolyphonicSelector(Master master, int partPerChannel)
             : base(master)
         {
+            this.partPerChannel = partPerChannel;
             this.Initalize();
         }
         #endregion
@@ -112,18 +114,18 @@ namespace ux.Utils.Midi
             {
                 int channel = message.Channel;
                 int targetPart = channel + 1;
-                int targetStart = 1 + PolyphonicSelector.PartPerChannel * channel;
+                int targetStart = 1 + this.partPerChannel * channel;
                 var targetParts = this.partSequences[channel];
 
                 switch (message.Type)
                 {
                     case EventType.NoteOff:
-                        targetStart += (message.Data1 % PolyphonicSelector.PartPerChannel);
+                        targetStart += (message.Data1 % this.partPerChannel);
                         this.master.PushHandle(new Handle(targetStart, HandleType.NoteOff, message.Data1));
                         break;
 
                     case EventType.NoteOn:
-                        targetStart += (message.Data1 % PolyphonicSelector.PartPerChannel);
+                        targetStart += (message.Data1 % this.partPerChannel);
 
                         if (targetPart == 10)
                         {
@@ -240,18 +242,16 @@ namespace ux.Utils.Midi
             this.partMsb = new int[16];
             this.partProgram = new int[16];
             this.nowPresets = new ProgramPreset[16];
-            this.nowDrumPresets = new ProgramPreset[PolyphonicSelector.PartPerChannel];
+            this.nowDrumPresets = new ProgramPreset[this.partPerChannel];
 
             this.allParts = Enumerable.Range(1, this.PartCount).ToArray();
-            this.drumParts = Enumerable.Range(1 + 9 * PolyphonicSelector.PartPerChannel,
-                                              PolyphonicSelector.PartPerChannel)
+            this.drumParts = Enumerable.Range(1 + 9 * this.partPerChannel, this.partPerChannel)
                                        .ToArray();
 
             this.partSequences = new int[16][];
 
             for (int i = 0; i < 16; i++)
-                this.partSequences[i] = Enumerable.Range(1 + i * PolyphonicSelector.PartPerChannel,
-                                                         PolyphonicSelector.PartPerChannel)
+                this.partSequences[i] = Enumerable.Range(1 + i * this.partPerChannel, this.partPerChannel)
                                                   .ToArray();
 
             #region Handles

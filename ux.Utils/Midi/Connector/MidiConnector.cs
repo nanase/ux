@@ -63,7 +63,7 @@ namespace ux.Utils.Midi
         /// <param name="samplingRate">サンプリング周波数。</param>
         public MidiConnector(float samplingRate)
         {
-            this.selector = new PolyphonicSelector(samplingRate);
+            this.selector = new PolyphonicSelector(samplingRate, 16);
             this.uxMaster = this.selector.Master;
         }
 
