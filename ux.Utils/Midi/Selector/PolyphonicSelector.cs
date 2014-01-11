@@ -120,8 +120,9 @@ namespace ux.Utils.Midi
                 switch (message.Type)
                 {
                     case EventType.NoteOff:
-                        targetStart += (message.Data1 % this.partPerChannel);
-                        this.master.PushHandle(new Handle(targetStart, HandleType.NoteOff, message.Data1));
+                        this.master.PushHandle(new Handle(targetStart + (message.Data1 % this.partPerChannel),
+                                                          HandleType.NoteOff,
+                                                          message.Data1));
                         break;
 
                     case EventType.NoteOn:
