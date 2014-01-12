@@ -110,8 +110,10 @@ namespace ux.Utils.Midi
         /// <param name="events">イベントの列挙子。</param>
         public override void ProcessMidiEvent(IEnumerable<Event> events)
         {
-            foreach (MidiEvent message in events.OfType<MidiEvent>())
+            // optimized: foreach (MidiEvent message in events.OfType<MidiEvent>())
+            for (var iter = events.OfType<MidiEvent>().GetEnumerator(); iter.MoveNext(); )
             {
+                MidiEvent message = iter.Current;
                 int channel = message.Channel;
                 int targetPart = channel + 1;
                 int targetStart = 1 + this.partPerChannel * channel;
@@ -280,8 +282,9 @@ namespace ux.Utils.Midi
 
             if (this.nowPresets[channel] != null)
             {
-                foreach (var item in this.nowPresets[channel].FinalHandles)
-                    this.master.PushHandle(item, targets);
+                // optimized: foreach (var item in this.nowPresets[channel].FinalHandles)
+                for (var iter = this.nowPresets[channel].FinalHandles.GetEnumerator(); iter.MoveNext(); )
+                    this.master.PushHandle(iter.Current, targets);
             }
 
             ProgramPreset preset = this.preset.FindProgram(p => p.Number == @event.Data1 &&
@@ -291,8 +294,9 @@ namespace ux.Utils.Midi
 
             if (preset != null)
             {
-                foreach (var item in preset.InitHandles)
-                    this.master.PushHandle(item, targets);
+                // optimized: foreach (var item in this.nowPresets[channel].FinalHandles)
+                for (var iter = preset.InitHandles.GetEnumerator(); iter.MoveNext(); )
+                    this.master.PushHandle(iter.Current, targets);
 
                 Console.WriteLine("Matching Program: {0}", @event.Data1);
             }
