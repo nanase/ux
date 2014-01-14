@@ -32,6 +32,7 @@ using System.Windows.Forms;
 using ALSharp;
 using ux.Utils.Midi;
 using ux.Utils.Midi.IO;
+using uxPlayer.Properties;
 
 namespace uxPlayer
 {
@@ -336,7 +337,8 @@ namespace uxPlayer
             }
             #endregion
 
-            this.connector.AddPreset("ux_preset.xml");
+            foreach (string item in Settings.Default.PlayerPresets)
+                this.connector.AddPreset(item);
         }
 
         private void OpenSmfFile()
@@ -597,7 +599,9 @@ namespace uxPlayer
                 return;
             }
 
-            ExportDialog ed = new ExportDialog(this.smfFileDialog.FileName, new[] { "ux_preset.xml" }, this.masterc);
+            ExportDialog ed = new ExportDialog(this.smfFileDialog.FileName, 
+                                               Settings.Default.PlayerPresets.Cast<string>(),
+                                               this.masterc);
 
             ed.ShowDialog();
         }
@@ -605,6 +609,18 @@ namespace uxPlayer
         private void menu_masterControl_Click(object sender, EventArgs e)
         {
             this.masterc.Visible = true;
+        }
+
+        private void menu_preset_Click(object sender, EventArgs e)
+        {
+            using (PresetManageDialog pmd = new PresetManageDialog(Settings.Default.PlayerPresets.Cast<string>()))
+                if (pmd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    Settings.Default.PlayerPresets.Clear();
+                    Settings.Default.PlayerPresets.AddRange(pmd.FileNames.ToArray());
+
+                    this.RefreshPresets();
+                }
         }
         #endregion
         #endregion

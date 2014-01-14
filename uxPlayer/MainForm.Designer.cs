@@ -96,6 +96,7 @@
             this.fastTimer = new System.Windows.Forms.Timer(this.components);
             this.smfFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.slowTimer = new System.Windows.Forms.Timer(this.components);
+            this.menu_preset = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.splitContainer.Panel1.SuspendLayout();
@@ -229,7 +230,8 @@
             this.menu_connect,
             this.menu_refresh,
             this.toolStripSeparator7,
-            this.menu_masterControl});
+            this.menu_masterControl,
+            this.menu_preset});
             this.menu_tool.Name = "menu_tool";
             this.menu_tool.Size = new System.Drawing.Size(74, 22);
             this.menu_tool.Text = "ツール(&T)";
@@ -761,6 +763,13 @@
             this.slowTimer.Interval = 250;
             this.slowTimer.Tick += new System.EventHandler(this.slowTimer_Tick);
             // 
+            // menu_preset
+            // 
+            this.menu_preset.Name = "menu_preset";
+            this.menu_preset.Size = new System.Drawing.Size(226, 22);
+            this.menu_preset.Text = "プリセット(&P)...";
+            this.menu_preset.Click += new System.EventHandler(this.menu_preset_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -862,6 +871,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem menu_masterControl;
+        private System.Windows.Forms.ToolStripMenuItem menu_preset;
     }
 }
 

@@ -76,6 +76,12 @@
     <Compile Include="Dialog\MasterControlDialog.Designer.cs">
       <DependentUpon>MasterControlDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialog\PresetManageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialog\PresetManageDialog.Designer.cs">
+      <DependentUpon>PresetManageDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Export\Filter.cs" />
     <Compile Include="Export\WaveFormatWriter.cs" />
     <Compile Include="MainForm.cs">
@@ -84,15 +90,18 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MonitorBase.cs" />
+    <Compile Include="Class\MonitorBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Class\Settings.cs" />
     <EmbeddedResource Include="Dialog\ExportDialog.resx">
       <DependentUpon>ExportDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialog\MasterControlDialog.resx">
       <DependentUpon>MasterControlDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialog\PresetManageDialog.resx">
+      <DependentUpon>PresetManageDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
