@@ -214,6 +214,8 @@
             this.Controls.Add(this.groupBox_compressor_threshold);
             this.Controls.Add(this.groupBox_tempo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "MasterControlDialog";
             this.Text = "マスター調整";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MasterControlDialog_FormClosing);
