@@ -34,20 +34,20 @@ namespace uxPlayer
     {
         public IEnumerable<string> FileNames
         {
-            get { return this.listView1.Items.OfType<ListViewItem>().Select(i => i.Text); }
+            get { return this.listView_presets.Items.OfType<ListViewItem>().Select(i => i.Text); }
         }
 
         public PresetManageDialog(IEnumerable<string> fileNames)
         {
             InitializeComponent();
 
-            this.listView1.Items.AddRange(fileNames.Select(f => new ListViewItem(f, 0)).ToArray());
+            this.listView_presets.Items.AddRange(fileNames.Select(f => new ListViewItem(f, 0)).ToArray());
             this.UpdateListItemStatus();
         }
 
         private void UpdateListItemStatus()
         {
-            foreach (ListViewItem item in this.listView1.Items)
+            foreach (ListViewItem item in this.listView_presets.Items)
             {
                 item.ImageIndex = File.Exists(item.Text) ? 0 : 1;
                 item.ToolTipText = String.Format("フルパス: {0}", new FileInfo(item.Text).FullName);
@@ -56,10 +56,10 @@ namespace uxPlayer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (this.openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (this.openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                if (!this.listView1.Items.ContainsKey(this.openFileDialog1.FileName))
-                    this.listView1.Items.Add(this.openFileDialog1.FileName, 0);
+                if (!this.listView_presets.Items.ContainsKey(this.openFileDialog.FileName))
+                    this.listView_presets.Items.Add(this.openFileDialog.FileName, 0);
             }
 
             this.UpdateListItemStatus();
@@ -67,9 +67,9 @@ namespace uxPlayer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem item in this.listView1.SelectedItems)
+            foreach (ListViewItem item in this.listView_presets.SelectedItems)
             {
-                this.listView1.Items.Remove(item);
+                this.listView_presets.Items.Remove(item);
             }
 
             this.UpdateListItemStatus();
