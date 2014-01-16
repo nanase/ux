@@ -71,10 +71,10 @@ namespace uxPlayer
         {
             InitializeComponent();
 
-            this.trackBar1.Value = (int)Math.Round(Settings.Default.SynthMasterVolume.Clamp(2f, 0f) * 100.0);
-            this.trackBar2.Value = (int)Math.Round(Settings.Default.SynthCompressorRatio.Clamp(10f, 1f) * 100.0);
-            this.trackBar3.Value = (int)Math.Round(Settings.Default.SynthCompressorThreshold.Clamp(1f, 0f) * 100.0);
-            this.trackBar4.Value = (int)Math.Round(Settings.Default.SequenceTempoFactor.Clamp(2f, 0.5f) * 100.0);
+            this.trackBar_mastervolume.Value = (int)Math.Round(Settings.Default.SynthMasterVolume.Clamp(2f, 0f) * 100.0);
+            this.trackBar_compressor_ratio.Value = (int)Math.Round(Settings.Default.SynthCompressorRatio.Clamp(10f, 1f) * 100.0);
+            this.trackBar_compressor_threshold.Value = (int)Math.Round(Settings.Default.SynthCompressorThreshold.Clamp(1f, 0f) * 100.0);
+            this.trackBar_tempo.Value = (int)Math.Round(Settings.Default.SequenceTempoFactor.Clamp(2f, 0.5f) * 100.0);
         }
         #endregion
 
@@ -83,26 +83,26 @@ namespace uxPlayer
         {
             if (master != null)
             {
-                master.MasterVolume = this.trackBar1.Value / 100.0f;
-                master.Ratio = this.trackBar2.Value / 100.0f;
-                master.Threshold = this.trackBar3.Value / 100.0f;
+                master.MasterVolume = this.trackBar_mastervolume.Value / 100.0f;
+                master.Ratio = this.trackBar_compressor_ratio.Value / 100.0f;
+                master.Threshold = this.trackBar_compressor_threshold.Value / 100.0f;
             }
         }
 
         public void ApplyToSequencer(Sequencer sequencer)
         {
             if (sequencer != null)
-                sequencer.TempoFactor = this.trackBar4.Value / 100.0f;
+                sequencer.TempoFactor = this.trackBar_tempo.Value / 100.0f;
         }
         #endregion
 
         #region -- Private Methods --
         private void MasterControlDialog_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Settings.Default.SynthMasterVolume = this.trackBar1.Value / 100.0f;
-            Settings.Default.SynthCompressorRatio = this.trackBar2.Value / 100.0f;
-            Settings.Default.SynthCompressorThreshold = this.trackBar3.Value / 100.0f;
-            Settings.Default.SequenceTempoFactor = this.trackBar4.Value / 100.0f;
+            Settings.Default.SynthMasterVolume = this.trackBar_mastervolume.Value / 100.0f;
+            Settings.Default.SynthCompressorRatio = this.trackBar_compressor_ratio.Value / 100.0f;
+            Settings.Default.SynthCompressorThreshold = this.trackBar_compressor_threshold.Value / 100.0f;
+            Settings.Default.SequenceTempoFactor = this.trackBar_tempo.Value / 100.0f;
 
             Settings.Default.Save();
 
@@ -115,34 +115,34 @@ namespace uxPlayer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.trackBar1.Value = 100;
-            this.trackBar2.Value = 200;
-            this.trackBar3.Value = 80;
-            this.trackBar4.Value = 100;
+            this.trackBar_mastervolume.Value = 100;
+            this.trackBar_compressor_ratio.Value = 200;
+            this.trackBar_compressor_threshold.Value = 80;
+            this.trackBar_tempo.Value = 100;
         }
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
             this.ApplyToMaster(this.master);
-            this.label1.Text = String.Format("{0:p0}", this.trackBar1.Value / 100.0f);
+            this.label_mastervolume.Text = String.Format("{0:p0}", this.trackBar_mastervolume.Value / 100.0f);
         }
 
         private void trackBar2_ValueChanged(object sender, EventArgs e)
         {
             this.ApplyToMaster(this.master);
-            this.label2.Text = String.Format("1:{0:f2}", this.trackBar2.Value / 100.0f);
+            this.label_compressor_ratio.Text = String.Format("1:{0:f2}", this.trackBar_compressor_ratio.Value / 100.0f);
         }
 
         private void trackBar3_ValueChanged(object sender, EventArgs e)
         {
             this.ApplyToMaster(this.master);
-            this.label3.Text = String.Format("{0:f2}", this.trackBar3.Value / 100.0f);
+            this.label_compressor_threshold.Text = String.Format("{0:f2}", this.trackBar_compressor_threshold.Value / 100.0f);
         }
 
         private void trackBar4_ValueChanged(object sender, EventArgs e)
         {
             this.ApplyToSequencer(this.sequencer);
-            this.label4.Text = String.Format("{0:p0}", this.trackBar4.Value / 100.0f);
+            this.label_tempo.Text = String.Format("{0:p0}", this.trackBar_tempo.Value / 100.0f);
         }
         #endregion
     }
