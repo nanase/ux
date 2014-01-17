@@ -48,6 +48,7 @@
             this.menu_refresh = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.menu_masterControl = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu_preset = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_help = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_versionInfo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
@@ -96,7 +97,6 @@
             this.fastTimer = new System.Windows.Forms.Timer(this.components);
             this.smfFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.slowTimer = new System.Windows.Forms.Timer(this.components);
-            this.menu_preset = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.splitContainer.Panel1.SuspendLayout();
@@ -263,6 +263,13 @@
             this.menu_masterControl.Size = new System.Drawing.Size(226, 22);
             this.menu_masterControl.Text = "マスター調整(&F)";
             this.menu_masterControl.Click += new System.EventHandler(this.menu_masterControl_Click);
+            // 
+            // menu_preset
+            // 
+            this.menu_preset.Name = "menu_preset";
+            this.menu_preset.Size = new System.Drawing.Size(226, 22);
+            this.menu_preset.Text = "プリセット(&P)...";
+            this.menu_preset.Click += new System.EventHandler(this.menu_preset_Click);
             // 
             // menu_help
             // 
@@ -753,8 +760,8 @@
             // 
             // smfFileDialog
             // 
-            this.smfFileDialog.Filter = "サポートするファイル|*.mid;*.midi;*.rmi|MIDI ファイル(*.mid, *.midi)|*.mid;*.midi|RMI ファイル(*.rm" +
-    "i)|*.rmi";
+            this.smfFileDialog.Filter = "サポートするファイル (*.mid,*.midi,*.rmi)|*.mid;*.midi;*.rmi|MIDI ファイル (*.mid, *.midi)|*.mi" +
+    "d;*.midi|RMI ファイル (*.rmi)|*.rmi";
             this.smfFileDialog.Title = "MIDIファイルの読み込み";
             // 
             // slowTimer
@@ -762,13 +769,6 @@
             this.slowTimer.Enabled = true;
             this.slowTimer.Interval = 250;
             this.slowTimer.Tick += new System.EventHandler(this.slowTimer_Tick);
-            // 
-            // menu_preset
-            // 
-            this.menu_preset.Name = "menu_preset";
-            this.menu_preset.Size = new System.Drawing.Size(226, 22);
-            this.menu_preset.Text = "プリセット(&P)...";
-            this.menu_preset.Click += new System.EventHandler(this.menu_preset_Click);
             // 
             // MainForm
             // 
