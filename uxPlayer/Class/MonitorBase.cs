@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using SoundUtils;
 
 namespace uxPlayer
 {
@@ -140,9 +141,11 @@ namespace uxPlayer
         #region -- Private Fields --
         private PointF[] buffer = new PointF[0];
         private Pen p = Pens.Black;
+        private FastFourier fft;
 
-        private double[] re = new double[0];
-        private double[] im = new double[0];
+        private double[] fft_buffer = new double[0];
+        private double[] lchannel = new double[0];
+        private double[] rchannel = new double[0];
         #endregion
 
         #region -- Constructors --
@@ -155,7 +158,7 @@ namespace uxPlayer
         #region -- Public Methods --
         public override void Draw(float[] data)
         {
-            float dx = (float)this.size.Width / (float)(data.Length / 4);
+            float dx = (float)this.size.Width / (float)(data.Length / 8);
             float y_offset = +20.0f;
 
             int fftSize = data.Length / 2;
@@ -163,25 +166,30 @@ namespace uxPlayer
 
             if (this.buffer.Length != fftSize)
             {
-                this.buffer = new PointF[fftSize];
-                this.re = new double[fftSize];
-                this.im = new double[fftSize];
+                this.buffer = new PointF[fftSize / 4];
+                this.lchannel = new double[fftSize];
+                this.rchannel = new double[fftSize];
+                this.fft_buffer = new double[fftSize * 2];
+                this.fft = new FastFourier(fftSize);
             }
 
             this.graphics.Clear(this.backgroundColor);
 
+            for (int i = 0, j = 0, k = 1; i < fftSize; i++, j += 2, k += 2)
+            {
+                this.lchannel[i] = data[j];
+                this.rchannel[i] = data[k];
+            }
+
             // L channel
             {
-                for (int i = 0, j = 0; i < fftSize; i++, j += 2)
-                    this.re[i] = data[j];
+                Window.Hanning(lchannel);
+                Channel.Interleave(lchannel, this.fft_buffer, fftSize);
+                this.fft.TransformComplex(false, this.fft_buffer);
 
-                Array.Clear(this.im, 0, fftSize);
-                Utils.WindowingAsHanning(re);
-                Utils.FFT(fftSize, false, re, im);
-
-                for (int i = 0; i < fftSize; i++)
+                for (int i = 0, j = 0, k = 1; i < fftSize / 4; i++, j += 2, k += 2)
                 {
-                    double d = 20.0 * Math.Log10(Math.Sqrt(re[i] * re[i] + im[i] * im[i]) / fftSize) + y_offset;
+                    double d = 20.0 * Math.Log10(Math.Sqrt(this.fft_buffer[j] * this.fft_buffer[j] + this.fft_buffer[k] * this.fft_buffer[k]) / fftSize) + y_offset;
 
                     if (d <= -height)
                         d = -height;
@@ -196,16 +204,13 @@ namespace uxPlayer
 
             // R channel
             {
-                for (int i = 0, j = 1; i < fftSize; i++, j += 2)
-                    this.re[i] = data[j];
+                Window.Hanning(rchannel);
+                Channel.Interleave(rchannel, this.fft_buffer, fftSize);
+                this.fft.TransformComplex(false, this.fft_buffer);
 
-                Array.Clear(this.im, 0, fftSize);
-                Utils.WindowingAsHanning(re);
-                Utils.FFT(fftSize, false, re, im);
-
-                for (int i = 0; i < fftSize; i++)
+                for (int i = 0, j = 0, k = 1; i < fftSize / 4; i++, j += 2, k += 2)
                 {
-                    double d = 20.0 * Math.Log10(Math.Sqrt(re[i] * re[i] + im[i] * im[i]) / fftSize) + y_offset;
+                    double d = 20.0 * Math.Log10(Math.Sqrt(this.fft_buffer[j] * this.fft_buffer[j] + this.fft_buffer[k] * this.fft_buffer[k]) / fftSize) + y_offset;
 
                     if (d <= -height)
                         d = -height;
@@ -228,9 +233,10 @@ namespace uxPlayer
     class FrequencySpectrumMonitor : MonitorBase
     {
         #region -- Private Fields --
+        private double[] fft_buffer = new double[0];
         private double[] re = new double[0];
-        private double[] im = new double[0];
         private Bitmap spectrum = null;
+        private FastFourier fft;
 
         private bool disposed;
         #endregion
@@ -252,22 +258,22 @@ namespace uxPlayer
 
             int fftSize = data.Length;
 
-            if (fftSize != this.re.Length)
+            if (fftSize != this.fft_buffer.Length)
             {
+                this.fft = new FastFourier(fftSize);
                 this.re = new double[fftSize];
-                this.im = new double[fftSize];
-                this.spectrum = new Bitmap(1, fftSize / 4);
+                this.fft_buffer = new double[fftSize * 2];
+                this.spectrum = new Bitmap(1, fftSize / 8);
             }
-            else
-                Array.Clear(this.im, 0, fftSize);
 
             data.CopyTo(re, 0);
-            Utils.WindowingAsHanning(re);
-            Utils.FFT(fftSize, false, re, im);
+            Window.Hanning(this.re);
+            Channel.Interleave(this.re, this.fft_buffer, fftSize);
+            this.fft.TransformComplex(false, this.fft_buffer);
 
-            for (int i = 0; i < fftSize / 4; i++)
+            for (int i = 0, j = 0, k = 1; i < fftSize / 8; i++, j += 2, k += 2)
             {
-                re[i] = y_amplifier * Math.Log10(Math.Sqrt(re[i] * re[i] + im[i] * im[i]) / (fftSize * 4)) + y_offset;
+                re[i] = y_amplifier * Math.Log10(Math.Sqrt(this.fft_buffer[j] * this.fft_buffer[j] + this.fft_buffer[k] * this.fft_buffer[k]) / (fftSize * 4)) + y_offset;
 
                 if (re[i] < -255.0)
                     re[i] = -255.0;
@@ -284,7 +290,7 @@ namespace uxPlayer
             }
             this.bitmap.UnlockBits(bdata);
 
-            bdata = this.spectrum.LockBits(new Rectangle(0, 0, 1, fftSize / 4),
+            bdata = this.spectrum.LockBits(new Rectangle(0, 0, 1, fftSize / 8),
                                            ImageLockMode.ReadWrite,
                                            PixelFormat.Format32bppArgb);
             {
