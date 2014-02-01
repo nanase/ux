@@ -29,6 +29,10 @@ using System.Security.Permissions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SoundUtils;
+using SoundUtils.Filtering;
+using SoundUtils.Filtering.FIR;
+using SoundUtils.IO;
 using ux.Utils.Midi;
 
 namespace uxPlayer
@@ -140,50 +144,61 @@ namespace uxPlayer
                 using (FileStream fs = new FileStream(this.textBox_saveto.Text, FileMode.Create))
                 using (WaveFormatWriter wfw = new WaveFormatWriter(fs, samplingRate, bit * 8, 2))
                 {
-                    const int bufferSize = WaveFilter.DefaultFFTSize * 2;
-                    int size;
+                    const int bufferSize = 512;
+                    const int filterSize = 4096;
 
                     float[] buffer = new float[bufferSize];
-                    double[] buffer_double = new double[bufferSize];
-                    double[] bufferOut = new double[bufferSize];
-                    WaveFilter filter = new WaveFilter(true, samplingRate * oversampling, bufferSize);
+                    double[] buffer_double = new double[filterSize];
+                    double[] bufferOut = new double[filterSize];
+
+                    SoundFilter filter = new SoundFilter(true, filterSize);
+                    var filterGenerator = new LowPassFilter()
+                    {
+                        SamplingRate = samplingRate * oversampling,
+                        CutoffFrequency = samplingRate / 2 - ImpulseResponse.GetDelta(samplingRate * oversampling, filterSize)
+                    };
+                    double[] impulse = filterGenerator.Generate(filterSize / 2);
+
+                    Window.Hanning(impulse);
+                    filter.SetFilter(impulse);
+
                     double bufferTime = (buffer.Length / 2.0) / (samplingRate * oversampling);
 
-                    filter.SetFilter(FilterType.LowPass,
-                                     samplingRate / 2 - FFTFiltering.GetDelta(samplingRate * oversampling,
-                                                                              WaveFilter.DefaultFilterSize + 1),
-                                     0);
-
-                    while (!this.reqEnd && filesize > output)
+                    var filterBuffer = new FilterBuffer<float>(filterSize, da =>
                     {
-                        size = buffer.Length;
-
-                        connector.Sequencer.Progress(bufferTime);
-                        connector.Master.Read(buffer, 0, size);
-
                         if (oversampling > 1)
                         {
-                            for (int i = 0; i < size; i++)
-                                buffer_double[i] = buffer[i];
+                            for (int i = 0; i < filterSize; i++)
+                                bufferOut[i] = da[i];
 
-                            filter.Filtering(buffer_double, bufferOut);
+                            filter.Filtering(bufferOut);
 
-                            for (int i = 0, j = 0; i < size; i += oversampling * 2)
+                            for (int i = 0, j = 0; i < filterSize; i += oversampling * 2)
                             {
                                 buffer_double[j++] = bufferOut[i];
                                 buffer_double[j++] = bufferOut[i + 1];
                             }
 
-                            wfw.Write(buffer_double, 0, (int)Math.Min(size / oversampling, filesize - output));
+                            wfw.Write(buffer_double, 0, (int)Math.Min(filterSize / oversampling, filesize - output));
                         }
                         else
-                            wfw.Write(buffer, 0, size);
+                            wfw.Write(da, 0, filterSize);
 
                         output = wfw.WrittenBytes;
+                    });
+
+                    while (!this.reqEnd && filesize > output)
+                    {
+                        connector.Sequencer.Progress(bufferTime);
+                        connector.Master.Read(buffer, 0, bufferSize);
+
+                        filterBuffer.Push(buffer);
 
                         if (sequenceEnded && connector.Master.ToneCount == 0)
                             this.reqEnd = true;
                     }
+
+                    filterBuffer.Close();
 
                     this.reqEnd = true;
                     this.Invoke(new Action(() => button4_Click(null, null)));
