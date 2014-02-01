@@ -85,7 +85,6 @@
     <Compile Include="Dialog\PresetManageDialog.Designer.cs">
       <DependentUpon>PresetManageDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Export\Filter.cs" />
     <Compile Include="Export\WaveFormatWriter.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
