@@ -374,6 +374,61 @@ namespace ux
         }
 
         /// <summary>
+        /// 生成された PCM データを読み込みます。
+        /// </summary>
+        /// <param name="buffer">格納先のバッファ。</param>
+        /// <param name="offset">バッファに対するオフセット。</param>
+        /// <param name="count">読み込まれる要素数。</param>
+        /// <returns>読み込みに成功した要素数。</returns>
+        public int Read(double[] buffer, int offset, int count)
+        {
+            // バッファクリア
+            Array.Clear(buffer, offset, count);
+
+            // ハンドルの適用
+            this.ApplyHandle();
+
+            // count は バイト数
+            // Part.Generate にはサンプル数を与える
+            for (int k = 0; k < this.partCount; k++)
+            {
+                Part part = this.parts[k];
+
+                if (part.IsSounding)
+                {
+                    part.Generate(count / 2);
+
+                    // 波形合成
+                    for (int i = offset, j = 0; j < count; i++, j++)
+                        buffer[i] += (double)part.Buffer[j];
+                }
+            }
+
+            for (int i = offset, length = offset + count; i < length; i++)
+            {
+                double output = buffer[i] * this.masterVolume * this.gain;
+
+                if (output == 0.0)
+                {
+                    buffer[i] = 0.0;
+                }
+                else
+                {
+                    // 圧縮
+                    if (output > this.compressorThreshold)
+                        output = this.upover + this.compressorRatio * output;
+                    else if (output < -this.compressorThreshold)
+                        output = this.downover + this.compressorRatio * output;
+
+                    // クリッピングと代入
+                    buffer[i] = (output > 1.0) ? 1.0 : (output < -1.0) ? -1.0 : output;
+                }
+            }
+
+            return count;
+        }
+
+        /// <summary>
         /// マスターとパートのパラメータを初期化します。
         /// </summary>
         public void Reset()
