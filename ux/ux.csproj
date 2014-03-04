@@ -76,7 +76,6 @@
   <ItemGroup>
     <Compile Include="Component\Enums.cs" />
     <Compile Include="Component\Envelope.cs" />
-    <Compile Include="Component\EnvelopeState.cs" />
     <Compile Include="Component\Extension.cs" />
     <Compile Include="Component\Handle.cs" />
     <Compile Include="Component\HandleType.cs" />

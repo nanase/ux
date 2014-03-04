@@ -25,6 +25,25 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 namespace ux.Component
 {
     /// <summary>
+    /// エンベロープの状態を表す列挙体です。
+    /// </summary>
+    public enum EnvelopeState
+    {
+        /// <summary>
+        /// 無音状態。
+        /// </summary>
+        Silence,
+        /// <summary>
+        /// アタック(立ち上がり)状態。
+        /// </summary>
+        Attack,
+        /// <summary>
+        /// リリース(余韻)状態。
+        /// </summary>
+        Release,
+    }
+
+    /// <summary>
     /// 擬似乱数ジェネレータに作用するオプションを表した列挙体です。
     /// </summary>
     public enum RandomNoiseOperate
