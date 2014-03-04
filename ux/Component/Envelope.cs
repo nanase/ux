@@ -45,7 +45,7 @@ namespace ux.Component
         public EnvelopeState State { get { return this.state; } }
 
         /// <summary>
-        /// ノートが開始されてピークに達するまでの遷移時間を取得します。
+        /// ノートが開始されてピークに達するまでの遷移時間を取得または設定します。
         /// </summary>
         public float AttackTime
         {
@@ -54,7 +54,7 @@ namespace ux.Component
         }
 
         /// <summary>
-        /// ピークを維持する時間を取得します。
+        /// ピークを維持する時間を取得または設定します。
         /// </summary>
         public float PeakTime
         {
@@ -63,7 +63,7 @@ namespace ux.Component
         }
 
         /// <summary>
-        /// ピークからサスティンレベルに達するまでの遷移時間を取得します。
+        /// ピークからサスティンレベルに達するまでの遷移時間を取得または設定します。
         /// </summary>
         public float DecayTime
         {
@@ -72,7 +72,7 @@ namespace ux.Component
         }
 
         /// <summary>
-        /// エンベロープがリリースされるまで持続するサスティンレベルを取得します。
+        /// エンベロープがリリースされるまで持続するサスティンレベルを取得または設定します。
         /// </summary>
         public float SustainLevel
         {
@@ -81,7 +81,7 @@ namespace ux.Component
         }
 
         /// <summary>
-        /// リリースされてからエンベロープが消滅するまでの時間を取得します。
+        /// リリースされてからエンベロープが消滅するまでの時間を取得または設定します。
         /// </summary>
         public float ReleaseTime
         {
@@ -90,7 +90,7 @@ namespace ux.Component
         }
 
         /// <summary>
-        /// このエンベロープで使われるサンプリング周波数を取得します。
+        /// このエンベロープで使われるサンプリング周波数を取得または設定します。
         /// </summary>
         public float SamplingRate { get { return this.samplingRate; } }
         #endregion
