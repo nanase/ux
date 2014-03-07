@@ -67,12 +67,8 @@ namespace ux.Component
         /// <param name="targetPart">ハンドルが適用されるパート。</param>
         /// <param name="type">ハンドルの種類。</param>
         public Handle(int targetPart, HandleType type)
+            : this(targetPart, type, 0, 0.0f)
         {
-            this.targetPart = targetPart;
-            this.type = type;
-
-            this.data1 = 0;
-            this.data2 = 0.0f;
         }
 
         /// <summary>
@@ -82,12 +78,8 @@ namespace ux.Component
         /// <param name="type">ハンドルの種類。</param>
         /// <param name="data1">ハンドルに対する整数パラメータ。</param>
         public Handle(int targetPart, HandleType type, int data1)
+            : this(targetPart, type, data1, 0.0f)
         {
-            this.targetPart = targetPart;
-            this.type = type;
-
-            this.data1 = data1;
-            this.data2 = 0.0f;
         }
 
         /// <summary>
@@ -97,12 +89,8 @@ namespace ux.Component
         /// <param name="type">ハンドルの種類。</param>
         /// <param name="data2">ハンドルに対する実数パラメータ。</param>
         public Handle(int targetPart, HandleType type, float data2)
+            : this(targetPart, type, 0, data2)
         {
-            this.targetPart = targetPart;
-            this.type = type;
-
-            this.data1 = 0;
-            this.data2 = data2;
         }
 
         /// <summary>
@@ -127,12 +115,8 @@ namespace ux.Component
         /// <param name="handle">ベースとなる Handle オブジェクト。</param>
         /// <param name="newTargetPart">新しいパート。</param>
         public Handle(Handle handle, int newTargetPart)
+            : this(newTargetPart, handle.type, handle.data1, handle.data2)
         {
-            this.targetPart = newTargetPart;
-            this.type = handle.Type;
-
-            this.data1 = handle.data1;
-            this.data2 = handle.data2;
         }
         #endregion
 
