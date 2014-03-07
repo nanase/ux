@@ -80,7 +80,7 @@ namespace ux.Component
         /// </summary>
         /// <param name="targetPart">ハンドルが適用されるパート。</param>
         /// <param name="type">ハンドルの種類。</param>
-        /// <param name="data1">パラメータに対する整数パラメータ。</param>
+        /// <param name="data1">ハンドルに対する整数パラメータ。</param>
         public Handle(int targetPart, HandleType type, int data1)
         {
             this.targetPart = targetPart;
@@ -95,7 +95,7 @@ namespace ux.Component
         /// </summary>
         /// <param name="targetPart">ハンドルが適用されるパート。</param>
         /// <param name="type">ハンドルの種類。</param>
-        /// <param name="data2">パラメータに対する実数パラメータ。</param>
+        /// <param name="data2">ハンドルに対する実数パラメータ。</param>
         public Handle(int targetPart, HandleType type, float data2)
         {
             this.targetPart = targetPart;
@@ -110,8 +110,8 @@ namespace ux.Component
         /// </summary>
         /// <param name="targetPart">ハンドルが適用されるパート。</param>
         /// <param name="type">ハンドルの種類。</param>
-        /// <param name="data1">パラメータに対する整数パラメータ。</param>
-        /// <param name="data2">パラメータに対する実数パラメータ。</param>
+        /// <param name="data1">ハンドルに対する整数パラメータ。</param>
+        /// <param name="data2">ハンドルに対する実数パラメータ。</param>
         public Handle(int targetPart, HandleType type, int data1, float data2)
         {
             this.targetPart = targetPart;
