@@ -78,7 +78,6 @@
     <Compile Include="Component\Envelope.cs" />
     <Compile Include="Component\Extension.cs" />
     <Compile Include="Component\Handle.cs" />
-    <Compile Include="Component\HandleType.cs" />
     <Compile Include="Component\Panpot.cs" />
     <Compile Include="Component\Part.cs" />
     <Compile Include="Master.cs" />
