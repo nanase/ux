@@ -132,7 +132,7 @@ namespace ux.Waveform
                     if (this.queue != null)
                     {
                         this.queue.Enqueue((byte)data2.Clamp(255.0f, 0.0f));
-                        if (this.queue.Count <= 32767)
+                        if (this.queue.Count <= MaxDataSize)
                             this.SetStep(this.queue.ToArray());
 
                         this.queue = null;
