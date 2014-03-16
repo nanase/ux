@@ -59,6 +59,10 @@ namespace uxPlayer
         public MainForm()
         {
             InitializeComponent();
+
+            this.masterc = new MasterControlDialog();
+
+            this.SwitchConnection();
         }
         #endregion
 
@@ -71,10 +75,6 @@ namespace uxPlayer
 
             this.volumeMonitor = new VolumeMonitor(Color.FromArgb(139, 229, 139), this.volumeMonitorBox.Size);
             this.volumeMonitorBox.Image = this.volumeMonitor.Bitmap;
-
-            this.masterc = new MasterControlDialog();
-
-            this.SwitchConnection();
 
             Func<float[], int, int, int> process = (buffer, offset, count) =>
             {
@@ -486,8 +486,6 @@ namespace uxPlayer
             this.label_tone_left.Text = this.connector.Master.ToneCount.ToString();
             this.label_tone_right.Text = this.connector.Master.PartCount.ToString();
 
-
-
             this.eventCountOld = this.connector.EventCount;
         }
 
@@ -599,7 +597,7 @@ namespace uxPlayer
                 return;
             }
 
-            ExportDialog ed = new ExportDialog(this.smfFileDialog.FileName, 
+            ExportDialog ed = new ExportDialog(this.smfFileDialog.FileName,
                                                Settings.Default.PlayerPresets.Cast<string>(),
                                                this.masterc);
 
