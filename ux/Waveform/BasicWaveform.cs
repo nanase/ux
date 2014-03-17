@@ -92,45 +92,37 @@ namespace ux.Waveform
             if (onTime > StepWaveform.MaxDataSize)
                 return;
 
-            Tuple<int, float[]> nc = null;
-
             for (var now = cache.First; now != null; now = now.Next)
             {
                 if (now.Value.Item1 == onTime)
                 {
-                    nc = now.Value;
-                    break;
+                    Tuple<int, float[]> nc = now.Value;
+                    this.value = nc.Item2;
+                    this.length = nc.Item2.Length;
+                    return;
                 }
             }
 
-            if (nc == null)
+            byte[] l = new byte[onTime + 1];
+
+            if (duty <= 0.5f)
             {
-                byte[] l = new byte[onTime + 1];
-
-                if (duty <= 0.5f)
-                {
-                    // 10, 100, 1000, ...
-                    l[0] = (byte)1;
-                }
-                else
-                {
-                    // 10, 110, 1110, ...
-                    for (int i = 0; i < onTime; i++)
-                        l[i] = (byte)1;
-                }
-
-                this.SetStep(l);
-
-                cache.AddFirst(new Tuple<int, float[]>(onTime, this.value));
-
-                if (cache.Count > Square.MaxCacheSize)
-                    cache.RemoveLast();
+                // 10, 100, 1000, ...
+                l[0] = (byte)1;
             }
             else
             {
-                this.value = nc.Item2;
-                this.length = nc.Item2.Length;
+                // 10, 110, 1110, ...
+                for (int i = 0; i < onTime; i++)
+                    l[i] = (byte)1;
             }
+
+            this.SetStep(l);
+
+            cache.AddFirst(new Tuple<int, float[]>(onTime, this.value));
+
+            if (cache.Count > Square.MaxCacheSize)
+                cache.RemoveLast();
         }
         #endregion
     }
@@ -193,40 +185,32 @@ namespace ux.Waveform
             if (step <= 0 || step > 256)
                 return;
 
-            Tuple<int, float[]> nc = null;
-
             for (var now = cache.First; now != null; now = now.Next)
             {
                 if (now.Value.Item1 == step)
                 {
-                    nc = now.Value;
-                    break;
+                    Tuple<int, float[]> nc = now.Value;
+
+                    this.value = nc.Item2;
+                    this.length = nc.Item2.Length;
+                    return;
                 }
             }
 
-            if (nc == null)
-            {
-                byte[] l = new byte[step * 2];
+            byte[] l = new byte[step * 2];
 
+            for (int i = 0; i < step; i++)
+                l[i] = (byte)i;
 
-                for (int i = 0; i < step; i++)
-                    l[i] = (byte)i;
+            for (int i = step; i < step * 2; i++)
+                l[i] = (byte)(step * 2 - i - 1);
 
-                for (int i = step; i < step * 2; i++)
-                    l[i] = (byte)(step * 2 - i - 1);
+            this.SetStep(l);
 
-                this.SetStep(l);
+            cache.AddFirst(new Tuple<int, float[]>(step, this.value));
 
-                cache.AddFirst(new Tuple<int, float[]>(step, this.value));
-
-                if (cache.Count > Triangle.MaxCacheSize)
-                    cache.RemoveLast();
-            }
-            else
-            {
-                this.value = nc.Item2;
-                this.length = nc.Item2.Length;
-            }
+            if (cache.Count > Triangle.MaxCacheSize)
+                cache.RemoveLast();
         }
         #endregion
     }
