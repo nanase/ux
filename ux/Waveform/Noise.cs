@@ -122,27 +122,43 @@ namespace ux.Waveform
         #endregion
     }
 
+    struct RandomNoiseCache : CacheObject<RandomNoiseCache>
+    {
+        public float[] DataValue { get; set; }
+        public int Seed { get; private set; }
+        public int Length { get; private set; }
+
+        public RandomNoiseCache(int seed, int length)
+            : this()
+        {
+            this.Seed = seed;
+            this.Length = length;
+        }
+
+        public bool Equals(RandomNoiseCache other)
+        {
+            return this.Seed == other.Seed && this.Length == other.Length;
+        }
+
+        public bool CanResize(RandomNoiseCache other)
+        {
+            return this.Seed == other.Seed && this.Length >= other.Length;
+        }
+    }
+
     /// <summary>
     /// 周期とシード値を元にした擬似乱数によるノイズジェネレータです。
     /// </summary>
-    class RandomNoise : StepWaveform
+    class RandomNoise : CachedWaveform<RandomNoiseCache>
     {
         #region -- Private Fields --
-        private static readonly LinkedList<NoiseCache> cache = new LinkedList<NoiseCache>();
-        private const int MaxCacheSize = 32;
-
-        private int seed = 0;
-        private int array_length = 1024;
+        private RandomNoiseCache param;
         #endregion
 
-        #region -- Constructors --
-        /// <summary>
-        /// 新しい RandomNoise クラスのインスタンスを初期化します。
-        /// </summary>
-        public RandomNoise()
-            : base()
-        {
-        }
+        #region -- Public Properties --
+        protected override bool CanResizeData { get { return true; } }
+
+        protected override bool GeneratingFloat { get { return true; } }
         #endregion
 
         #region -- Public Methods --
@@ -152,7 +168,8 @@ namespace ux.Waveform
         public override void Reset()
         {
             this.freqFactor = 1.0;
-            this.Generate();
+            this.param = new RandomNoiseCache(0, 1024);
+            this.GenerateStep();
         }
 
         /// <summary>
@@ -164,13 +181,13 @@ namespace ux.Waveform
             switch ((RandomNoiseOperate)data1)
             {
                 case RandomNoiseOperate.Seed:
-                    this.seed = (int)data2;
+                    this.param = new RandomNoiseCache((int)data2, this.param.Length);
                     break;
 
                 case RandomNoiseOperate.Length:
-                    int leng = (int)data2;
-                    if (leng > 0 && leng <= StepWaveform.MaxDataSize)
-                        this.array_length = leng;
+                    int length = (int)data2;
+                    if (length > 0 && length <= StepWaveform.MaxDataSize)
+                        this.param = new RandomNoiseCache(this.param.Seed, length);
                     break;
 
                 default:
@@ -178,60 +195,29 @@ namespace ux.Waveform
                     break;
             }
 
-            this.Generate();
+            this.GenerateStep();
+        }
+        #endregion
+
+        #region -- Protected Methods --
+        protected override float[] GenerateFloat(RandomNoiseCache parameter)
+        {
+            float[] value = new float[parameter.Length];
+
+            Random r = new Random(parameter.Seed);
+
+            for (int i = 0; i < parameter.Length; i++)
+                value[i] = (float)(r.NextDouble() * 2.0 - 1.0);
+
+            return value;
         }
         #endregion
 
         #region -- Private Methods --
-        private void Generate()
+        private void GenerateStep()
         {
-            NoiseCache nc = new NoiseCache();
-
-            for (var now = cache.First; now != null; now = now.Next)
-            {
-                if (now.Value.seed == this.seed && now.Value.array_length >= this.array_length)
-                {
-                    nc = now.Value;
-                    break;
-                }
-            }
-
-            if (nc.array_length == 0)
-            {
-                this.value = new float[this.array_length];
-                this.length = this.array_length;
-
-                Random r = new Random(this.seed);
-
-                for (int i = 0; i < this.array_length; i++)
-                    this.value[i] = (float)(r.NextDouble() * 2.0 - 1.0);
-            }
-
-            else if (nc.array_length == this.array_length)
-            {
-                this.value = nc.data;
-                this.length = this.array_length;
-                return;
-            }
-            else
-            {
-                this.value = new float[this.array_length];
-                this.length = this.array_length;
-                Array.Copy(nc.data, this.value, this.array_length);
-            }
-
-            cache.AddFirst(new NoiseCache() { array_length = this.array_length, data = this.value, seed = this.seed });
-
-            if (cache.Count > RandomNoise.MaxCacheSize)
-                cache.RemoveLast();
+            this.Cache(this.param);
         }
         #endregion
-
-        struct NoiseCache
-        {
-            public int seed;
-            public int array_length;
-            public float[] data;
-        }
     }
 }
