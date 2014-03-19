@@ -148,7 +148,7 @@ namespace ux.Waveform
             switch ((BasicWaveformOperate)data1)
             {
                 case BasicWaveformOperate.Type:
-                    this.GenerateStep((int)data2.Clamp(int.MaxValue, 1f));
+                    this.GenerateStep(((int)data2).Clamp(int.MaxValue, 1));
                     break;
 
                 default:
