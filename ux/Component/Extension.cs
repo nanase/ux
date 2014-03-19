@@ -32,7 +32,7 @@ namespace ux.Utils
         #region -- Public Static Methods --
         #region Clamp
         /// <summary>
-        /// Double 値を 0.0 から指定された数値の範囲でクランプします。
+        /// Double 値を 0.0 から最大値 max の範囲でクランプします。
         /// </summary>
         /// <param name="value">クランプされる値。</param>
         /// <param name="max">範囲の最大値。</param>
@@ -43,7 +43,7 @@ namespace ux.Utils
         }
 
         /// <summary>
-        /// Double 値を 0.0 から指定された数値の範囲でクランプします。
+        /// Double 値を最小値 min から最大値 max の範囲でクランプします。
         /// </summary>
         /// <param name="value">クランプされる値。</param>
         /// <param name="max">範囲の最大値。</param>
@@ -55,7 +55,7 @@ namespace ux.Utils
         }
 
         /// <summary>
-        /// Single 値を 0.0 から指定された数値の範囲でクランプします。
+        /// Single 値を 0.0 から最大値 max の範囲でクランプします。
         /// </summary>
         /// <param name="value">クランプされる値。</param>
         /// <param name="max">範囲の最大値。</param>
@@ -66,7 +66,7 @@ namespace ux.Utils
         }
 
         /// <summary>
-        /// Single 値を 0.0 から指定された数値の範囲でクランプします。
+        /// Single 値を最小値 min から最大値 max の範囲でクランプします。
         /// </summary>
         /// <param name="value">クランプされる値。</param>
         /// <param name="max">範囲の最大値。</param>
@@ -78,7 +78,7 @@ namespace ux.Utils
         }
 
         /// <summary>
-        /// Int32 値を 0 から指定された数値の範囲でクランプします。
+        /// Int32 値を 0 から最大値 max の範囲でクランプします。
         /// </summary>
         /// <param name="value">クランプされる値。</param>
         /// <param name="max">範囲の最大値。</param>
@@ -89,7 +89,7 @@ namespace ux.Utils
         }
 
         /// <summary>
-        /// Int32 値を 0.0 から指定された数値の範囲でクランプします。
+        /// Int32 値を最小値 min から最大値 max の範囲でクランプします。
         /// </summary>
         /// <param name="value">クランプされる値。</param>
         /// <param name="max">範囲の最大値。</param>
@@ -101,7 +101,7 @@ namespace ux.Utils
         }
 
         /// <summary>
-        /// Int16 値を 0 から指定された数値の範囲でクランプします。
+        /// Int16 値を 0 から最大値 max の範囲でクランプします。
         /// </summary>
         /// <param name="value">クランプされる値。</param>
         /// <param name="max">範囲の最大値。</param>
@@ -112,7 +112,7 @@ namespace ux.Utils
         }
 
         /// <summary>
-        /// Int16 値を 0.0 から指定された数値の範囲でクランプします。
+        /// Int16 値を最小値 min から最大値 max の範囲でクランプします。
         /// </summary>
         /// <param name="value">クランプされる値。</param>
         /// <param name="max">範囲の最大値。</param>
