@@ -123,43 +123,6 @@ namespace ux.Utils
             return value < min ? min : value > max ? max : value;
         }
         #endregion
-
-        #region ToInt32
-        /// <summary>
-        /// float 値を単純に Int32 値に変換します。
-        /// </summary>
-        /// <param name="value">変換される float 値。</param>
-        /// <returns>変換された Int32 値。</returns>
-        public static int ToInt32(this float value)
-        {
-            return (int)value;
-        }
-
-        /// <summary>
-        /// float 値を 0 から指定された数値の範囲で Int32 値に変換します。
-        /// </summary>
-        /// <param name="value">変換される float 値。</param>
-        /// <param name="max">変換の上限となる 最大値。</param>
-        /// <returns>変換された Int32 値。</returns>
-        public static int ToInt32(this float value, int max)
-        {
-            int tmp = (int)value;
-            return tmp < 0 ? 0 : tmp > max ? max : tmp;
-        }
-
-        /// <summary>
-        /// float 値を指定された数値の範囲で Int32 値に変換します。
-        /// </summary>
-        /// <param name="value">変換される float 値。</param>
-        /// <param name="max">変換の上限となる 最大値。</param>
-        /// <param name="min">変換の下限となる 最小値。</param>
-        /// <returns>変換された Int32 値。</returns>
-        public static int ToInt32(this float value, int max, int min)
-        {
-            int tmp = (int)value;
-            return tmp < min ? min : tmp > max ? max : tmp;
-        }
-        #endregion
         #endregion
 	}
 }
