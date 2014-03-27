@@ -204,7 +204,7 @@ namespace ux.Waveform
         {
             float[] value = new float[parameter.Length];
 
-            Random r = new Random(parameter.Seed);
+            JKissRandom r = new JKissRandom(parameter.Seed);
 
             for (int i = 0; i < parameter.Length; i++)
                 value[i] = (float)(r.NextDouble() * 2.0 - 1.0);
