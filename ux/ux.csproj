@@ -86,6 +86,7 @@
     <Compile Include="Waveform\CachedWaveform.cs" />
     <Compile Include="Waveform\FM.cs" />
     <Compile Include="Waveform\IWaveform.cs" />
+    <Compile Include="Waveform\JKissRandom.cs" />
     <Compile Include="Waveform\Noise.cs" />
     <Compile Include="Waveform\StepWaveform.cs" />
   </ItemGroup>
