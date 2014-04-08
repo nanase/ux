@@ -417,47 +417,37 @@ namespace ux.Component
         /// <param name="data2">実数パラメータ。</param>
         private void ApplyForWaveform(int data1, float data2)
         {
+            this.waveform.Reset();
+
             switch ((WaveformType)data1)
             {
                 case WaveformType.Square:
-                    if (this.waveform is Square)
-                        this.waveform.Reset();
-                    else
+                    if (!(this.waveform is Square))
                         this.waveform = new Square();
                     break;
 
                 case WaveformType.Triangle:
-                    if (this.waveform is Triangle)
-                        this.waveform.Reset();
-                    else
+                    if (!(this.waveform is Triangle))
                         this.waveform = new Triangle();
                     break;
 
                 case WaveformType.ShortNoise:
-                    if (this.waveform is ShortNoise)
-                        this.waveform.Reset();
-                    else
+                    if (!(this.waveform is ShortNoise))
                         this.waveform = new ShortNoise();
                     break;
 
                 case WaveformType.LongNoise:
-                    if (this.waveform is LongNoise)
-                        this.waveform.Reset();
-                    else
+                    if (!(this.waveform is LongNoise))
                         this.waveform = new LongNoise();
                     break;
 
                 case WaveformType.RandomNoise:
-                    if (this.waveform is RandomNoise)
-                        this.waveform.Reset();
-                    else
+                    if (!(this.waveform is RandomNoise))
                         this.waveform = new RandomNoise();
                     break;
 
                 case WaveformType.FM:
-                    if (this.waveform is FM)
-                        this.waveform.Reset();
-                    else
+                    if (!(this.waveform is FM))
                         this.waveform = new FM(this.samplingRate);
                     break;
 
