@@ -52,14 +52,6 @@ namespace ux.Waveform
                 LongNoise.data[i] = (output ^= (ushort)(reg & 1)) * 2.0f - 1.0f;
             }
         }
-
-        /// <summary>
-        /// 新しい LongNoise クラスのインスタンスを初期化します。
-        /// </summary>
-        public LongNoise()
-            : base()
-        {
-        }
         #endregion
 
         #region -- Public Methods --
@@ -98,14 +90,6 @@ namespace ux.Waveform
                 reg += (ushort)(reg + (((reg >> 6) ^ (reg >> 5)) & 1));
                 ShortNoise.data[i] = (output ^= (ushort)(reg & 1)) * 2.0f - 1.0f;
             }
-        }
-
-        /// <summary>
-        /// 新しい ShortNoise クラスのインスタンスを初期化します。
-        /// </summary>
-        public ShortNoise()
-            : base()
-        {
         }
         #endregion
 
