@@ -1,0 +1,3 @@
+[submodule "MidiUtils"]
+	path = MidiUtils
+	url = git@github.com:nanase/MidiUtils.git
