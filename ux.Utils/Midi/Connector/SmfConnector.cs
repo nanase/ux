@@ -27,8 +27,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ux.Utils.Midi.IO;
-using ux.Utils.Midi.Sequencer;
+using MidiUtils.IO;
+using MidiUtils.Sequencer;
 
 namespace ux.Utils.Midi
 {
@@ -39,7 +39,7 @@ namespace ux.Utils.Midi
     {
         #region -- Private Fields --
         private Sequence sequence;
-        private Sequencer.Sequencer sequencer;
+        private MidiUtils.Sequencer.Sequencer sequencer;
 
         private bool disposed;
         #endregion
@@ -53,7 +53,7 @@ namespace ux.Utils.Midi
         /// <summary>
         /// 演奏に用いるシーケンサオブジェクトを取得します。
         /// </summary>
-        public Sequencer.Sequencer Sequencer { get { return this.sequencer; } }
+        public MidiUtils.Sequencer.Sequencer Sequencer { get { return this.sequencer; } }
         #endregion
 
         #region -- Constructors --
@@ -79,7 +79,7 @@ namespace ux.Utils.Midi
                 this.sequencer.Stop();
 
             this.sequence = new Sequence(filename);
-            this.sequencer = new Sequencer.Sequencer(sequence);
+            this.sequencer = new MidiUtils.Sequencer.Sequencer(sequence);
 
             Console.WriteLine("Loaded: {0}", Path.GetFileName(filename));
             Encoding sjis = Encoding.GetEncoding(932);

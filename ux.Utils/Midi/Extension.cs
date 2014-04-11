@@ -22,7 +22,6 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-using System;
 using System.Xml.Linq;
 
 namespace ux.Utils.Midi
@@ -32,42 +31,6 @@ namespace ux.Utils.Midi
     /// </summary>
     public static class Extension
     {
-        /// <summary>
-        /// 与えられた Int16 値のバイトオーダを逆転させます。
-        /// </summary>
-        /// <param name="value">バイトオーダが逆転される Int16 値。</param>
-        /// <returns>バイトオーダが逆転された結果。</returns>
-        public static Int16 ToLittleEndian(this Int16 value)
-        {
-            var array = BitConverter.GetBytes(value);
-            Array.Reverse(array);
-            return BitConverter.ToInt16(array, 0);
-        }
-
-        /// <summary>
-        /// 与えられた Int32 値のバイトオーダを逆転させます。
-        /// </summary>
-        /// <param name="value">バイトオーダが逆転される Int32 値。</param>
-        /// <returns>バイトオーダが逆転された結果。</returns>
-        public static Int32 ToLittleEndian(this Int32 value)
-        {
-            var array = BitConverter.GetBytes(value);
-            Array.Reverse(array);
-            return BitConverter.ToInt32(array, 0);
-        }
-
-        /// <summary>
-        /// 与えられた UInt32 値のバイトオーダを逆転させます。
-        /// </summary>
-        /// <param name="value">バイトオーダが逆転される UInt32 値。</param>
-        /// <returns>バイトオーダが逆転された結果。</returns>
-        public static UInt32 ToLittleEndian(this UInt32 value)
-        {
-            var array = BitConverter.GetBytes(value);
-            Array.Reverse(array);
-            return BitConverter.ToUInt32(array, 0);
-        }
-
         /// <summary>
         /// 要素中の指定された名前を持つ属性値を取得します。
         /// </summary>

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ux.Utils", "ux.Utils\ux.Uti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uxBenchmark", "uxBenchmark\uxBenchmark.csproj", "{4E454B11-164D-411F-8C36-22CDD33D0D2D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MidiUtils", "MidiUtils\src\MidiUtils.csproj", "{76C90E84-9450-4635-897D-2C065F8DFC17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -48,6 +50,14 @@ Global
 		{4E454B11-164D-411F-8C36-22CDD33D0D2D}.Release|x64.Build.0 = Release|x64
 		{4E454B11-164D-411F-8C36-22CDD33D0D2D}.Release|x86.ActiveCfg = Release|x86
 		{4E454B11-164D-411F-8C36-22CDD33D0D2D}.Release|x86.Build.0 = Release|x86
+		{76C90E84-9450-4635-897D-2C065F8DFC17}.Debug|x64.ActiveCfg = Debug|x64
+		{76C90E84-9450-4635-897D-2C065F8DFC17}.Debug|x64.Build.0 = Debug|x64
+		{76C90E84-9450-4635-897D-2C065F8DFC17}.Debug|x86.ActiveCfg = Debug|x86
+		{76C90E84-9450-4635-897D-2C065F8DFC17}.Debug|x86.Build.0 = Debug|x86
+		{76C90E84-9450-4635-897D-2C065F8DFC17}.Release|x64.ActiveCfg = Release|x64
+		{76C90E84-9450-4635-897D-2C065F8DFC17}.Release|x64.Build.0 = Release|x64
+		{76C90E84-9450-4635-897D-2C065F8DFC17}.Release|x86.ActiveCfg = Release|x86
+		{76C90E84-9450-4635-897D-2C065F8DFC17}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -25,8 +25,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MidiUtils.IO;
 using ux.Component;
-using ux.Utils.Midi.IO;
 
 namespace ux.Utils.Midi
 {

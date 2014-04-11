@@ -58,11 +58,6 @@
     <Compile Include="HandleStore.cs" />
     <Compile Include="Midi\Extension.cs" />
     <Compile Include="HandleCreator.cs" />
-    <Compile Include="Midi\IO\Event.cs" />
-    <Compile Include="Midi\IO\MidiEvent.cs" />
-    <Compile Include="Midi\IO\Track.cs" />
-    <Compile Include="Midi\IO\SystemExclusiveEvent.cs" />
-    <Compile Include="Midi\IO\MetaEvent.cs" />
     <Compile Include="Midi\Connector\MidiConnector.cs" />
     <Compile Include="Midi\Preset\Preset.cs" />
     <Compile Include="Midi\Selector\PolyphonicSelector.cs" />
@@ -72,13 +67,15 @@
     <Compile Include="Midi\Preset\ProgramPreset.cs" />
     <Compile Include="Midi\Sequencer\SequenceLayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Midi\Sequencer\Sequence.cs" />
-    <Compile Include="Midi\Sequencer\Sequencer.cs" />
     <Compile Include="Midi\Connector\SmfConnector.cs" />
     <Compile Include="Midi\Connector\MidiInConnector.cs" />
     <Compile Include="Midi\Preset\DrumPreset.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MidiUtils\src\MidiUtils.csproj">
+      <Project>{76c90e84-9450-4635-897d-2c065f8dfc17}</Project>
+      <Name>MidiUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ux\ux.csproj">
       <Project>{17901e1a-4b15-41ca-8bf3-19f7279f31cc}</Project>
       <Name>ux</Name>

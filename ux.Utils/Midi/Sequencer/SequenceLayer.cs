@@ -26,7 +26,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ux.Utils.Midi.IO;
+using MidiUtils.IO;
+using MidiUtils.Sequencer;
 
 namespace ux.Utils.Midi.Sequencer
 {
@@ -36,7 +37,7 @@ namespace ux.Utils.Midi.Sequencer
     public class SequenceLayer
     {
         #region -- Private Field --
-        private Sequencer sequencer = null;
+        private MidiUtils.Sequencer.Sequencer sequencer = null;
         private readonly int[] targetChannels;
         private readonly Preset preset;
         private readonly Master master;
@@ -44,7 +45,7 @@ namespace ux.Utils.Midi.Sequencer
         #endregion
 
         #region -- Public Properties --
-        public Sequencer Sequencer { get { return this.sequencer; } }
+        public MidiUtils.Sequencer.Sequencer Sequencer { get { return this.sequencer; } }
         #endregion
 
         #region -- Constructor --
@@ -103,7 +104,7 @@ namespace ux.Utils.Midi.Sequencer
             if (this.sequencer != null)
                 this.sequencer.Stop();
 
-            this.sequencer = new Sequencer(sequence);
+            this.sequencer = new MidiUtils.Sequencer.Sequencer(sequence);
             this.sequencer.Start();
             this.sequencer.OnTrackEvent += this.OnTrackEvent;
         }
