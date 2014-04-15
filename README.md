@@ -1,4 +1,4 @@
-﻿# ux - Micro Xylph
+# ux - Micro Xylph
 
 ux は軽量でシンプルな動作を目標としたソフトウェアシンセサイザです。C# で作られており、Mono 上でも動作します。
 
@@ -12,6 +12,13 @@ ux は モノフォニック、複数パート、ポルタメント、ビブラ�
 現在 Wiki を構築中です。ハンドルの詳細など仕様については Wiki を参照してください: https://github.com/nanase/ux/wiki
 
 
+## バイナリ
+
+過去のリリース(v0.1.5-dev以前)は [Releases](//github.com/nanase/ux/releases) よりダウンロード可能です。これらは uxPlayer を同梱しており実行可能となっています。
+
+それ以降の最新リリースでは DLL のみの配布とします。uxPlayer のバイナリダウンロードは[こちらのリポジトリ](//github.com/nanase/uxPlayer)をご参照ください。
+
+
 ## TODO in v0.2-dev
 
 * プロジェクト共通
@@ -23,14 +30,9 @@ ux は モノフォニック、複数パート、ポルタメント、ビブラ�
 * uxMidi
   - [x] ポリフォニック演奏への暫定対応
 
-* uxPlayer
-  - [x] WAVE 出力機能の実装
-  - [x] 任意の音源定義 XML ファイルの指定
-
 
 ## 姉妹リポジトリ
 
-* [uxPresetEditor](//github.com/nanase/uxPresetEditor) - 音源定義 XML ファイルエディタ
 * [ux++](//github.com/nanase/uxpp) - C++ 実装
 * [rbux](//github.com/nanase/rbux) - Ruby 実装
 
@@ -51,16 +53,6 @@ ux は モノフォニック、複数パート、ポルタメント、ビブラ�
 * Mono 2.10.8.1 (Linux Mint 14 64 bit)
 * .NET Framework 4.5 (Windows 7 64 bit)
 * (内部プロジェクトは互換性を理由に .NET Framework 4.0 をターゲットにしています)
-
-
-## 使用素材
-uxPlayer にて [p.yusukekamiyamane.com](http://p.yusukekamiyamane.com/) の Fugue Icons を使用しています。
-
-(C) 2013 Yusuke Kamiyamane. All rights reserved.
-
-These icons are licensed under a Creative Commons
-Attribution 3.0 License.
-<http://creativecommons.org/licenses/by/3.0/>
 
 ## ライセンス
 Copyright &copy; 2013-2014 Tomona Nanase
