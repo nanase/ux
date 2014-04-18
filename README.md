@@ -55,6 +55,7 @@ ux は モノフォニック、複数パート、ポルタメント、ビブラ�
 * (内部プロジェクトは互換性を理由に .NET Framework 4.0 をターゲットにしています)
 
 ## ライセンス
-Copyright &copy; 2013-2014 Tomona Nanase
 
-MIT ライセンス
+**MIT ライセンス**
+
+Copyright &copy; 2013-2014 Tomona Nanase
