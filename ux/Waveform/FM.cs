@@ -521,6 +521,31 @@ namespace ux.Waveform
                 else
                     this.ConstantValues.CopyTo(this.Send3EnvelopeBuffer, 0);
             }
+
+            public void Reset()
+            {
+                OutAmplifier = 0.0f;
+                FreqFactor = 1.0f;
+                Send0 = 0.0f;
+                Send1 = 0.0f;
+                Send2 = 0.0f;
+                Send3 = 0.0f;
+                Old = 0.0f;
+                IsSelected = false;
+
+                OutAmplifierEnvelope.Reset();
+                Send0Envelope.Reset();
+                Send1Envelope.Reset();
+                Send2Envelope.Reset();
+                Send3Envelope.Reset();
+
+                Array.Clear(OutAmplifierEnvelopeBuffer, 0, OutAmplifierEnvelopeBuffer.Length);
+                Array.Clear(Send0EnvelopeBuffer, 0, Send0EnvelopeBuffer.Length);
+                Array.Clear(Send1EnvelopeBuffer, 0, Send1EnvelopeBuffer.Length);
+                Array.Clear(Send2EnvelopeBuffer, 0, Send2EnvelopeBuffer.Length);
+                Array.Clear(Send3EnvelopeBuffer, 0, Send3EnvelopeBuffer.Length);
+                Array.Clear(ConstantValues, 0, ConstantValues.Length);
+            }
             #endregion
 
             #region -- Private Methods --
