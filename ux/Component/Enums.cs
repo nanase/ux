@@ -213,6 +213,15 @@ namespace ux.Component
         /// </summary>
         Frequency = 0x0500,
         Freq = Frequency,
+
+        /// <summary>
+        /// 各オペレータへのアルゴリズム。
+        /// この列挙値はすべてのオペレータに対して操作されます。
+        /// </summary>
+        Algorithm = 0x0600,
+        Alg = Algorithm,
+        Algo = Algorithm,
+
         //
 
         /// <summary>
