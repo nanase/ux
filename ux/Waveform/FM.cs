@@ -533,10 +533,19 @@ namespace ux.Waveform
                 Old = 0.0f;
                 IsSelected = false;
 
+                if (OutAmplifierEnvelope != null)
                 OutAmplifierEnvelope.Reset();
+
+                if (Send0Envelope != null)
                 Send0Envelope.Reset();
+
+                if (Send1Envelope != null)
                 Send1Envelope.Reset();
+
+                if (Send2Envelope != null)
                 Send2Envelope.Reset();
+
+                if (Send3Envelope != null)
                 Send3Envelope.Reset();
 
                 Array.Clear(OutAmplifierEnvelopeBuffer, 0, OutAmplifierEnvelopeBuffer.Length);
