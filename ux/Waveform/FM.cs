@@ -148,6 +148,12 @@ namespace ux.Waveform
         /// <param name="parameter">パラメータオブジェクトとなる PValue 値。</param>
         public void SetParameter(int data1, float data2)
         {
+            if ((FMOperate)(data1 & 0x0f00) == FMOperate.Algorithm)
+            {
+                this.SetAlgorithm(data1, data2);
+                return;
+            }
+
             Operator op;
             switch ((FMOperate)(data1 & 0xf000))
             {
@@ -346,6 +352,88 @@ namespace ux.Waveform
                     this.op2.IsSelected = true;
             }
         }
+
+        private void SetAlgorithm(int data1, float data2)
+        {
+            this.op0.Reset();
+            this.op1.Reset();
+            this.op2.Reset();
+            this.op3.Reset();
+
+            switch ((int)data2.Clamp(int.MaxValue, 0))
+            {
+                case 0:
+                    this.op0.Send0 = 1.0f;
+                    this.op0.Send1 = 1.0f;
+                    this.op1.Send2 = 1.0f;
+                    this.op2.Send3 = 1.0f;
+                    this.op3.OutAmplifier = 1.0f;
+                    break;
+
+                case 1:
+                    this.op0.Send0 = 1.0f;
+                    this.op0.Send2 = 1.0f;
+                    this.op1.Send2 = 1.0f;
+                    this.op2.Send3 = 1.0f;
+                    this.op3.OutAmplifier = 1.0f;
+                    break;
+
+                case 2:
+                    this.op0.Send0 = 1.0f;
+                    this.op0.Send3 = 1.0f;
+                    this.op1.Send2 = 1.0f;
+                    this.op2.Send3 = 1.0f;
+                    this.op3.OutAmplifier = 1.0f;
+                    break;
+
+                case 3:
+                    this.op0.Send0 = 1.0f;
+                    this.op0.Send1 = 1.0f;
+                    this.op1.Send3 = 1.0f;
+                    this.op2.Send3 = 1.0f;
+                    this.op3.OutAmplifier = 1.0f;
+                    break;
+
+                case 4:
+                    this.op0.Send0 = 1.0f;
+                    this.op0.Send1 = 1.0f;
+                    this.op1.OutAmplifier = 0.5f;
+                    this.op2.Send3 = 1.0f;
+                    this.op3.OutAmplifier = 0.5f;
+                    break;
+
+                case 5:
+                    this.op0.Send0 = 1.0f;
+                    this.op0.Send1 = 1.0f;
+                    this.op0.Send2 = 1.0f;
+                    this.op0.Send3 = 1.0f;
+                    this.op1.OutAmplifier = 1.0f / 3.0f;
+                    this.op2.OutAmplifier = 1.0f / 3.0f;
+                    this.op3.OutAmplifier = 1.0f / 3.0f;
+                    break;
+
+                case 6:
+                    this.op0.Send0 = 1.0f;
+                    this.op0.Send1 = 1.0f;
+                    this.op1.OutAmplifier = 1.0f / 3.0f;
+                    this.op2.OutAmplifier = 1.0f / 3.0f;
+                    this.op3.OutAmplifier = 1.0f / 3.0f;
+                    break;
+
+                case 7:
+                    this.op0.Send0 = 1.0f;
+                    this.op0.OutAmplifier = 0.25f;
+                    this.op1.OutAmplifier = 0.25f;
+                    this.op2.OutAmplifier = 0.25f;
+                    this.op3.OutAmplifier = 0.25f;
+                    break;
+
+                default:
+                    break;
+            }
+
+            this.SelectProcessingOperator();
+        }
         #endregion
 
         /// <summary>
@@ -534,19 +622,19 @@ namespace ux.Waveform
                 IsSelected = false;
 
                 if (OutAmplifierEnvelope != null)
-                OutAmplifierEnvelope.Reset();
+                    OutAmplifierEnvelope.Reset();
 
                 if (Send0Envelope != null)
-                Send0Envelope.Reset();
+                    Send0Envelope.Reset();
 
                 if (Send1Envelope != null)
-                Send1Envelope.Reset();
+                    Send1Envelope.Reset();
 
                 if (Send2Envelope != null)
-                Send2Envelope.Reset();
+                    Send2Envelope.Reset();
 
                 if (Send3Envelope != null)
-                Send3Envelope.Reset();
+                    Send3Envelope.Reset();
 
                 Array.Clear(OutAmplifierEnvelopeBuffer, 0, OutAmplifierEnvelopeBuffer.Length);
                 Array.Clear(Send0EnvelopeBuffer, 0, Send0EnvelopeBuffer.Length);
