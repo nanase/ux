@@ -641,7 +641,7 @@ namespace ux.Waveform
                 Array.Clear(Send1EnvelopeBuffer, 0, Send1EnvelopeBuffer.Length);
                 Array.Clear(Send2EnvelopeBuffer, 0, Send2EnvelopeBuffer.Length);
                 Array.Clear(Send3EnvelopeBuffer, 0, Send3EnvelopeBuffer.Length);
-                Array.Clear(ConstantValues, 0, ConstantValues.Length);
+                //Array.Clear(ConstantValues, 0, ConstantValues.Length);
             }
             #endregion
 
