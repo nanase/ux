@@ -622,19 +622,19 @@ namespace ux.Waveform
                 IsSelected = false;
 
                 if (OutAmplifierEnvelope != null)
-                    OutAmplifierEnvelope.Reset();
+                    OutAmplifierEnvelope = Envelope.CreateConstant(this.samplingRate);
 
                 if (Send0Envelope != null)
-                    Send0Envelope.Reset();
+                    Send0Envelope = Envelope.CreateConstant(this.samplingRate);
 
                 if (Send1Envelope != null)
-                    Send1Envelope.Reset();
+                    Send1Envelope = Envelope.CreateConstant(this.samplingRate);
 
                 if (Send2Envelope != null)
-                    Send2Envelope.Reset();
+                    Send2Envelope = Envelope.CreateConstant(this.samplingRate);
 
                 if (Send3Envelope != null)
-                    Send3Envelope.Reset();
+                    Send3Envelope = Envelope.CreateConstant(this.samplingRate);
 
                 Array.Clear(OutAmplifierEnvelopeBuffer, 0, OutAmplifierEnvelopeBuffer.Length);
                 Array.Clear(Send0EnvelopeBuffer, 0, Send0EnvelopeBuffer.Length);
