@@ -32,6 +32,10 @@ namespace ux.Utils.Midi
     /// </summary>
     public abstract class Selector
     {
+        #region -- Protected Static Fields --
+        protected const int GMDrumPart = 10;
+        #endregion
+
         #region -- Protected Fields --
         protected readonly Preset preset;        
         protected readonly Master master;
