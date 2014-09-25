@@ -118,12 +118,12 @@ namespace ux.Utils.Midi
                         break;
 
                     case EventType.NoteOn:
-                        if (targetPart == 10)
+                        if (targetPart == Selector.GMDrumPart)
                         {
                             int target = message.Data1 % 8;
 
                             if (target == 0)
-                                target = 10;
+                                target = Selector.GMDrumPart;
                             else
                                 target += 16;
 
@@ -219,7 +219,7 @@ namespace ux.Utils.Midi
                         break;
 
                     case EventType.ProgramChange:
-                        if (targetPart != 10)
+                        if (targetPart != Selector.GMDrumPart)
                             this.ChangeProgram(message, targetPart);
                         break;
 
