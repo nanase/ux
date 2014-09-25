@@ -130,7 +130,7 @@ namespace ux.Utils.Midi
                     case EventType.NoteOn:
                         targetStart += (message.Data1 % this.partPerChannel);
 
-                        if (targetPart == 10)
+                        if (targetPart == Selector.GMDrumPart)
                         {
                             if (message.Data2 > 0)
                             {
@@ -227,7 +227,7 @@ namespace ux.Utils.Midi
                         break;
 
                     case EventType.ProgramChange:
-                        if (targetPart != 10)
+                        if (targetPart != Selector.GMDrumPart)
                             this.ChangeProgram(message, targetParts);
                         break;
 
